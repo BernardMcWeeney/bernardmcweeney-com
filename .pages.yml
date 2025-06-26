@@ -1,0 +1,71 @@
+media:
+  input: public
+  output: /
+  extensions: [ jpg, png, webp, svg ]
+  categories: [ image ]
+
+content:
+  - name: blog
+    label: Blog Posts
+    type: collection
+    path: src/content/blog
+    format: yaml-frontmatter
+    filename: '{year}-{month}-{day}-{slug}.md'
+    fields:
+      - name: title
+        label: Title
+        type: string
+        required: true
+      - name: slug
+        label: Slug
+        type: string
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: description
+        label: Description
+        type: text
+      - name: cover
+        label: Cover Image
+        type: image
+      - name: body
+        label: Body
+        type: rich-text
+        required: true
+    view:
+      fields: [ title, date ]
+      primary: title
+      sort: [ date, title ]
+      default:
+        sort: date
+        order: desc
+
+  - name: about
+    label: About Page
+    type: file
+    path: src/pages/about.astro
+    fields:
+      - name: body
+        label: Body
+        type: rich-text
+
+components:
+  seo:
+    label: SEO Fields
+    type: object
+    fields:
+      - name: metaTitle
+        label: Meta Title
+        type: string
+      - name: metaDescription
+        label: Meta Description
+        type: text
+      - name: featuredImage
+        label: Featured Image
+        type: image
+
+settings:
+  content:
+    merge: true
