@@ -1,24 +1,32 @@
 ---
 import type { HTMLAttributes } from 'astro/types';
 
-type Props = HTMLAttributes<'a'>;
+interface Props extends HTMLAttributes<'a'> {
+	href: string;
+}
 
 const { href, class: className, ...props } = Astro.props;
+
+// Get current pathname and normalize it
 const pathname = Astro.url.pathname.replace(import.meta.env.BASE_URL, '');
-const subpath = pathname.match(/[^\/]+/g);
-const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
+const normalizedPathname = pathname === '' ? '/' : pathname;
+
+// Determine if link is active
+let isActive = false;
+
+if (href === '/') {
+	// Home link is active only on exact match
+	isActive = normalizedPathname === '/';
+} else {
+	// Other links are active if pathname starts with href
+	isActive = normalizedPathname.startsWith(href);
+}
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a 
+	href={href} 
+	class:list={[className, { active: isActive }]} 
+	{...props}
+>
 	<slot />
 </a>
-<style>
-	a {
-		display: inline-block;
-		text-decoration: none;
-	}
-	a.active {
-		font-weight: bolder;
-		text-decoration: underline;
-	}
-</style>

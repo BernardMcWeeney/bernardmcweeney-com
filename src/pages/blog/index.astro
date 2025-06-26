@@ -1,111 +1,162 @@
 ---
-import BaseHead from '../../components/BaseHead.astro';
-import Header from '../../components/Header.astro';
-import Footer from '../../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../../consts';
-import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Sidebar from '../../components/Sidebar.astro';
 import FormattedDate from '../../components/FormattedDate.astro';
+import { getCollection } from 'astro:content';
 
+// Get all blog posts and sort by date (newest first)
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+
+const pageTitle = "Blog";
+const pageDescription = "Thoughts on web development, clean code, and digital craftsmanship.";
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-		<style>
-			main {
-				width: 960px;
-			}
-			ul {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 2rem;
-				list-style-type: none;
-				margin: 0;
-				padding: 0;
-			}
-			ul li {
-				width: calc(50% - 1rem);
-			}
-			ul li * {
-				text-decoration: none;
-				transition: 0.2s ease;
-			}
-			ul li:first-child {
-				width: 100%;
-				margin-bottom: 1rem;
-				text-align: center;
-			}
-			ul li:first-child img {
-				width: 100%;
-			}
-			ul li:first-child .title {
-				font-size: 2.369rem;
-			}
-			ul li img {
-				margin-bottom: 0.5rem;
-				border-radius: 12px;
-			}
-			ul li a {
-				display: block;
-			}
-			.title {
-				margin: 0;
-				color: rgb(var(--black));
-				line-height: 1;
-			}
-			.date {
-				margin: 0;
-				color: rgb(var(--gray));
-			}
-			ul li a:hover h4,
-			ul li a:hover .date {
-				color: rgb(var(--accent));
-			}
-			ul a:hover img {
-				box-shadow: var(--box-shadow);
-			}
-			@media (max-width: 720px) {
-				ul {
-					gap: 0.5em;
-				}
-				ul li {
-					width: 100%;
-					text-align: center;
-				}
-				ul li:first-child {
-					margin-bottom: 0;
-				}
-				ul li:first-child .title {
-					font-size: 1.563em;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<Header />
-		<main>
-			<section>
-				<ul>
-					{
-						posts.map((post) => (
-							<li>
-								<a href={`/blog/${post.id}/`}>
-									<img width={720} height={360} src={post.data.heroImage} alt="" />
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
+<Layout title={pageTitle} description={pageDescription}>
+	<div class="container py-12">
+		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+			<!-- Main Content Column -->
+			<div class="lg:col-span-2 space-y-8">
+				<!-- Terminal Header -->
+				<div class="terminal-window">
+					<div class="terminal-header">
+						<div class="terminal-dots">
+							<div class="terminal-dot bg-red-400"></div>
+							<div class="terminal-dot bg-yellow-400"></div>
+							<div class="terminal-dot bg-green-400"></div>
+						</div>
+					</div>
+					<div class="terminal-content">
+						<h1 class="text-3xl md:text-4xl font-mono font-bold text-white mb-4">
+							&gt; Blog<span class="text-emerald-200">/</span>
+						</h1>
+						<p class="text-emerald-50 text-lg leading-relaxed">
+							Thoughts on web development, clean code, and digital craftsmanship. 
+							{posts.length} {posts.length === 1 ? 'post' : 'posts'} and counting.
+						</p>
+					</div>
+				</div>
+
+				<!-- Blog Posts List -->
+				<div class="space-y-6">
+					{posts.map((post, index) => (
+						<article class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-emerald-300 transition-all duration-200 hover:shadow-lg dark:bg-slate-800 dark:border-slate-700 dark:hover:border-emerald-600">
+							<div class="md:flex">
+								<!-- Post Image -->
+								<div class="md:w-56 h-48 md:h-auto bg-gray-900 flex-shrink-0">
+									{post.data.heroImage ? (
+										<img 
+											src={post.data.heroImage} 
+											alt={post.data.title} 
+											class="w-full h-full object-cover"
+											loading={index < 3 ? "eager" : "lazy"}
+										/>
+									) : (
+										<div class="w-full h-full bg-gradient-to-br from-emerald-600 to-emerald-700 flex items-center justify-center">
+											<div class="text-white text-center p-4">
+												<svg class="w-10 h-10 mx-auto mb-2 opacity-80" fill="currentColor" viewBox="0 0 20 20">
+													<path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+												</svg>
+												<span class="text-xs font-mono opacity-90 leading-tight">
+													{post.data.title.length > 30 ? post.data.title.slice(0, 30) + '...' : post.data.title}
+												</span>
+											</div>
+										</div>
+									)}
+								</div>
+								
+								<!-- Post Content -->
+								<div class="p-6 flex-1 flex flex-col">
+									<div class="mb-3">
+										<time class="text-xs font-mono text-emerald-600 bg-emerald-50 dark:bg-emerald-900/30 dark:text-emerald-300 px-2 py-1 rounded">
+											<FormattedDate date={post.data.pubDate} />
+										</time>
+									</div>
+									
+									<h2 class="text-xl md:text-2xl font-mono font-bold text-gray-900 dark:text-white mb-3 leading-tight">
+										<a 
+											href={`/blog/${post.id || post.slug}/`}
+											class="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+										>
+											{post.data.title}
+										</a>
+									</h2>
+									
+									<p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4 flex-grow">
+										{post.data.description}
 									</p>
-								</a>
-							</li>
-						))
-					}
-				</ul>
-			</section>
-		</main>
-		<Footer />
-	</body>
-</html>
+									
+									<div class="flex flex-wrap items-center justify-between gap-4">
+										<div class="flex flex-wrap gap-2">
+											{post.data.tags ? post.data.tags.map((tag: string) => (
+												<span class="tag">{tag}</span>
+											)) : (
+												<>
+													<span class="tag">webdev</span>
+													<span class="tag">blog</span>
+												</>
+											)}
+										</div>
+										
+										<a 
+											href={`/blog/${post.id || post.slug}/`}
+											class="inline-flex items-center font-mono text-sm text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 dark:hover:text-emerald-300 transition-colors group"
+										>
+											Read more
+											<svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+											</svg>
+										</a>
+									</div>
+								</div>
+							</div>
+						</article>
+					))}
+				</div>
+
+				<!-- Empty State -->
+				{posts.length === 0 && (
+					<div class="bg-white border border-gray-200 rounded-lg p-12 text-center dark:bg-slate-800 dark:border-slate-700">
+						<div class="text-gray-400 dark:text-gray-500 mb-4">
+							<svg class="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+							</svg>
+						</div>
+						<h3 class="text-lg font-mono font-semibold text-gray-900 dark:text-white mb-2">
+							No posts yet
+						</h3>
+						<p class="text-gray-600 dark:text-gray-300 font-mono text-sm">
+							Check back soon for new content!
+						</p>
+					</div>
+				)}
+
+				<!-- Pagination (for future use) -->
+				<!-- 
+				<div class="flex items-center justify-between pt-8">
+					<div class="flex items-center space-x-2">
+						<span class="text-sm text-gray-500 font-mono">
+							Showing {posts.length} of {posts.length} posts
+						</span>
+					</div>
+					
+					<div class="flex space-x-2">
+						<button class="px-4 py-2 border border-gray-200 rounded-lg font-mono text-sm text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
+							← Previous
+						</button>
+						<button class="px-4 py-2 border border-gray-200 rounded-lg font-mono text-sm text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50" disabled>
+							Next →
+						</button>
+					</div>
+				</div>
+				-->
+			</div>
+
+			<!-- Sidebar Column -->
+			<div class="lg:col-span-1">
+				<Sidebar />
+			</div>
+		</div>
+	</div>
+</Layout>
