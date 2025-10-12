@@ -1,0 +1,50 @@
+---
+import Page from "../../layouts/Page.astro";
+import { getCollection } from "astro:content";
+
+let projects: any[] = [];
+try { /* @ts-ignore */ projects = await getCollection("projects"); } catch { projects = []; }
+
+if (!projects.length) {
+  const blog = await getCollection("blog");
+  projects = blog.filter((p) => {
+    const t = (Array.isArray(p.data?.tags) ? p.data.tags.join(" ") : "").toLowerCase();
+    return /project|build|case study/.test(t);
+  });
+}
+
+projects = projects
+  .filter((p)=>!p.data?.draft)
+  .sort((a,b)=> +new Date(b.data.pubDate || b.data.date) - +new Date(a.data.pubDate || a.data.date));
+---
+
+<Page title="Projects" description="Selected builds, experiments, and shipping logs." prompt="> ls projects/">
+  <div class="container" style="max-width:64rem;margin:auto;">
+    <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px;">
+      {projects.map((p) => {
+        const href = p.collection === 'projects' ? `/projects/${p.slug || p.id}/` : `/blog/${p.id}/`;
+        const img = p.data?.heroImage || p.data?.image;
+        const desc = p.data?.description;
+        const status = p.data?.status || "Active";
+        const pct = Number(p.data?.progress ?? 55);
+        return (
+          <article class="card corners card--12 sm:card--6">
+            <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+
+            <a href={href} class="no-underline hover:underline" style="display:grid;grid-template-columns:140px 1fr;gap:.8rem;">
+              <div class="panel" style="overflow:hidden;display:grid;place-items:center;">
+                {img ? <img src={img} alt={p.data?.title} loading="lazy" style="width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;" /> : <div class="font-mono" style="font-size:1.8rem;">🛠️</div>}
+              </div>
+              <div>
+                <h2 class="font-mono" style="margin:0 0 .15rem 0;color:var(--brand);font-size:1.1rem;">{p.data?.title}</h2>
+                {desc && <p style="margin:.25rem 0 .4rem 0;">{desc}</p>}
+                <div class="font-mono text-sm" style="color:var(--muted)">Status: {status}</div>
+                <div class="meter" style="margin-top:.35rem;"><span style={`width:${Math.max(0,Math.min(100,pct))}%`}></span></div>
+              </div>
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</Page>

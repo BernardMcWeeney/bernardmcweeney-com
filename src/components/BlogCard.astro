@@ -1,0 +1,56 @@
+---
+import FormattedDate from "../components/FormattedDate.astro";
+
+interface Props {
+  href: string;
+  title: string;
+  description?: string;
+  pubDate: Date | string;
+  updatedDate?: Date | string;
+  heroImage?: string;
+  category?: string;
+  tags?: string[];
+  // small variant for dense lists
+  dense?: boolean;
+}
+
+const {
+  href, title, description, pubDate, updatedDate, heroImage, category = "General", tags = [], dense = false
+} = Astro.props;
+
+const catEmoji: Record<string,string> = {
+  engineering: "🛠️", infra: "🖧", design: "🎨", microsoft: "🪟", music: "💿", general: "📄"
+};
+const fallbackEmoji = catEmoji[(category || "general").toLowerCase()] ?? "📄";
+---
+
+<article class={`card corners ${dense ? "" : ""}`} style="padding:.6rem;">
+  <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+
+  <a href={href} class="no-underline hover:underline" style="display:grid;grid-template-columns:120px 1fr;gap:.8rem;align-items:stretch;">
+    <!-- Thumb -->
+    <div class="panel" style="overflow:hidden;display:grid;place-items:center;">
+      {heroImage ? (
+        <img src={heroImage} alt={title} loading="lazy" style="width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;" />
+      ) : (
+        <div class="font-mono" style="font-size:1.8rem;opacity:.9">{fallbackEmoji}</div>
+      )}
+    </div>
+
+    <!-- Text -->
+    <div>
+      <h2 class="font-mono" style="font-size:1.1rem;margin:0 0 .15rem 0;color:var(--brand);">{title}</h2>
+      <div class="font-mono text-sm" style="color:var(--muted);">
+        <FormattedDate date={pubDate} />
+        {updatedDate && <> · updated <FormattedDate date={updatedDate} /></>}
+        {category && <> · {category}</>}
+      </div>
+      {description && <p style="margin:.35rem 0 0 0;">{description}</p>}
+      {tags?.length > 0 &&
+        <div style="margin-top:.45rem;display:flex;gap:.35rem;flex-wrap:wrap;">
+          {tags.slice(0,4).map((t) => <span class="badge">{t}</span>)}
+        </div>
+      }
+    </div>
+  </a>
+</article>

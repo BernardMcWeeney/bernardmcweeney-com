@@ -1,0 +1,79 @@
+<section class="widget corners">
+  <span class="sq tl"></span><span class="sq br"></span>
+  <div class="head"><span class="icon">WX</span> Weather</div>
+
+  <div class="body text-sm flex items-center justify-between gap-4">
+    <!-- LEFT: details -->
+    <div class="min-w-0">
+      <div class="font-mono truncate" id="w-place">Detecting location…</div>
+      <div class="mt-1 flex items-end gap-3">
+        <div class="font-mono text-lg" id="w-temp">--°C</div>
+        <div class="text-[color:var(--muted)]" id="w-desc">—</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: viz -->
+    <div class="viz wx-right">
+      <div class="thermo">
+        <div class="thermo-col" id="w-col"></div>
+        <div class="thermo-bulb"></div>
+      </div>
+      <div class="radar-t themed">
+        <div class="radar-grid"></div>
+        <div class="radar-sweep"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const wp = document.getElementById('w-place');
+  const wt = document.getElementById('w-temp');
+  const wd = document.getElementById('w-desc');
+  const wc = document.getElementById('w-col');
+
+  const wx = {0:"Clear",1:"Mainly clear",2:"Partly cloudy",3:"Overcast",45:"Fog",51:"Drizzle",61:"Rain",71:"Snow",80:"Showers"};
+
+  function setThermo(t){
+    const pct = Math.max(0, Math.min(100, ((t + 10) / 50) * 100)); // −10→0%, 40→100%
+    wc.style.height = pct + "%";
+    wt.textContent = Math.round(t) + "°C";
+  }
+
+  async function labelFromCoords(lat, lon){
+    try {
+      const r = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=en&format=json`);
+      const j = await r.json();
+      const p = j?.results?.[0];
+      if (!p) return null;
+      const name = p.city || p.town || p.village || p.name || "";
+      const cc = p.country_code || "";
+      return name ? `${name}, ${cc}` : (p.country || "Unknown");
+    } catch { return null; }
+  }
+
+  async function fetchWx(lat, lon, fallbackLabel){
+    try {
+      const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`);
+      const j = await r.json();
+      const t = j?.current?.temperature_2m;
+      const code = j?.current?.weather_code;
+      const nice = await labelFromCoords(lat, lon);
+      wp.textContent = nice || fallbackLabel;
+      setThermo(t);
+      wd.textContent = wx[code] ?? "—";
+    } catch {
+      wp.textContent = "Weather unavailable";
+    }
+  }
+
+  if (navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      p => fetchWx(p.coords.latitude, p.coords.longitude, "Current location"),
+      () => fetchWx(53.3498, -6.2603, "Dublin, IE"),
+      { timeout: 4000 }
+    );
+  } else {
+    fetchWx(53.3498, -6.2603, "Dublin, IE");
+  }
+</script>

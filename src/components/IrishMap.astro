@@ -1,0 +1,72 @@
+---
+interface Props {
+  imageSrc?: string;
+  showCities?: boolean;
+}
+const { imageSrc = "", showCities = true } = Astro.props;
+
+const cities = [
+  { name:"Dublin",lat:53.3498,lon:-6.2603,x:78,y:42 },
+  { name:"Meath",lat:53.6055,lon:-6.6564,x:72,y:38 },
+  { name:"Galway",lat:53.2707,lon:-9.0568,x:30,y:54 },
+  { name:"Limerick",lat:52.6638,lon:-8.6267,x:45,y:70 },
+  { name:"Cork",lat:51.8985,lon:-8.4756,x:52,y:86 },
+  { name:"Waterford",lat:52.2593,lon:-7.1101,x:64,y:84 },
+  { name:"Sligo",lat:54.2697,lon:-8.4601,x:28,y:28 },
+  { name:"Belfast",lat:54.5973,lon:-5.9301,x:82,y:22 },
+];
+---
+
+<div class="panel corners overflow-hidden">
+  <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+
+  <div class="relative h-64 md:h-72" style={`background:url('${imageSrc}') center/cover no-repeat;`}>
+    {showCities && cities.map(c => (
+      <span class="absolute map-dot" style={`left:${c.x}%; top:${c.y}%; transform: translate(-50%,-50%);`} title={c.name} />
+    ))}
+    <span id="pin" class="absolute hidden map-dot" title="You"></span>
+
+    <div id="label" class="panel p-2 text-xs absolute left-2 bottom-2">Detecting location…</div>
+  </div>
+</div>
+
+<script>
+  const pin = document.getElementById('pin');
+  const label = document.getElementById('label');
+
+  const bounds = { minLat: 51.39, maxLat: 55.38, minLon: -10.47, maxLon: -5.43 };
+  function toPct(lat, lon){
+    const x = ((lon - bounds.minLon) / (bounds.maxLon - bounds.minLon)) * 100;
+    const y = ((bounds.maxLat - lat) / (bounds.maxLat - bounds.minLat)) * 100;
+    return { x: Math.max(0,Math.min(100,x)), y: Math.max(0,Math.min(100,y)) };
+  }
+
+  const cities = JSON.parse(`{${JSON.stringify(cities).slice(1,-1)}}`);
+  function nearest(lat, lon){
+    const R=6371, d2r=v=>v*Math.PI/180;
+    let best=Object.values(cities)[0], dist=1e9;
+    for (const c of Object.values(cities)){
+      const dlat=d2r(c.lat-lat), dlon=d2r(c.lon-lon);
+      const a=Math.sin(dlat/2)**2+Math.cos(d2r(lat))*Math.cos(d2r(c.lat))*Math.sin(dlon/2)**2;
+      const d=2*R*Math.asin(Math.sqrt(a));
+      if (d<dist){ dist=d; best=c; }
+    }
+    return best;
+  }
+
+  function place(lat, lon){
+    const p = toPct(lat, lon);
+    pin.style.left = p.x+"%"; pin.style.top = p.y+"%"; pin.style.transform="translate(-50%,-50%)";
+    pin.classList.remove('hidden');
+    const near = nearest(lat, lon);
+    label.textContent = `Connected near ${near.name}`;
+  }
+
+  if (navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+      pos => place(pos.coords.latitude, pos.coords.longitude),
+      () => place(53.3498,-6.2603),
+      { timeout: 4000 }
+    );
+  } else { place(53.3498,-6.2603); }
+</script>

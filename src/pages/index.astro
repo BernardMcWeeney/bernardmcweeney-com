@@ -1,135 +1,110 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Sidebar from '../components/Sidebar.astro';
-import FormattedDate from '../components/FormattedDate.astro';
-import { getCollection } from 'astro:content';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import Layout from "../layouts/Layout.astro";
+import WindowHero from "../components/WindowHero.astro";
+import IrishMap from "../components/IrishMap.astro";
+import Weather from "../components/widgets/Weather.astro";
+import LocalTime from "../components/widgets/LocalTime.astro";
+import NowPlaying from "../components/widgets/NowPlaying.astro";
+import { getCollection } from "astro:content";
 
-// Get blog posts and sort by date (newest first)
-const posts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
-
-// Get the most recent posts (limit to 3 for homepage)
-const recentPosts = posts.slice(0, 3);
+const posts = (await getCollection("blog")).sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0,3);
+const notes = (await getCollection("notes")).sort((a,b)=> b.data.date.valueOf()-a.data.date.valueOf()).slice(0,6);
+const docs  = (await getCollection("docs")).slice(0,3);
+const projects = (await getCollection("projects"))
+  .sort((a,b)=> (a.data.order ?? 999) - (b.data.order ?? 999))
+  .slice(0,6);
 ---
 
-<Layout title={SITE_TITLE} description={SITE_DESCRIPTION}>
-	<div class="container py-12">
-		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-			<!-- Main Content Column -->
-			<div class="lg:col-span-2 space-y-8">
-				<!-- Terminal Welcome Section -->
-				<div class="terminal-window">
-					<div class="terminal-header">
-						<div class="terminal-dots">
-							<div class="terminal-dot bg-red-400"></div>
-							<div class="terminal-dot bg-yellow-400"></div>
-							<div class="terminal-dot bg-green-400"></div>
-						</div>
-					</div>
-					<div class="terminal-content">
-						<h1 class="text-3xl md:text-4xl font-mono font-bold text-white mb-4">
-							&gt; Welcome<span class="text-emerald-200">/</span>
-						</h1>
-						<p class="text-emerald-50 text-lg leading-relaxed">
-							A modern retro tech blog exploring web development, clean code, and the art of 
-							digital craftsmanship. Straight lines, hard edges, and a touch of nostalgia.
-						</p>
-					</div>
-				</div>
+<Layout title="Home" description="Bernard’s personal hub — blog, projects, notes, and docs.">
+  <section class="container my-8">
+    <!-- Split hero: window (left) + map (right) -->
+    <div class="grid gap-4 md:grid-cols-2">
+      <WindowHero title="Bernard McWeeney" subtitle="A modern-retro home for my writing, projects, and build logs." />
+      <IrishMap imageSrc="/images/ireland.svg" />
+    </div>
 
-				<!-- Recent Posts Section -->
-				<section>
-					<div class="flex items-center justify-between mb-6">
-						<h2 class="text-2xl font-mono font-bold text-gray-900 border-b-2 border-gray-900 pb-1">
-							Recent Posts
-						</h2>
-					</div>
-					
-					<div class="space-y-6">
-						{recentPosts.map((post) => (
-							<article class="bg-white border border-gray-200 rounded-lg overflow-hidden hover:border-emerald-300 transition-colors">
-								<div class="md:flex">
-									<!-- Post Image -->
-									<div class="md:w-48 h-48 md:h-auto bg-gray-900 flex-shrink-0">
-										{post.data.heroImage ? (
-											<img 
-												src={post.data.heroImage} 
-												alt={post.data.title} 
-												class="w-full h-full object-cover"
-											/>
-										) : (
-											<div class="w-full h-full bg-emerald-600 flex items-center justify-center">
-												<div class="text-white text-center">
-													<svg class="w-8 h-8 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-														<path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
-													</svg>
-													<span class="text-xs font-mono">{post.data.title.slice(0, 20)}...</span>
-												</div>
-											</div>
-										)}
-									</div>
-									
-									<!-- Post Content -->
-									<div class="p-6 flex-1">
-										<div class="mb-3">
-											<time class="text-xs font-mono text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
-												<FormattedDate date={post.data.pubDate} />
-											</time>
-										</div>
-										
-										<h3 class="text-xl font-mono font-semibold text-gray-900 mb-3 leading-tight">
-											<a 
-												href={`/blog/${post.id || post.slug}/`}
-												class="hover:text-emerald-600 transition-colors"
-											>
-												{post.data.title}
-											</a>
-										</h3>
-										
-										<p class="text-gray-600 text-sm leading-relaxed mb-4">
-											{post.data.description}
-										</p>
-										
-										<div class="flex flex-wrap gap-2">
-											<!-- Add actual tags from post data if available -->
-											{post.data.tags ? post.data.tags.map((tag: string) => (
-												<span class="tag">{tag}</span>
-											)) : (
-												<>
-													<span class="tag">webdev</span>
-													<span class="tag">blog</span>
-												</>
-											)}
-										</div>
-									</div>
-								</div>
-							</article>
-						))}
-					</div>
-					
-					<!-- View All Posts Link -->
-					{posts.length > 3 && (
-						<div class="text-center mt-8">
-							<a 
-								href="/blog" 
-								class="inline-flex items-center font-mono text-sm text-emerald-600 hover:text-emerald-700 transition-colors bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-lg"
-							>
-								View All Posts ({posts.length})
-								<svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-								</svg>
-							</a>
-						</div>
-					)}
-				</section>
-			</div>
+    <!-- Widgets with accent headers + corners -->
+    <div class="mt-6 grid gap-3 md:grid-cols-3">
+      <Weather />
+      <NowPlaying />
+      <LocalTime />
+    </div>
 
-			<!-- Sidebar Column -->
-			<div class="lg:col-span-1">
-				<Sidebar />
-			</div>
-		</div>
-	</div>
+    <!-- Personal brand stripe (full orange, but relevant copy) -->
+    <div class="mt-8 panel overflow-hidden border-[color:var(--brand)]">
+      <div class="bg-[color:var(--brand)] text-white p-5">
+        <p class="font-mono">I build things, write about the process, and leave the rough edges in.</p>
+      </div>
+    </div>
+
+    <!-- Snippet grids -->
+    <div class="mt-8 grid-cards">
+      <!-- Projects Preview -->
+      <section class="card card--6 relative corners">
+	  	<span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+        <div class="panel-header">
+          <span>Projects</span>
+          <span class="ml-auto"><a href="/projects/" class="btn">See all →</a></span>
+        </div>
+        <div class="pt-4 grid gap-3 sm:grid-cols-2">
+          {projects.map(p => (
+            <a href={`/projects/${p.slug}/`} class="panel p-3 hover:border-[color:var(--brand)] transition-colors">
+              <div class="flex items-center justify-between">
+                <h3 class="text-base">{p.data.title}</h3>
+                {p.data.status && <span class="badge">{p.data.status}</span>}
+              </div>
+              <p class="text-sm text-[color:var(--muted)] mt-1">{p.data.summary}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- Recent Blog -->
+      <section class="card card--6 relative corners">
+	  	<span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+        <div class="panel-header">
+          <span>Recent Posts</span>
+          <span class="ml-auto"><a class="btn" href="/blog/">All posts →</a></span>
+        </div>
+        <ul class="pt-3 space-y-3">
+          {posts.map(post => (
+            <li class="panel p-3 hover:border-[color:var(--brand)]">
+              <a href={`/blog/${post.slug}/`} class="no-underline">
+                <h3 class="text-[17px]">{post.data.title}</h3>
+                <p class="text-sm text-[color:var(--muted)]">{post.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- Notes -->
+      <section class="card card--4 relative corners">
+	  	<span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+        <div class="panel-header"><span>Notes</span><span class="ml-auto"><a class="btn" href="/notes/">All notes →</a></span></div>
+        <div class="pt-3 space-y-2">
+          {notes.map(n => (
+            <a href={`/notes/${n.slug}/`} class="panel p-2 block hover:border-[color:var(--brand)]">
+              <div class="text-sm">{n.data.title}</div>
+              <div class="text-xs text-[color:var(--muted)]">{new Date(n.data.date).toLocaleDateString()}</div>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <!-- Docs -->
+      <section class="card card--8 relative corners">
+	  	<span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+        <div class="panel-header"><span>Docs</span><span class="ml-auto"><a class="btn" href="/docs/">Browse docs →</a></span></div>
+        <div class="pt-4 grid gap-3 md:grid-cols-3">
+          {docs.map(d => (
+            <a href={`/docs/${d.slug}/`} class="panel p-3 hover:border-[color:var(--brand)]">
+              <h3 class="text-base">{d.data.title}</h3>
+              <p class="text-sm text-[color:var(--muted)]">{d.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  </section>
 </Layout>

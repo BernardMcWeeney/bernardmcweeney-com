@@ -1,0 +1,121 @@
+---
+const LASTFM_URL = "https://lastfm-last-played.biancarosa.com.br/bmcweeney/latest-song";
+---
+
+<section class="widget corners nowplaying" data-np>
+  <span class="sq tl"></span><span class="sq br"></span>
+
+  <div class="head">
+    <span class="icon">NP</span> Now Playing
+  </div>
+
+  <!-- Text wraps on left, fixed-width viz on right -->
+  <div class="body grid items-center gap-4" style="grid-template-columns:minmax(0,1fr) var(--np-viz-w,140px);">
+    <!-- LEFT -->
+    <div class="min-w-0">
+      <div class="font-mono">
+        <a id="np-title-link" class="track-link np-title" href="#" target="_blank" rel="noopener">Nothing spinning</a>
+      </div>
+      <div class="text-[color:var(--muted)] np-meta">
+        <span id="np-artist">—</span>
+        <span aria-hidden="true"> • </span>
+        <span id="np-album">—</span>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="viz">
+      <div class="deck" id="deck" aria-hidden="true">
+        <!-- Controls: vertical LEFT column (off the platter) -->
+        <div class="controls">
+          <span class="btn led" id="np-led" aria-hidden="true"></span>
+          <span class="btn power" aria-hidden="true"></span>
+          <span class="knob pitch" aria-hidden="true"></span>
+        </div>
+
+        <!-- Platter -->
+        <div class="platter" id="platter">
+          <span class="rim" aria-hidden="true"></span>
+          <span class="grooves" aria-hidden="true"></span>
+          <span class="deadwax" aria-hidden="true"></span>
+          <span class="shine" aria-hidden="true"></span>
+          <span class="spindle" aria-hidden="true"></span>
+          <span class="label-dot" id="label-dot" aria-hidden="true"></span>
+        </div>
+
+        <!-- Tonearm: pivots at bottom-right; stylus over record -->
+        <div class="tonearm">
+          <span class="pivot" aria-hidden="true"></span>
+          <span class="rod" aria-hidden="true"></span>
+          <span class="headshell" aria-hidden="true">
+            <span class="stylus" aria-hidden="true"></span>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      const ROOT     = document.currentScript.closest('[data-np]');
+      const titleA   = ROOT.querySelector('#np-title-link');
+      const artistEl = ROOT.querySelector('#np-artist');
+      const albumEl  = ROOT.querySelector('#np-album');
+      const labelDot = ROOT.querySelector('#label-dot');
+      const platter  = ROOT.querySelector('#platter');
+      const deck     = ROOT.querySelector('#deck');
+      const led      = ROOT.querySelector('#np-led');
+
+      function normalize(data){
+        const t = (data && data.track) || {};
+        const imgs = Array.isArray(t.image) ? t.image : [];
+        const pref = ['extralarge','large','medium','small'];
+        let art = '';
+        for (const s of pref){
+          const hit = imgs.find(i => i?.size === s && i?.['#text']);
+          if (hit?.['#text']) { art = hit['#text']; break; }
+        }
+        if (!art && imgs.length) art = imgs[imgs.length-1]['#text'] || '';
+        return {
+          title: t?.name || '',
+          artist: t?.artist?.['#text'] || '',
+          album: t?.album?.['#text'] || '',
+          url: t?.url || '',
+          art,
+          nowPlaying: String(t?.['@attr']?.nowplaying || '') === 'true',
+        };
+      }
+
+      function apply(j){
+        const playing = j.nowPlaying && (j.title || j.artist);
+
+        titleA.textContent = j.title || 'Nothing spinning';
+        titleA.href = j.url || '#';
+        titleA.classList.toggle('disabled', !j.url);
+
+        artistEl.textContent = j.artist || '—';
+        albumEl.textContent  = j.album  || '—';
+
+        if (j.art) labelDot.style.backgroundImage = `url("${j.art}")`;
+        else labelDot.style.removeProperty('background-image');
+
+        platter.classList.toggle('spin', playing);
+        deck.classList.toggle('play', playing);
+        led.classList.toggle('on', playing);
+      }
+
+      async function load(){
+        try {
+          const r = await fetch("https://lastfm-last-played.biancarosa.com.br/bmcweeney/latest-song", { cache: 'no-store' });
+          if (!r.ok) throw new Error();
+          apply(normalize(await r.json()));
+        } catch {
+          apply({ title:'', artist:'', album:'', art:'', url:'', nowPlaying:false });
+        }
+      }
+
+      load();
+      setInterval(load, 30000);
+    })();
+  </script>
+</section>

@@ -1,0 +1,99 @@
+---
+import Page from "../layouts/Page.astro";
+import { getCollection } from "astro:content";
+import FormattedDate from "../components/FormattedDate.astro";
+
+function y(d: any) { return new Date(d).getFullYear(); }
+
+const blog = (await getCollection("blog")).filter((p) => !p.data.draft);
+let notes: any[] = [];
+try { /* @ts-ignore */ notes = (await getCollection("notes")).filter((p) => !p.data?.draft); } catch {}
+
+const all = [...blog, ...notes].sort((a,b)=> +new Date(b.data?.pubDate || b.data?.date) - +new Date(a.data?.pubDate || a.data?.date));
+const grouped = all.reduce((acc:Record<number, any[]>, item) => {
+  const yr = y(item.data?.pubDate || item.data?.date);
+  (acc[yr] ||= []).push(item);
+  return acc;
+}, {});
+const years = Object.keys(grouped).map(Number).sort((a,b)=>b-a);
+---
+
+<Page title="Archive" description="Everything in one place. Grouped by year, sprinkled with a few fun system widgets." prompt="> tree --dirsfirst archive/">
+  {years.length === 0 && <p class="text-[color:var(--muted)]">No entries yet.</p>}
+
+  {years.map((year) => {
+    const entries = grouped[year];
+    return (
+      <section class="widget corners" style="margin:1rem auto;max-width:64rem;">
+        <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+
+        <div class="head">
+          <div class="icon">{String(year).slice(-2)}</div>
+          <div class="font-mono text-sm">{year} · {entries.length} item{entries.length>1?'s':''}</div>
+        </div>
+
+        <div class="body grid" style="grid-template-columns:1fr 220px; gap:14px;">
+          <!-- List -->
+          <ul class="m-0 p-0 list-none">
+            {entries.map((entry) => {
+              const href =
+                entry.collection === "blog"
+                  ? `/blog/${entry.id}/`
+                  : entry.slug
+                  ? `/notes/${entry.slug}/`
+                  : `/${entry.collection}/${entry.id}/`;
+              const date = entry.data?.pubDate || entry.data?.date;
+              return (
+                <li class="py-2 border-b" style="border-color:var(--border)">
+                  <a class="no-underline hover:underline" href={href}>
+                    <span class="font-mono text-sm text-[color:var(--muted)]">
+                      <FormattedDate date={date} />
+                    </span>
+                    {" · "}
+                    <span class="font-mono">{entry.data?.title ?? "Untitled"}</span>
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+
+          <!-- Fun side widgets (rotates per year for variety) -->
+          <aside class="grid gap-3">
+            <div class="panel corners">
+              <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+              <div class="head"><div class="icon">WX</div><div class="font-mono text-sm">Thermal</div></div>
+              <div class="body">
+                <div class="viz">
+                  <div class="thermo">
+                    <div class="thermo-col" style={`height:${(year % 80)+10}%`}></div>
+                    <div class="thermo-bulb"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel corners">
+              <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+              <div class="head"><div class="icon">RF</div><div class="font-mono text-sm">Radar</div></div>
+              <div class="body">
+                <div class="viz">
+                  <div class="radar-t">
+                    <div class="radar-grid"></div>
+                    <div class="radar-sweep"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    );
+  })}
+
+  <!-- Loud orange footer stripe -->
+  <section class="panel" style="margin:1.25rem auto;max-width:64rem;background:var(--brand);border-color:var(--brand);color:#fff;">
+    <div class="body font-mono">
+      Archive complete. <span class="caret-slash"></span> Use the blog filters if you’re hunting something specific.
+    </div>
+  </section>
+</Page>

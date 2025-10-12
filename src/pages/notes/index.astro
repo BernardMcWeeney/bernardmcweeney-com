@@ -1,0 +1,94 @@
+---
+import Page from "../../layouts/Page.astro";
+import { getCollection } from "astro:content";
+import FormattedDate from "../../components/FormattedDate.astro";
+
+let notes: any[] = [];
+try { /* @ts-ignore */ notes = await getCollection("notes"); } catch {}
+if (!notes.length) {
+  const blog = await getCollection("blog");
+  notes = blog.filter((p) => {
+    const d = p.data || {};
+    return d.kind === "note"
+        || (Array.isArray(d.tags) && d.tags.some((t:string)=>/note|notes|project/i.test(t)))
+        || /note|changelog|devlog|log/i.test(d?.title ?? "");
+  });
+}
+notes = notes.filter((p)=>!p.data?.draft)
+  .sort((a,b)=> +new Date(b.data.pubDate || b.data.date) - +new Date(a.data.pubDate || a.data.date));
+---
+
+<Page title="Project Notes" description="Working notes and how-to breadcrumbs across infra, Microsoft 365, and web." prompt="> tail -f notes/">
+  <!-- Top stripe callout -->
+  <section class="panel" style="background:var(--brand);border-color:var(--brand);color:#fff;margin:0 auto 1rem;max-width:64rem;">
+    <div class="body font-mono">
+      Fast, practical, sometimes messy. These are the steps I don’t want to forget.
+    </div>
+  </section>
+
+  <div class="container" style="max-width:64rem;margin:auto;">
+    <div class="grid" style="grid-template-columns:1fr 260px; gap: 16px;">
+
+      <!-- LIST -->
+      <section class="grid-cards">
+        {notes.map((note) => (
+          <article class="card corners card--12">
+            <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+            <header class="mb-2">
+              <a href={note.slug ? `/notes/${note.slug}/` : (note.collection === "blog" ? `/blog/${note.id}/` : `/${note.collection}/${note.id}/`)} class="no-underline hover:underline">
+                <h2 class="text-lg font-mono">{note.data?.title ?? "Note"}</h2>
+              </a>
+              <div class="text-[color:var(--muted)] font-mono text-sm">
+                <FormattedDate date={note.data?.pubDate || note.data?.date} />
+              </div>
+            </header>
+            {note.data?.description && <p class="mt-2">{note.data.description}</p>}
+            <footer class="mt-3">
+              <a class="badge" href={note.slug ? `/notes/${note.slug}/` : (note.collection === "blog" ? `/blog/${note.id}/` : `/${note.collection}/${note.id}/`)}>Open →</a>
+            </footer>
+          </article>
+        ))}
+      </section>
+
+      <!-- SIDEBAR: binary ticker + orbit -->
+      <aside class="grid gap-4">
+        <section class="widget corners" id="bin-widget">
+          <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+          <div class="head"><div class="icon">01</div><div class="font-mono text-sm">Binary Stream</div></div>
+          <div class="body">
+            <div class="font-mono text-sm" id="bin-out" style="word-break:break-all;min-height:3.5em;">1010 1111 0011</div>
+          </div>
+        </section>
+
+        <section class="widget corners">
+          <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+          <div class="head"><div class="icon">SAT</div><div class="font-mono text-sm">Orbit</div></div>
+          <div class="body">
+            <div class="viz">
+              <div class="orbit" id="orbit-notes">
+                <div class="planet"></div>
+                <div class="orbit-core"><div class="satellite"></div></div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    // Binary ticker
+    const out = document.getElementById('bin-out');
+    if (out) {
+      setInterval(() => {
+        const bytes = Array.from({length: 16}, () => Math.random() > .5 ? 1 : 0);
+        let s = '';
+        for (let i=0;i<bytes.length;i++){
+          s += bytes[i];
+          if ((i+1)%4===0) s += ' ';
+        }
+        out.textContent = s.trim();
+      }, 700);
+    }
+  </script>
+</Page>

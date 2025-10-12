@@ -1,197 +1,23 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Sidebar from '../components/Sidebar.astro';
-
-const pageTitle = "About";
-const pageDescription = "Learn more about Bernard McWeeney - software engineer, web developer, and digital craftsman.";
+import Page from "../layouts/Page.astro";
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
-	<div class="container py-12">
-		<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-			<!-- Main Content Column -->
-			<div class="lg:col-span-2 space-y-8">
-				<!-- Terminal Header -->
-				<div class="terminal-window">
-					<div class="terminal-header">
-						<div class="terminal-dots">
-							<div class="terminal-dot bg-red-400"></div>
-							<div class="terminal-dot bg-yellow-400"></div>
-							<div class="terminal-dot bg-green-400"></div>
-						</div>
-					</div>
-					<div class="terminal-content">
-						<h1 class="text-3xl md:text-4xl font-mono font-bold text-white mb-4">
-							&gt; About<span class="text-emerald-200">/</span>
-						</h1>
-						<p class="text-emerald-50 text-lg leading-relaxed">
-							Software engineer passionate about clean code, modern web technologies, 
-							and the art of digital craftsmanship.
-						</p>
-					</div>
-				</div>
+<Page title="About" description="Who I am, what I do, and what I’m building." prompt="> cat about.md">
+  <!-- About block -->
+  <section class="widget corners">
+    <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
 
-				<!-- Main About Content -->
-				<div class="bg-white border border-gray-200 rounded-lg p-8 dark:bg-slate-800 dark:border-slate-700">
-					<div class="prose prose-gray max-w-none dark:prose-invert">
-						<h2 class="font-mono text-xl font-semibold text-gray-900 dark:text-white mb-6">
-							<span class="text-emerald-600">&gt;</span> Hello, I'm Bernard
-						</h2>
-						
-						<div class="space-y-6 text-gray-600 dark:text-gray-300 leading-relaxed">
-							<p>
-								I'm a software engineer with a passion for building modern web applications 
-								that are both functional and beautiful. My journey in technology has been 
-								driven by curiosity and a love for solving complex problems through code.
-							</p>
-							
-							<p>
-								When I'm not coding, you'll find me exploring the latest web technologies, 
-								contributing to open source projects, or writing about development best 
-								practices. I believe in the power of clean, maintainable code and the 
-								importance of continuous learning in our rapidly evolving field.
-							</p>
-							
-							<p>
-								This blog serves as a digital garden where I share my thoughts on web 
-								development, document my learning journey, and hopefully help other 
-								developers along the way.
-							</p>
-						</div>
-					</div>
-				</div>
+    <div class="head">
+      <div class="icon">ID</div>
+      <div class="font-mono text-sm">about.txt</div>
+    </div>
 
-				<!-- Skills & Technologies -->
-				<div class="bg-white border border-gray-200 rounded-lg p-8 dark:bg-slate-800 dark:border-slate-700">
-					<h2 class="font-mono text-xl font-semibold text-gray-900 dark:text-white mb-6">
-						<span class="text-emerald-600">&gt;</span> Skills & Technologies
-					</h2>
-					
-					<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-						<div>
-							<h3 class="font-mono text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-4">
-								Frontend
-							</h3>
-							<div class="flex flex-wrap gap-2">
-								<span class="tag">JavaScript</span>
-								<span class="tag">TypeScript</span>
-								<span class="tag">React</span>
-								<span class="tag">Astro</span>
-								<span class="tag">Vue.js</span>
-								<span class="tag">Tailwind CSS</span>
-								<span class="tag">HTML5</span>
-								<span class="tag">CSS3</span>
-							</div>
-						</div>
-						
-						<div>
-							<h3 class="font-mono text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider mb-4">
-								Backend & Tools
-							</h3>
-							<div class="flex flex-wrap gap-2">
-								<span class="tag">Node.js</span>
-								<span class="tag">Python</span>
-								<span class="tag">PostgreSQL</span>
-								<span class="tag">MongoDB</span>
-								<span class="tag">Docker</span>
-								<span class="tag">Git</span>
-								<span class="tag">AWS</span>
-								<span class="tag">Cloudflare</span>
-							</div>
-						</div>
-					</div>
-				</div>
-
-				<!-- Current Focus -->
-				<div class="bg-emerald-50 border border-emerald-200 rounded-lg p-8 dark:bg-emerald-900/20 dark:border-emerald-800">
-					<h2 class="font-mono text-xl font-semibold text-emerald-900 dark:text-emerald-100 mb-6">
-						<span class="text-emerald-600">&gt;</span> Current Focus
-					</h2>
-					
-					<div class="space-y-4 text-emerald-800 dark:text-emerald-200">
-						<div class="flex items-start space-x-3">
-							<div class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-							<p>Building modern web applications with Astro and Tailwind CSS</p>
-						</div>
-						<div class="flex items-start space-x-3">
-							<div class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-							<p>Exploring edge computing and serverless architectures</p>
-						</div>
-						<div class="flex items-start space-x-3">
-							<div class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-							<p>Contributing to open source UI component libraries</p>
-						</div>
-						<div class="flex items-start space-x-3">
-							<div class="w-2 h-2 bg-emerald-500 rounded-full mt-2 flex-shrink-0"></div>
-							<p>Writing about web development best practices and modern tooling</p>
-						</div>
-					</div>
-				</div>
-
-				<!-- Contact -->
-				<div class="bg-white border border-gray-200 rounded-lg p-8 dark:bg-slate-800 dark:border-slate-700">
-					<h2 class="font-mono text-xl font-semibold text-gray-900 dark:text-white mb-6">
-						<span class="text-emerald-600">&gt;</span> Let's Connect
-					</h2>
-					
-					<div class="space-y-4 text-gray-600 dark:text-gray-300">
-						<p>
-							I'm always interested in connecting with fellow developers, discussing 
-							new technologies, or collaborating on interesting projects.
-						</p>
-						
-						<div class="flex flex-wrap gap-4 pt-4">
-							<a 
-								href="mailto:hello@bernardmcweeney.com" 
-								class="inline-flex items-center font-mono text-sm text-emerald-600 hover:text-emerald-700 transition-colors bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-lg dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50"
-							>
-								<svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
-								</svg>
-								Email
-							</a>
-							
-							<!-- Add your actual social links -->
-							<!-- 
-							<a 
-								href="https://github.com/yourusername" 
-								class="inline-flex items-center font-mono text-sm text-emerald-600 hover:text-emerald-700 transition-colors bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-lg dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50"
-							>
-								<svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-								</svg>
-								GitHub
-							</a>
-							
-							<a 
-								href="https://twitter.com/yourusername" 
-								class="inline-flex items-center font-mono text-sm text-emerald-600 hover:text-emerald-700 transition-colors bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-lg dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50"
-							>
-								<svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
-								</svg>
-								Twitter
-							</a>
-							-->
-							
-							<a 
-								href="/rss.xml" 
-								class="inline-flex items-center font-mono text-sm text-emerald-600 hover:text-emerald-700 transition-colors bg-emerald-50 hover:bg-emerald-100 px-4 py-2 rounded-lg dark:bg-emerald-900/30 dark:hover:bg-emerald-900/50"
-							>
-								<svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24">
-									<path d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795.001 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.71-7.118-15.758-15.839-15.82zm0-3.368c10.58.046 19.152 8.594 19.183 19.188h4.817c-.03-13.231-10.755-23.954-24-24v4.812z"/>
-								</svg>
-								RSS
-							</a>
-						</div>
-					</div>
-				</div>
-			</div>
-
-			<!-- Sidebar Column -->
-			<div class="lg:col-span-1">
-				<Sidebar />
-			</div>
-		</div>
-	</div>
-</Layout>
+    <div class="body">
+      <div class="prose">
+        <p>Hi — I’m Bernard. I build fast, reliable sites and systems with a focus on clean design, great UX, and boringly solid infra.</p>
+        <p>I run <strong>Greenberry</strong>, make tools for real-world teams, and occasionally write about tech, process, and music.</p>
+        <p>On this site you’ll find blog posts, project notes, and an archive of experiments. Everything runs on Astro + Tailwind with a modern–retro UI kit I’ve been refining.</p>
+      </div>
+    </div>
+  </section>
+</Page>

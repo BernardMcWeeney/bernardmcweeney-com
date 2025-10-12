@@ -1,0 +1,28 @@
+---
+interface Props { title?: string; subtitle?: string; }
+const { title = "Bernard_McWeeney", subtitle = "" } = Astro.props;
+---
+
+<div class="window corners">
+  <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+
+  <div class="chrome">
+    <div class="win-dots">
+      <span class="win-dot win-dot--r"></span>
+      <span class="win-dot win-dot--y"></span>
+      <span class="win-dot win-dot--g"></span>
+    </div>
+    <div class="addr font-mono">bernardmcweeney.com</div>
+  </div>
+
+  <div class="p-6">
+    <h1 class="mb-2 whitespace-nowrap leading-none">
+      {title}<span class="caret-slash" aria-hidden="true"></span>
+    </h1>
+    {subtitle && <p class="text-[15px] text-[color:var(--muted)] max-w-2xl">{subtitle}</p>}
+    <div class="mt-5 flex flex-wrap gap-2">
+      <a class="btn primary" href="/projects/">Explore projects</a>
+      <a class="btn" href="/blog/">Read the blog</a>
+    </div>
+  </div>
+</div>
