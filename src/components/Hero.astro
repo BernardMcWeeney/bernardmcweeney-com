@@ -1,0 +1,38 @@
+---
+interface Props {
+  title: string;
+  subtitle: string;
+}
+
+const { title, subtitle } = Astro.props;
+---
+
+<section class="terminal">
+  <div class="terminal-header">
+    <div class="terminal-dots">
+      <span class="terminal-dot terminal-dot--red"></span>
+      <span class="terminal-dot terminal-dot--yellow"></span>
+      <span class="terminal-dot terminal-dot--green"></span>
+    </div>
+    <span class="terminal-title">~/bernardmcweeney</span>
+    <div style="width: 52px;"></div>
+  </div>
+  
+  <div class="terminal-body">
+    <div class="space-y-3">
+      <p class="text-[var(--color-text-muted)]">
+        <span class="text-[var(--color-brand)]">$</span> whoami
+      </p>
+      <h1 class="text-[var(--color-text-primary)] text-2xl md:text-3xl">
+        {title}
+      </h1>
+      <p class="text-[var(--color-text-secondary)] max-w-xl">
+        {subtitle}
+      </p>
+      <p class="text-[var(--color-text-muted)] pt-2">
+        <span class="text-[var(--color-brand)]">$</span> 
+        <span class="cursor"></span>
+      </p>
+    </div>
+  </div>
+</section>

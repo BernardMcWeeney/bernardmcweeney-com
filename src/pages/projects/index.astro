@@ -1,50 +1,82 @@
 ---
-import Page from "../../layouts/Page.astro";
-import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
 
-let projects: any[] = [];
-try { /* @ts-ignore */ projects = await getCollection("projects"); } catch { projects = []; }
-
-if (!projects.length) {
-  const blog = await getCollection("blog");
-  projects = blog.filter((p) => {
-    const t = (Array.isArray(p.data?.tags) ? p.data.tags.join(" ") : "").toLowerCase();
-    return /project|build|case study/.test(t);
-  });
-}
-
-projects = projects
-  .filter((p)=>!p.data?.draft)
-  .sort((a,b)=> +new Date(b.data.pubDate || b.data.date) - +new Date(a.data.pubDate || a.data.date));
+// Placeholder projects - replace with getCollection when you have the collection
+const projects = [
+  {
+    slug: 'parish-core',
+    title: 'Parish Core',
+    description: 'A comprehensive WordPress plugin for Catholic parish management with liturgical calendar integration, mass scheduling, and admin dashboards.',
+    status: 'Active',
+    tags: ['WordPress', 'PHP', 'React'],
+  },
+  {
+    slug: 'bernardmcweeney-com',
+    title: 'bernardmcweeney.com',
+    description: 'This very site! Built with Astro, Tailwind CSS v4, and hosted on Cloudflare Workers.',
+    status: 'Active',
+    tags: ['Astro', 'Tailwind', 'Cloudflare'],
+  },
+  {
+    slug: 'powershell-scripts',
+    title: 'PowerShell Automation',
+    description: 'Collection of scripts for Microsoft 365 administration, Google Drive management, and Windows deployment.',
+    status: 'Ongoing',
+    tags: ['PowerShell', 'Microsoft 365', 'GAM'],
+  },
+];
 ---
 
-<Page title="Projects" description="Selected builds, experiments, and shipping logs." prompt="> ls projects/">
-  <div class="container" style="max-width:64rem;margin:auto;">
-    <div class="grid" style="grid-template-columns:repeat(12,1fr);gap:12px;">
-      {projects.map((p) => {
-        const href = p.collection === 'projects' ? `/projects/${p.slug || p.id}/` : `/blog/${p.id}/`;
-        const img = p.data?.heroImage || p.data?.image;
-        const desc = p.data?.description;
-        const status = p.data?.status || "Active";
-        const pct = Number(p.data?.progress ?? 55);
-        return (
-          <article class="card corners card--12 sm:card--6">
-            <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+<Layout 
+  title="Projects" 
+  description="Things I've built and am currently working on."
+>
+  <div class="container py-8 md:py-12">
+    
+    <!-- Page Header -->
+    <header class="mb-10">
+      <h1 class="text-3xl md:text-4xl font-semibold text-[var(--color-text-primary)]">
+        Projects
+      </h1>
+      <p class="text-[var(--color-text-secondary)] mt-2 max-w-2xl">
+        A collection of things I've built, am building, or have contributed to.
+      </p>
+    </header>
 
-            <a href={href} class="no-underline hover:underline" style="display:grid;grid-template-columns:140px 1fr;gap:.8rem;">
-              <div class="panel" style="overflow:hidden;display:grid;place-items:center;">
-                {img ? <img src={img} alt={p.data?.title} loading="lazy" style="width:100%;height:100%;object-fit:cover;aspect-ratio:4/3;" /> : <div class="font-mono" style="font-size:1.8rem;">🛠️</div>}
-              </div>
-              <div>
-                <h2 class="font-mono" style="margin:0 0 .15rem 0;color:var(--brand);font-size:1.1rem;">{p.data?.title}</h2>
-                {desc && <p style="margin:.25rem 0 .4rem 0;">{desc}</p>}
-                <div class="font-mono text-sm" style="color:var(--muted)">Status: {status}</div>
-                <div class="meter" style="margin-top:.35rem;"><span style={`width:${Math.max(0,Math.min(100,pct))}%`}></span></div>
-              </div>
-            </a>
-          </article>
-        );
-      })}
+    <!-- Projects Grid -->
+    <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {projects.map(project => (
+        <article class="card card-interactive p-5 flex flex-col">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h2 class="font-mono text-lg font-semibold text-[var(--color-text-primary)]">
+              {project.title}
+            </h2>
+            {project.status && (
+              <span class="badge badge-brand flex-shrink-0">
+                {project.status}
+              </span>
+            )}
+          </div>
+          
+          <p class="text-sm text-[var(--color-text-muted)] flex-1">
+            {project.description}
+          </p>
+          
+          <div class="flex flex-wrap gap-2 mt-4 pt-4 border-t border-[var(--color-border)]">
+            {project.tags.map(tag => (
+              <span class="badge">{tag}</span>
+            ))}
+          </div>
+        </article>
+      ))}
     </div>
+
+    <!-- More coming soon -->
+    <div class="card p-6 mt-8 text-center">
+      <p class="text-[var(--color-text-muted)]">
+        More projects coming soon. Check out my <a href="https://github.com/BernardMcWeeney" class="text-[var(--color-brand)] hover:underline">GitHub</a> for more.
+      </p>
+    </div>
+
   </div>
-</Page>
+</Layout>

@@ -1,58 +1,35 @@
 ---
-import BaseHead from "../components/BaseHead.astro";
-import Header from "../components/Header.astro";
-import Footer from "../components/Footer.astro";
+import Layout from "./Layout.astro";
 
 interface Props {
   title: string;
-  description?: string;
-  image?: string;
-  prompt?: string; // e.g. "> cat about.md"
+  description: string;
+  prompt?: string;
 }
-const { title, description, image, prompt } = Astro.props;
+
+const { title, description, prompt } = Astro.props;
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <BaseHead title={title} description={description} image={image} />
-  </head>
-  <body class="min-h-dvh flex flex-col">
-    <a href="#content" class="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-[100] btn">Skip to content</a>
+<Layout title={title} description={description}>
+  <div class="container py-8 md:py-12">
+    
+    <!-- Page Header -->
+    <header class="mb-10">
+      {prompt && (
+        <p class="font-mono text-sm text-[var(--color-text-muted)] mb-2">
+          <span class="text-[var(--color-brand)]">$</span> {prompt}
+        </p>
+      )}
+      <h1 class="text-3xl md:text-4xl font-semibold text-[var(--color-text-primary)]">
+        {title}
+      </h1>
+      <p class="text-[var(--color-text-secondary)] mt-2 max-w-2xl">
+        {description}
+      </p>
+    </header>
 
-    <Header />
+    <!-- Page Content -->
+    <slot />
 
-    <main id="content" class="flex-1">
-      <!-- Hero (consistent inner padding) -->
-      <section class="panel corners" aria-label="page-hero" style="margin: 1.25rem auto; max-width: 64rem;">
-        <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
-        <div class="head" style="padding:.9rem 1rem;">
-          <div class="icon">≡</div>
-          <div class="font-mono text-sm">{prompt ? prompt : "> open page"}</div>
-        </div>
-        <div class="body" style="padding:1.25rem;">
-          <h1 class="text-[clamp(1.8rem,3.5vw,2.6rem)] leading-tight mb-2">{title}</h1>
-          {description && <p class="text-[color:var(--muted)] max-w-prose">{description}</p>}
-        </div>
-      </section>
-
-      <!-- Page content wrapper with comfortable gutters -->
-      <section style="margin: 1.25rem auto; max-width: 64rem; padding-inline: 1rem;">
-        <slot />
-      </section>
-    </main>
-
-    <Footer />
-
-    <script>
-      document.addEventListener('click', (e) => {
-        const a = e.target.closest('a[href^="#"]');
-        if (!a) return;
-        const el = document.querySelector(a.getAttribute('href'));
-        if (!el) return;
-        e.preventDefault();
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    </script>
-  </body>
-</html>
+  </div>
+</Layout>

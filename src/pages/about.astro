@@ -1,23 +1,91 @@
 ---
-import Page from "../layouts/Page.astro";
+import Layout from "../layouts/Layout.astro";
 ---
 
-<Page title="About" description="Who I am, what I do, and what I’m building." prompt="> cat about.md">
-  <!-- About block -->
-  <section class="widget corners">
-    <span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
+<Layout 
+  title="About" 
+  description="About Bernard McWeeney — IT administrator, web developer, and technology enthusiast based in Dublin, Ireland."
+>
+  <div class="container py-8 md:py-12">
+    <div class="max-w-3xl">
+      
+      <!-- Page Header -->
+      <header class="mb-10">
+        <h1 class="text-3xl md:text-4xl font-semibold text-[var(--color-text-primary)]">
+          About
+        </h1>
+      </header>
 
-    <div class="head">
-      <div class="icon">ID</div>
-      <div class="font-mono text-sm">about.txt</div>
-    </div>
-
-    <div class="body">
+      <!-- Main Content -->
       <div class="prose">
-        <p>Hi — I’m Bernard. I build fast, reliable sites and systems with a focus on clean design, great UX, and boringly solid infra.</p>
-        <p>I run <strong>Greenberry</strong>, make tools for real-world teams, and occasionally write about tech, process, and music.</p>
-        <p>On this site you’ll find blog posts, project notes, and an archive of experiments. Everything runs on Astro + Tailwind with a modern–retro UI kit I’ve been refining.</p>
+        <p class="text-lg text-[var(--color-text-secondary)]">
+          Hi, I'm Bernard — an IT administrator based in Dublin, Ireland. I work in education technology, 
+          managing Microsoft 365 environments and Google Workspace deployments across multiple institutions.
+        </p>
+
+        <h2>What I Do</h2>
+        <p>
+          By day, I handle the technical infrastructure for educational organizations — from bulk user management 
+          and license provisioning to security auditing and compliance. I spend a lot of time in PowerShell, 
+          automating the repetitive tasks that would otherwise eat up entire days.
+        </p>
+        <p>
+          By night (and weekends), I build web projects. This site runs on Astro and is hosted on Cloudflare Workers. 
+          I'm particularly interested in static site generators, modern CSS, and building tools that solve real problems.
+        </p>
+
+        <h2>Current Projects</h2>
+        <p>
+          I've been working on a few things lately:
+        </p>
+        <ul>
+          <li><strong>Parish Core</strong> — A WordPress plugin for Catholic parish management, featuring liturgical calendar integration and mass scheduling</li>
+          <li><strong>PowerShell automation scripts</strong> — For Google Drive file management, Windows ESU activation, and Microsoft 365 administration</li>
+          <li><strong>This site</strong> — Always iterating on the design and adding new features</li>
+        </ul>
+
+        <h2>Tech Stack</h2>
+        <p>
+          The tools I use most often:
+        </p>
+        <div class="not-prose flex flex-wrap gap-2 my-4">
+          <span class="badge">PowerShell</span>
+          <span class="badge">Microsoft 365</span>
+          <span class="badge">Google Workspace</span>
+          <span class="badge">Astro</span>
+          <span class="badge">TypeScript</span>
+          <span class="badge">Tailwind CSS</span>
+          <span class="badge">Cloudflare</span>
+          <span class="badge">WordPress</span>
+          <span class="badge">PHP</span>
+        </div>
+
+        <h2>Get in Touch</h2>
+        <p>
+          I'm always happy to chat about tech, answer questions, or explore collaboration opportunities. 
+          You can reach me at:
+        </p>
+        <ul>
+          <li>Email: <a href="mailto:hello@bernardmcweeney.com">hello@bernardmcweeney.com</a></li>
+          <li>X (Twitter): <a href="https://x.com/BMcWeeneyIE" target="_blank" rel="noopener">@BMcWeeneyIE</a></li>
+          <li>GitHub: <a href="https://github.com/BernardMcWeeney" target="_blank" rel="noopener">BernardMcWeeney</a></li>
+        </ul>
       </div>
+
+      <!-- CTA Card -->
+      <div class="card p-6 mt-10 bg-[var(--color-brand-muted)] border-[var(--color-brand)]/30">
+        <h3 class="font-mono text-lg font-semibold text-[var(--color-text-primary)]">
+          Want to work together?
+        </h3>
+        <p class="text-[var(--color-text-secondary)] mt-2">
+          I'm open to freelance projects and consulting work, particularly around Microsoft 365 administration 
+          and web development.
+        </p>
+        <a href="mailto:hello@bernardmcweeney.com" class="btn btn-primary mt-4">
+          Get in touch →
+        </a>
+      </div>
+
     </div>
-  </section>
-</Page>
+  </div>
+</Layout>

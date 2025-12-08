@@ -1,110 +1,162 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import WindowHero from "../components/WindowHero.astro";
-import IrishMap from "../components/IrishMap.astro";
+import Hero from "../components/Hero.astro";
+import SectionHeader from "../components/SectionHeader.astro";
+import ContentCard from "../components/ContentCard.astro";
 import Weather from "../components/widgets/Weather.astro";
 import LocalTime from "../components/widgets/LocalTime.astro";
 import NowPlaying from "../components/widgets/NowPlaying.astro";
+import IrishMap from "../components/widgets/IrishMap.astro";
 import { getCollection } from "astro:content";
 
-const posts = (await getCollection("blog")).sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()).slice(0,3);
-const notes = (await getCollection("notes")).sort((a,b)=> b.data.date.valueOf()-a.data.date.valueOf()).slice(0,6);
-const docs  = (await getCollection("docs")).slice(0,3);
-const projects = (await getCollection("projects"))
-  .sort((a,b)=> (a.data.order ?? 999) - (b.data.order ?? 999))
-  .slice(0,6);
+// Fetch content
+const posts = (await getCollection("blog"))
+  .filter(p => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 3);
 ---
 
-<Layout title="Home" description="Bernard’s personal hub — blog, projects, notes, and docs.">
-  <section class="container my-8">
-    <!-- Split hero: window (left) + map (right) -->
-    <div class="grid gap-4 md:grid-cols-2">
-      <WindowHero title="Bernard McWeeney" subtitle="A modern-retro home for my writing, projects, and build logs." />
-      <IrishMap imageSrc="/images/ireland.svg" />
+<Layout 
+  title="Home" 
+  description="Bernard McWeeney — IT administrator, web developer, and technology enthusiast. Building things, writing about the process."
+>
+  <div class="container py-8 md:py-12 space-y-10">
+    
+    <!-- Hero + Map Row -->
+    <div class="grid gap-4 lg:grid-cols-5">
+      <div class="lg:col-span-3">
+        <Hero 
+          title="Bernard McWeeney"
+          subtitle="IT administrator by day, web tinkerer by night. I build things, write about the process, and share the rough edges."
+        />
+      </div>
+      <div class="lg:col-span-2">
+        <IrishMap />
+      </div>
     </div>
 
-    <!-- Widgets with accent headers + corners -->
-    <div class="mt-6 grid gap-3 md:grid-cols-3">
+    <!-- Widgets Row -->
+    <div class="grid gap-4 md:grid-cols-3">
       <Weather />
       <NowPlaying />
       <LocalTime />
     </div>
 
-    <!-- Personal brand stripe (full orange, but relevant copy) -->
-    <div class="mt-8 panel overflow-hidden border-[color:var(--brand)]">
-      <div class="bg-[color:var(--brand)] text-white p-5">
-        <p class="font-mono">I build things, write about the process, and leave the rough edges in.</p>
+    <!-- Quick Links Banner -->
+    <div class="card overflow-hidden">
+      <div class="bg-gradient-to-r from-[var(--color-brand)] via-[var(--color-brand-hover)] to-[var(--color-brand)] p-4">
+        <div class="flex flex-wrap items-center gap-4">
+          <span class="font-mono text-sm text-white font-medium">Quick links →</span>
+          <a href="/blog/" class="btn bg-white/10 border-white/20 text-white hover:bg-white/20 text-sm">Latest posts</a>
+          <a href="/projects/" class="btn bg-white/10 border-white/20 text-white hover:bg-white/20 text-sm">Projects</a>
+          <a href="/about/" class="btn bg-white/10 border-white/20 text-white hover:bg-white/20 text-sm">About me</a>
+          <a href="https://github.com/BernardMcWeeney" class="btn bg-white/10 border-white/20 text-white hover:bg-white/20 text-sm" target="_blank" rel="noopener">GitHub ↗</a>
+        </div>
       </div>
     </div>
 
-    <!-- Snippet grids -->
-    <div class="mt-8 grid-cards">
-      <!-- Projects Preview -->
-      <section class="card card--6 relative corners">
-	  	<span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
-        <div class="panel-header">
-          <span>Projects</span>
-          <span class="ml-auto"><a href="/projects/" class="btn">See all →</a></span>
-        </div>
-        <div class="pt-4 grid gap-3 sm:grid-cols-2">
-          {projects.map(p => (
-            <a href={`/projects/${p.slug}/`} class="panel p-3 hover:border-[color:var(--brand)] transition-colors">
-              <div class="flex items-center justify-between">
-                <h3 class="text-base">{p.data.title}</h3>
-                {p.data.status && <span class="badge">{p.data.status}</span>}
-              </div>
-              <p class="text-sm text-[color:var(--muted)] mt-1">{p.data.summary}</p>
-            </a>
-          ))}
-        </div>
-      </section>
-
-      <!-- Recent Blog -->
-      <section class="card card--6 relative corners">
-	  	<span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
-        <div class="panel-header">
-          <span>Recent Posts</span>
-          <span class="ml-auto"><a class="btn" href="/blog/">All posts →</a></span>
-        </div>
-        <ul class="pt-3 space-y-3">
+    <!-- Main Content Grid -->
+    <div class="grid gap-8 lg:grid-cols-3">
+      
+      <!-- Recent Posts (2/3 width on large screens) -->
+      <section class="lg:col-span-2">
+        <SectionHeader title="Recent Posts" href="/blog/" />
+        <div class="space-y-3 stagger">
           {posts.map(post => (
-            <li class="panel p-3 hover:border-[color:var(--brand)]">
-              <a href={`/blog/${post.slug}/`} class="no-underline">
-                <h3 class="text-[17px]">{post.data.title}</h3>
-                <p class="text-sm text-[color:var(--muted)]">{post.data.description}</p>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <!-- Notes -->
-      <section class="card card--4 relative corners">
-	  	<span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
-        <div class="panel-header"><span>Notes</span><span class="ml-auto"><a class="btn" href="/notes/">All notes →</a></span></div>
-        <div class="pt-3 space-y-2">
-          {notes.map(n => (
-            <a href={`/notes/${n.slug}/`} class="panel p-2 block hover:border-[color:var(--brand)]">
-              <div class="text-sm">{n.data.title}</div>
-              <div class="text-xs text-[color:var(--muted)]">{new Date(n.data.date).toLocaleDateString()}</div>
-            </a>
+            <ContentCard
+              href={`/blog/${post.slug}/`}
+              title={post.data.title}
+              description={post.data.description}
+              date={post.data.pubDate}
+              tags={post.data.tags}
+            />
           ))}
         </div>
+        
+        {posts.length === 0 && (
+          <div class="card p-6 text-center">
+            <p class="text-[var(--color-text-muted)]">No posts yet. Check back soon!</p>
+          </div>
+        )}
       </section>
 
-      <!-- Docs -->
-      <section class="card card--8 relative corners">
-	  	<span class="sq tl"></span><span class="sq tr"></span><span class="sq bl"></span><span class="sq br"></span>
-        <div class="panel-header"><span>Docs</span><span class="ml-auto"><a class="btn" href="/docs/">Browse docs →</a></span></div>
-        <div class="pt-4 grid gap-3 md:grid-cols-3">
-          {docs.map(d => (
-            <a href={`/docs/${d.slug}/`} class="panel p-3 hover:border-[color:var(--brand)]">
-              <h3 class="text-base">{d.data.title}</h3>
-              <p class="text-sm text-[color:var(--muted)]">{d.data.description}</p>
-            </a>
-          ))}
+      <!-- Sidebar (1/3 width) -->
+      <aside class="space-y-6">
+        
+        <!-- About Card -->
+        <div class="card p-4 border-l-2 border-l-[var(--color-brand)]">
+          <h3 class="font-mono text-xs font-semibold text-[var(--color-brand)] uppercase tracking-wider mb-2">
+            # About
+          </h3>
+          <p class="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+            Based in Dublin, Ireland. I work in IT administration managing Microsoft 365 and Google Workspace deployments, 
+            while building web projects on the side.
+          </p>
+          <a href="/about/" class="btn btn-primary text-xs mt-3 w-full justify-center">
+            Learn more →
+          </a>
         </div>
-      </section>
+
+        <!-- Tech Stack Card -->
+        <div class="card p-4">
+          <h3 class="font-mono text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">
+            # Tech Stack
+          </h3>
+          <div class="flex flex-wrap gap-2">
+            <span class="badge badge-brand">Astro</span>
+            <span class="badge">TypeScript</span>
+            <span class="badge">Tailwind</span>
+            <span class="badge badge-brand">Cloudflare</span>
+            <span class="badge">PowerShell</span>
+            <span class="badge">Microsoft 365</span>
+          </div>
+        </div>
+
+        <!-- Stats Card -->
+        <div class="card p-4 bg-gradient-to-br from-[var(--color-bg-surface)] to-[var(--color-brand-muted)]">
+          <h3 class="font-mono text-xs font-semibold text-[var(--color-text-muted)] uppercase tracking-wider mb-3">
+            # Site Stats
+          </h3>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <p class="font-mono text-2xl font-bold text-[var(--color-brand)]">{posts.length}</p>
+              <p class="text-xs text-[var(--color-text-muted)]">Blog posts</p>
+            </div>
+            <div>
+              <p class="font-mono text-2xl font-bold text-[var(--color-brand)]">v5.16</p>
+              <p class="text-xs text-[var(--color-text-muted)]">Astro version</p>
+            </div>
+          </div>
+        </div>
+
+      </aside>
     </div>
-  </section>
+
+    <!-- Featured/CTA Section -->
+    <section class="card overflow-hidden border-[var(--color-brand)]/30">
+      <div class="relative bg-gradient-to-r from-[var(--color-brand)] to-[var(--color-brand-hover)] p-6 md:p-8">
+        <!-- Decorative elements -->
+        <div class="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2"></div>
+        <div class="absolute bottom-0 left-20 w-24 h-24 bg-white/5 rounded-full translate-y-1/2"></div>
+        
+        <div class="relative flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h2 class="font-mono text-xl font-semibold text-white">
+              Want to get in touch?
+            </h2>
+            <p class="text-white/80 mt-1">
+              I'm always happy to chat about tech, projects, or collaboration opportunities.
+            </p>
+          </div>
+          <a 
+            href="mailto:hello@bernardmcweeney.com" 
+            class="btn bg-white text-[var(--color-brand)] border-white hover:bg-white/90 flex-shrink-0 font-semibold"
+          >
+            Say hello →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </div>
 </Layout>
