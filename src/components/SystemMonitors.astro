@@ -1,0 +1,698 @@
+---
+/**
+ * System Monitors v2.0
+ * Comprehensive monitoring widgets with networking visuals
+ */
+---
+
+<!-- Row 1: Core Monitors -->
+<div class="blade" data-unit="2U">
+  <div class="blade-face">
+    <div class="led-cluster">
+      <span class="led on"></span>
+      <span class="led on"></span>
+      <span class="led on blink"></span>
+    </div>
+    <span class="blade-label">
+      SYSTEM MONITORS
+      <span class="model">MON-ARRAY</span>
+    </span>
+  </div>
+  
+  <div class="blade-content">
+    <div class="monitors-grid grid-4">
+      
+      <!-- Time Monitor -->
+      <div class="monitor-card">
+        <div class="monitor-header">
+          <span class="monitor-title">
+            <span class="icon">◷</span>
+            CLOCK
+          </span>
+          <span class="led on blink" style="width:4px;height:4px;"></span>
+        </div>
+        <div class="monitor-body">
+          <div class="stat">
+            <span class="stat-label">LOCAL TIME</span>
+            <span class="stat-value" id="mon-time">--:--:--</span>
+          </div>
+          <div class="mini-stats">
+            <span class="mini-stat">
+              <span class="mini-label">TZ</span>
+              <span class="mini-value" id="mon-tz">--</span>
+            </span>
+            <span class="mini-stat">
+              <span class="mini-label">UTC</span>
+              <span class="mini-value" id="mon-utc">--</span>
+            </span>
+          </div>
+          <div class="load-bar" style="margin-top:0.5rem;">
+            <div class="load-fill primary" id="day-progress" style="width: 0%"></div>
+          </div>
+          <span class="progress-label"><span id="day-pct">0</span>% of day</span>
+        </div>
+      </div>
+
+      <!-- Weather/Environment Monitor -->
+      <div class="monitor-card">
+        <div class="monitor-header">
+          <span class="monitor-title">
+            <span class="icon">◉</span>
+            ENV
+          </span>
+          <span class="badge badge-green" id="env-badge">OK</span>
+        </div>
+        <div class="monitor-body">
+          <div class="stat">
+            <span class="stat-label">TEMPERATURE</span>
+            <span class="stat-value amber" id="mon-temp">--°</span>
+          </div>
+          <div class="env-condition">
+            <span class="condition-icon" id="mon-weather-icon">◌</span>
+            <span class="condition-text" id="mon-weather-text">Loading...</span>
+          </div>
+          <div class="mini-stats">
+            <span class="mini-stat">
+              <span class="mini-label">LOC</span>
+              <span class="mini-value" id="mon-location">--</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Now Playing Monitor -->
+      <div class="monitor-card">
+        <div class="monitor-header">
+          <span class="monitor-title">
+            <span class="icon">♫</span>
+            AUDIO
+          </span>
+          <span class="badge" id="audio-badge">IDLE</span>
+        </div>
+        <div class="monitor-body">
+          <div class="track-display">
+            <span class="track-name" id="np-track">No stream</span>
+            <span class="track-artist" id="np-artist">--</span>
+          </div>
+          <div class="eq-visualizer" id="eq-viz">
+            {Array.from({ length: 8 }).map(() => (
+              <span class="eq-bar"></span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <!-- Network Status Monitor -->
+      <div class="monitor-card">
+        <div class="monitor-header">
+          <span class="monitor-title">
+            <span class="icon">⬡</span>
+            NET
+          </span>
+          <span class="badge badge-green" id="net-badge">UP</span>
+        </div>
+        <div class="monitor-body">
+          <div class="stat">
+            <span class="stat-label">STATUS</span>
+            <span class="stat-value sm" id="net-status">CONNECTED</span>
+          </div>
+          <div class="port-indicators">
+            <span class="port-ind active" title="HTTP">80</span>
+            <span class="port-ind active" title="HTTPS">443</span>
+            <span class="port-ind" title="SSH">22</span>
+            <span class="port-ind" title="DNS">53</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Row 2: Network Monitoring -->
+<div class="blade" data-unit="2U">
+  <div class="blade-face">
+    <div class="led-cluster">
+      <span class="led on"></span>
+      <span class="led purple pulse"></span>
+      <span class="led cyan"></span>
+    </div>
+    <span class="blade-label">
+      NETWORK MONITORING
+      <span class="model">NET-MON</span>
+    </span>
+  </div>
+  
+  <div class="blade-content">
+    <div class="network-grid">
+      
+      <!-- VPN Tunnel Status -->
+      <div class="network-panel">
+        <div class="panel-header">
+          <span class="led purple pulse"></span>
+          <span>VPN TUNNELS</span>
+        </div>
+        <div class="vpn-list">
+          <div class="vpn-tunnel">
+            <div class="tunnel-label">
+              <span class="led on"></span>
+              <span class="tunnel-name">tun0</span>
+              <span class="badge badge-purple">IKEv2</span>
+            </div>
+            <div class="tunnel-info">
+              <span class="tunnel-endpoint">→ work-vpn.cdetb.ie</span>
+              <span class="tunnel-status">ESTABLISHED</span>
+            </div>
+          </div>
+          <div class="vpn-tunnel inactive">
+            <div class="tunnel-label">
+              <span class="led"></span>
+              <span class="tunnel-name">tun1</span>
+              <span class="badge">WireGuard</span>
+            </div>
+            <div class="tunnel-info">
+              <span class="tunnel-endpoint">→ home.mcweeney.ie</span>
+              <span class="tunnel-status">DISCONNECTED</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bandwidth Monitor -->
+      <div class="network-panel">
+        <div class="panel-header">
+          <span class="led on blink"></span>
+          <span>BANDWIDTH</span>
+        </div>
+        <div class="bandwidth-meter">
+          <div class="bandwidth-bar">
+            <span class="bandwidth-label">▲ TX</span>
+            <div class="bandwidth-track">
+              <div class="bandwidth-fill" id="tx-fill" style="width: 15%"></div>
+            </div>
+            <span class="bandwidth-value" id="tx-value">-- KB/s</span>
+          </div>
+          <div class="bandwidth-bar">
+            <span class="bandwidth-label">▼ RX</span>
+            <div class="bandwidth-track">
+              <div class="bandwidth-fill" id="rx-fill" style="width: 35%"></div>
+            </div>
+            <span class="bandwidth-value" id="rx-value">-- KB/s</span>
+          </div>
+        </div>
+        <div class="bandwidth-stats">
+          <span class="bw-stat">
+            <span class="bw-label">Total TX:</span>
+            <span class="bw-value" id="total-tx">--</span>
+          </span>
+          <span class="bw-stat">
+            <span class="bw-label">Total RX:</span>
+            <span class="bw-value" id="total-rx">--</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- Firewall Rules -->
+      <div class="network-panel">
+        <div class="panel-header">
+          <span class="led on"></span>
+          <span>FIREWALL</span>
+        </div>
+        <div class="firewall-list">
+          <div class="firewall-rule">
+            <span class="rule-action allow">ALLOW</span>
+            <span class="rule-proto">TCP</span>
+            <span class="rule-port">443</span>
+            <span class="rule-source">any → web</span>
+          </div>
+          <div class="firewall-rule">
+            <span class="rule-action allow">ALLOW</span>
+            <span class="rule-proto">TCP</span>
+            <span class="rule-port">80</span>
+            <span class="rule-source">any → web</span>
+          </div>
+          <div class="firewall-rule deny">
+            <span class="rule-action deny">DENY</span>
+            <span class="rule-proto">TCP</span>
+            <span class="rule-port">22</span>
+            <span class="rule-source">!trusted</span>
+          </div>
+          <div class="firewall-rule deny">
+            <span class="rule-action deny">DENY</span>
+            <span class="rule-proto">*</span>
+            <span class="rule-port">*</span>
+            <span class="rule-source">any</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  .monitors-grid {
+    gap: 0.5rem;
+  }
+
+  .mini-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .mini-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .mini-label {
+    font-size: 8px;
+    color: var(--color-term-dark);
+    text-transform: uppercase;
+  }
+
+  .mini-value {
+    font-size: 10px;
+    color: var(--color-term-gray);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .progress-label {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 8px;
+    color: var(--color-term-dark);
+  }
+
+  /* Environment */
+  .env-condition {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.4rem 0;
+    padding: 0.3rem;
+    background: var(--color-chassis);
+    border: 1px solid var(--color-border);
+  }
+
+  .condition-icon {
+    font-size: 14px;
+  }
+
+  .condition-text {
+    font-size: 10px;
+    color: var(--color-term-gray);
+  }
+
+  /* Track Display */
+  .track-display {
+    margin-bottom: 0.5rem;
+  }
+
+  .track-name {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--color-term-white);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .track-artist {
+    display: block;
+    font-size: 10px;
+    color: var(--color-term-dark);
+  }
+
+  /* EQ Visualizer */
+  .eq-visualizer {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 24px;
+    padding: 4px;
+    background: var(--color-chassis);
+    border: 1px solid var(--color-border);
+  }
+
+  .eq-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--color-term-dark);
+    transition: height 0.15s ease;
+  }
+
+  .eq-visualizer.playing .eq-bar {
+    background: var(--color-term-green);
+    box-shadow: var(--glow-green);
+    animation: eq-dance 0.4s ease-in-out infinite alternate;
+  }
+
+  .eq-visualizer.playing .eq-bar:nth-child(1) { animation-delay: 0s; }
+  .eq-visualizer.playing .eq-bar:nth-child(2) { animation-delay: 0.08s; }
+  .eq-visualizer.playing .eq-bar:nth-child(3) { animation-delay: 0.04s; }
+  .eq-visualizer.playing .eq-bar:nth-child(4) { animation-delay: 0.12s; }
+  .eq-visualizer.playing .eq-bar:nth-child(5) { animation-delay: 0.06s; }
+  .eq-visualizer.playing .eq-bar:nth-child(6) { animation-delay: 0.1s; }
+  .eq-visualizer.playing .eq-bar:nth-child(7) { animation-delay: 0.02s; }
+  .eq-visualizer.playing .eq-bar:nth-child(8) { animation-delay: 0.14s; }
+
+  @keyframes eq-dance {
+    from { height: 4px; }
+    to { height: 18px; }
+  }
+
+  /* Port Indicators */
+  .port-indicators {
+    display: flex;
+    gap: 4px;
+    margin-top: 0.5rem;
+  }
+
+  .port-ind {
+    padding: 0.15rem 0.3rem;
+    font-size: 9px;
+    background: var(--color-chassis);
+    border: 1px solid var(--color-border);
+    color: var(--color-term-dark);
+  }
+
+  .port-ind.active {
+    border-color: var(--color-term-green-dim);
+    color: var(--color-term-green);
+    background: rgba(0, 255, 65, 0.1);
+  }
+
+  /* Network Grid */
+  .network-grid {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .network-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .network-panel {
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+  }
+
+  .panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.6rem;
+    background: var(--color-surface);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-term-gray);
+  }
+
+  .panel-header .led {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* VPN List */
+  .vpn-list {
+    padding: 0.5rem;
+  }
+
+  .vpn-tunnel {
+    padding: 0.5rem;
+    margin-bottom: 0.25rem;
+    background: rgba(170, 51, 255, 0.1);
+    border: 1px dashed var(--color-tunnel);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .vpn-tunnel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(170, 51, 255, 0.15), transparent);
+    animation: tunnel-flow 2s linear infinite;
+  }
+
+  .vpn-tunnel.inactive {
+    background: var(--color-chassis);
+    border-color: var(--color-border);
+    border-style: solid;
+  }
+
+  .vpn-tunnel.inactive::before {
+    display: none;
+  }
+
+  .tunnel-label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 10px;
+    margin-bottom: 0.25rem;
+  }
+
+  .tunnel-label .led {
+    width: 5px;
+    height: 5px;
+  }
+
+  .tunnel-name {
+    color: var(--color-tunnel);
+    font-weight: 600;
+  }
+
+  .vpn-tunnel.inactive .tunnel-name {
+    color: var(--color-term-dark);
+  }
+
+  .tunnel-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 9px;
+  }
+
+  .tunnel-endpoint {
+    color: var(--color-term-gray);
+  }
+
+  .tunnel-status {
+    color: var(--color-term-green);
+    font-weight: 600;
+  }
+
+  .vpn-tunnel.inactive .tunnel-status {
+    color: var(--color-term-dark);
+  }
+
+  /* Bandwidth */
+  .bandwidth-meter {
+    padding: 0.5rem;
+  }
+
+  .bandwidth-stats {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0.5rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 9px;
+  }
+
+  .bw-stat {
+    display: flex;
+    gap: 0.3rem;
+  }
+
+  .bw-label {
+    color: var(--color-term-dark);
+  }
+
+  .bw-value {
+    color: var(--color-term-gray);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Firewall List */
+  .firewall-list {
+    padding: 0.25rem;
+  }
+</style>
+
+<script>
+  // ====== Time Monitor ======
+  function updateTimeMonitor() {
+    const now = new Date();
+    const timeEl = document.getElementById('mon-time');
+    const tzEl = document.getElementById('mon-tz');
+    const utcEl = document.getElementById('mon-utc');
+    const progressEl = document.getElementById('day-progress');
+    const pctEl = document.getElementById('day-pct');
+    
+    if (timeEl) {
+      timeEl.textContent = now.toLocaleTimeString('en-IE', { hour12: false });
+    }
+    
+    if (tzEl) {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+      tzEl.textContent = tz.split('/').pop()?.replace('_', ' ') || tz;
+    }
+    
+    if (utcEl) {
+      utcEl.textContent = now.toISOString().slice(11, 19);
+    }
+    
+    const daySeconds = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+    const dayPct = Math.round((daySeconds / 86400) * 100);
+    
+    if (progressEl) progressEl.style.width = `${dayPct}%`;
+    if (pctEl) pctEl.textContent = String(dayPct);
+  }
+  
+  updateTimeMonitor();
+  setInterval(updateTimeMonitor, 1000);
+
+  // ====== Weather Monitor ======
+  const weatherCodes: Record<number, { icon: string; text: string }> = {
+    0: { icon: '☀', text: 'Clear sky' },
+    1: { icon: '🌤', text: 'Mainly clear' },
+    2: { icon: '⛅', text: 'Partly cloudy' },
+    3: { icon: '☁', text: 'Overcast' },
+    45: { icon: '🌫', text: 'Foggy' },
+    51: { icon: '🌧', text: 'Light drizzle' },
+    61: { icon: '🌧', text: 'Light rain' },
+    63: { icon: '🌧', text: 'Moderate rain' },
+    71: { icon: '❄', text: 'Light snow' },
+    95: { icon: '⛈', text: 'Thunderstorm' },
+  };
+
+  async function fetchWeather(lat: number, lon: number) {
+    try {
+      const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weather_code&timezone=auto`);
+      const data = await res.json();
+      
+      const temp = data?.current?.temperature_2m;
+      const code = data?.current?.weather_code ?? 0;
+      const weather = weatherCodes[code] || weatherCodes[Math.floor(code / 10) * 10] || { icon: '◌', text: 'Unknown' };
+      
+      const tempEl = document.getElementById('mon-temp');
+      const iconEl = document.getElementById('mon-weather-icon');
+      const textEl = document.getElementById('mon-weather-text');
+      
+      if (tempEl) tempEl.textContent = `${Math.round(temp)}°C`;
+      if (iconEl) iconEl.textContent = weather.icon;
+      if (textEl) textEl.textContent = weather.text;
+      
+      // Get location name
+      const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/reverse?latitude=${lat}&longitude=${lon}&language=en&format=json`);
+      const geoData = await geoRes.json();
+      const place = geoData?.results?.[0];
+      const locEl = document.getElementById('mon-location');
+      if (locEl && place) {
+        locEl.textContent = place.city || place.name || 'Unknown';
+      }
+    } catch {
+      const textEl = document.getElementById('mon-weather-text');
+      if (textEl) textEl.textContent = 'Unavailable';
+    }
+  }
+
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude),
+      () => fetchWeather(53.3498, -6.2603),
+      { timeout: 5000 }
+    );
+  } else {
+    fetchWeather(53.3498, -6.2603);
+  }
+
+  // ====== Now Playing Monitor ======
+  async function fetchNowPlaying() {
+    try {
+      const res = await fetch('https://lastfm-last-played.biancarosa.com.br/bmcweeney/latest-song', { cache: 'no-store' });
+      const data = await res.json();
+      const track = data?.track || {};
+      
+      const isPlaying = String(track['@attr']?.nowplaying) === 'true';
+      const title = track.name || 'No stream';
+      const artist = track.artist?.['#text'] || '--';
+      
+      const trackEl = document.getElementById('np-track');
+      const artistEl = document.getElementById('np-artist');
+      const badgeEl = document.getElementById('audio-badge');
+      const eqEl = document.getElementById('eq-viz');
+      
+      if (trackEl) trackEl.textContent = title;
+      if (artistEl) artistEl.textContent = artist;
+      if (badgeEl) {
+        badgeEl.textContent = isPlaying ? 'LIVE' : 'IDLE';
+        badgeEl.className = isPlaying ? 'badge badge-green' : 'badge';
+      }
+      if (eqEl) {
+        eqEl.classList.toggle('playing', isPlaying);
+      }
+    } catch {
+      // Silent fail
+    }
+  }
+
+  fetchNowPlaying();
+  setInterval(fetchNowPlaying, 30000);
+
+  // ====== Network Status ======
+  function updateNetStatus() {
+    const online = navigator.onLine;
+    const statusEl = document.getElementById('net-status');
+    const badgeEl = document.getElementById('net-badge');
+    
+    if (statusEl) {
+      statusEl.textContent = online ? 'CONNECTED' : 'OFFLINE';
+      statusEl.style.color = online ? 'var(--color-term-green)' : 'var(--color-led-red)';
+    }
+    if (badgeEl) {
+      badgeEl.textContent = online ? 'UP' : 'DOWN';
+      badgeEl.className = online ? 'badge badge-green' : 'badge badge-red';
+    }
+  }
+
+  window.addEventListener('online', updateNetStatus);
+  window.addEventListener('offline', updateNetStatus);
+  updateNetStatus();
+
+  // ====== Bandwidth Simulation ======
+  function updateBandwidth() {
+    const txFill = document.getElementById('tx-fill');
+    const rxFill = document.getElementById('rx-fill');
+    const txVal = document.getElementById('tx-value');
+    const rxVal = document.getElementById('rx-value');
+    const totalTx = document.getElementById('total-tx');
+    const totalRx = document.getElementById('total-rx');
+    
+    const tx = Math.floor(Math.random() * 50) + 5;
+    const rx = Math.floor(Math.random() * 150) + 20;
+    
+    if (txFill) txFill.style.width = `${Math.min(tx, 100)}%`;
+    if (rxFill) rxFill.style.width = `${Math.min(rx / 2, 100)}%`;
+    if (txVal) txVal.textContent = `${tx} KB/s`;
+    if (rxVal) rxVal.textContent = `${rx} KB/s`;
+    if (totalTx) totalTx.textContent = `${(Math.random() * 50 + 10).toFixed(1)} MB`;
+    if (totalRx) totalRx.textContent = `${(Math.random() * 200 + 50).toFixed(1)} MB`;
+  }
+
+  updateBandwidth();
+  setInterval(updateBandwidth, 2000);
+</script>

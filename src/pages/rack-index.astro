@@ -15,14 +15,14 @@ const posts = (await getCollection("blog"))
   title="Home" 
   description="Bernard McWeeney's personal server rack - IT administrator, web developer, Dublin Ireland"
 >
-  <!-- Hero / System Console -->
+  <!-- Hero / System Info -->
   <RackHero />
   
   <!-- System Monitors -->
   <SystemMonitors />
   
   <!-- Recent Logs (Blog Posts) -->
-  <div class="blade" data-unit="2U">
+  <div class="blade" data-unit="3U">
     <div class="blade-face">
       <div class="led-cluster">
         <span class="led on"></span>
@@ -32,52 +32,37 @@ const posts = (await getCollection("blog"))
         RECENT LOGS
         <span class="model">/var/log/blog</span>
       </span>
-      <a href="/blog/" class="btn btn-sm" style="margin-left:auto;">
-        tail -f →
+      <a href="/blog/" class="btn" style="margin-left:auto;">
+        ls -la →
       </a>
     </div>
     
     <div class="blade-content">
       {posts.length === 0 ? (
         <div class="terminal">
-          <div class="terminal-header">
-            <div class="dots">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-            </div>
-            <span class="title">/var/log/blog</span>
-          </div>
           <div class="terminal-body">
             <div class="terminal-line">
               <span class="prompt">[bernard@srv01 ~]$</span>
-              <span class="command">ls -la /var/log/blog/</span>
+              <span class="command">ls /var/log/blog/</span>
             </div>
             <div class="terminal-line">
-              <span class="output muted">total 0</span>
-            </div>
-            <div class="terminal-line">
-              <span class="output">No log entries found. Check back soon.</span>
+              <span class="output">No log files found. Check back soon.</span>
             </div>
           </div>
         </div>
       ) : (
-        <div class="log-entries stagger">
-          {posts.map((post) => {
+        <div class="log-list">
+          {posts.map((post, i) => {
             const date = new Date(post.data.pubDate);
-            const timestamp = date.toISOString().slice(0, 10);
-            const time = date.toISOString().slice(11, 19);
+            const timestamp = date.toISOString().slice(0, 10).replace(/-/g, '');
             return (
               <a href={`/blog/${post.slug}/`} class="log-entry">
                 <span class="log-led"></span>
                 <span class="log-timestamp">{timestamp}</span>
-                <span class="log-time">{time}</span>
                 <span class="log-title">{post.data.title}</span>
-                <div class="log-tags">
-                  {post.data.tags?.slice(0, 2).map(tag => (
-                    <span class="badge">{tag}</span>
-                  ))}
-                </div>
+                {post.data.tags?.slice(0, 2).map(tag => (
+                  <span class="badge">{tag}</span>
+                ))}
               </a>
             );
           })}
@@ -86,77 +71,65 @@ const posts = (await getCollection("blog"))
     </div>
   </div>
   
-  <!-- Services / Quick Links -->
+  <!-- Quick Links / Services -->
   <div class="blade" data-unit="1U">
     <div class="blade-face">
       <div class="led-cluster">
         <span class="led on"></span>
-        <span class="led on"></span>
       </div>
       <span class="blade-label">
         SERVICES
-        <span class="model">systemctl list-units --type=service</span>
+        <span class="model">systemctl</span>
       </span>
     </div>
     
     <div class="blade-content">
-      <div class="services-grid grid-4">
-        <a href="/about/" class="service-unit">
-          <div class="service-header">
-            <span class="service-icon">◎</span>
-            <span class="led on"></span>
-          </div>
+      <div class="services-grid">
+        <a href="/about/" class="service-card">
+          <span class="service-icon">◎</span>
           <span class="service-name">about.service</span>
-          <span class="service-status">● active (running)</span>
-          <span class="service-desc">Personal info & background</span>
+          <span class="service-status active">● active</span>
+          <span class="service-desc">Crew profile and background</span>
         </a>
         
-        <a href="/projects/" class="service-unit">
-          <div class="service-header">
-            <span class="service-icon">◇</span>
-            <span class="led on"></span>
-          </div>
+        <a href="/projects/" class="service-card">
+          <span class="service-icon">◇</span>
           <span class="service-name">projects.service</span>
-          <span class="service-status">● active (running)</span>
-          <span class="service-desc">Active builds & missions</span>
+          <span class="service-status active">● active</span>
+          <span class="service-desc">Active missions and builds</span>
         </a>
         
-        <a href="/notes/" class="service-unit">
-          <div class="service-header">
-            <span class="service-icon">◆</span>
-            <span class="led amber blink"></span>
-          </div>
+        <a href="/notes/" class="service-card">
+          <span class="service-icon">◆</span>
           <span class="service-name">notes.service</span>
-          <span class="service-status">● active (running)</span>
-          <span class="service-desc">Quick notes & TILs</span>
+          <span class="service-status active">● active</span>
+          <span class="service-desc">Quick notes and TILs</span>
         </a>
         
-        <a href="https://github.com/BernardMcWeeney" target="_blank" rel="noopener" class="service-unit external">
-          <div class="service-header">
-            <span class="service-icon">⬡</span>
-            <span class="led on"></span>
-          </div>
+        <a href="https://github.com/BernardMcWeeney" target="_blank" class="service-card external">
+          <span class="service-icon">⬡</span>
           <span class="service-name">github.service</span>
-          <span class="service-status">● active (exited)</span>
-          <span class="service-desc">Source repositories ↗</span>
+          <span class="service-status active">● active</span>
+          <span class="service-desc">Source code repositories</span>
         </a>
       </div>
     </div>
   </div>
   
-  <!-- Patch Panel (Decorative) -->
-  <div class="blade" data-unit="1U">
+  <!-- Patch Panel (decorative) -->
+  <div class="blade" data-unit="1U" style="margin-top: 1rem;">
     <div class="blade-face">
-      <span class="blade-label">
-        PATCH PANEL A
-        <span class="model">CAT6A · 24-PORT</span>
+      <span class="blade-label" style="margin-left: 0;">
+        PATCH PANEL
+        <span class="model">CAT6A</span>
       </span>
     </div>
     <div class="patch-panel">
       {Array.from({ length: 24 }).map((_, i) => (
         <span 
           class:list={['port', { 
-            active: [0, 1, 2, 3, 5, 6, 11, 12].includes(i),
+            active: [0, 1, 2, 5, 6, 11].includes(i),
+            connected: [0, 1, 2].includes(i)
           }]}
           title={`Port ${i + 1}`}
         >
@@ -168,16 +141,14 @@ const posts = (await getCollection("blog"))
 </RackLayout>
 
 <style>
-  /* Log Entries */
-  .log-entries {
+  .log-list {
     display: flex;
     flex-direction: column;
     gap: 2px;
   }
 
   .log-entry {
-    display: grid;
-    grid-template-columns: auto auto auto 1fr auto;
+    display: flex;
     align-items: center;
     gap: 0.75rem;
     padding: 0.5rem 0.75rem;
@@ -197,23 +168,17 @@ const posts = (await getCollection("blog"))
     height: 6px;
     border-radius: 50%;
     background: var(--color-term-green);
-    box-shadow: var(--glow-green);
     flex-shrink: 0;
   }
 
   .log-timestamp {
     font-size: 10px;
-    color: var(--color-term-cyan);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .log-time {
-    font-size: 9px;
     color: var(--color-term-dark);
-    font-variant-numeric: tabular-nums;
+    min-width: 70px;
   }
 
   .log-title {
+    flex: 1;
     font-size: 12px;
     color: var(--color-term-white);
     white-space: nowrap;
@@ -225,26 +190,19 @@ const posts = (await getCollection("blog"))
     color: var(--color-term-green);
   }
 
-  .log-tags {
-    display: flex;
-    gap: 4px;
-  }
-
-  @media (max-width: 640px) {
-    .log-entry {
-      grid-template-columns: auto auto 1fr;
-    }
-    .log-time, .log-tags {
-      display: none;
-    }
-  }
-
-  /* Services Grid */
   .services-grid {
+    display: grid;
     gap: 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .service-unit {
+  @media (min-width: 768px) {
+    .services-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .service-card {
     display: flex;
     flex-direction: column;
     gap: 0.25rem;
@@ -255,16 +213,9 @@ const posts = (await getCollection("blog"))
     transition: all 0.15s ease;
   }
 
-  .service-unit:hover {
+  .service-card:hover {
     border-color: var(--color-primary);
     background: var(--color-primary-dim);
-  }
-
-  .service-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.25rem;
   }
 
   .service-icon {
@@ -272,13 +223,8 @@ const posts = (await getCollection("blog"))
     color: var(--color-term-gray);
   }
 
-  .service-unit:hover .service-icon {
+  .service-card:hover .service-icon {
     color: var(--color-primary);
-  }
-
-  .service-header .led {
-    width: 5px;
-    height: 5px;
   }
 
   .service-name {
@@ -289,6 +235,10 @@ const posts = (await getCollection("blog"))
 
   .service-status {
     font-size: 9px;
+    color: var(--color-term-dark);
+  }
+
+  .service-status.active {
     color: var(--color-term-green);
   }
 
@@ -298,7 +248,7 @@ const posts = (await getCollection("blog"))
     margin-top: 0.25rem;
   }
 
-  .service-unit.external .service-name::after {
+  .service-card.external .service-name::after {
     content: ' ↗';
     color: var(--color-term-dark);
   }

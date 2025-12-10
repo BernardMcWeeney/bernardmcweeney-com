@@ -1,0 +1,288 @@
+---
+/**
+ * Rack Footer
+ * Network status panel with system information
+ */
+
+const year = new Date().getFullYear();
+---
+
+<footer class="rack-footer">
+  <div class="container">
+    <div class="rack">
+      <div class="rack-inner">
+        <!-- System Status Blade -->
+        <div class="blade" data-unit="1U">
+          <div class="blade-face">
+            <div class="led-cluster">
+              <span class="led on"></span>
+              <span class="led on"></span>
+              <span class="led amber blink"></span>
+            </div>
+            <span class="blade-label">
+              SYSTEM STATUS
+              <span class="model">PDU-MGMT</span>
+            </span>
+          </div>
+          
+          <div class="blade-content">
+            <div class="footer-grid">
+              <!-- Identification -->
+              <div class="footer-section">
+                <div class="section-header">
+                  <span class="prompt">#</span> IDENTIFICATION
+                </div>
+                <div class="id-block">
+                  <div class="id-row">
+                    <span class="id-label">Hostname:</span>
+                    <span class="id-value cyan">bernard-srv01</span>
+                  </div>
+                  <div class="id-row">
+                    <span class="id-label">Location:</span>
+                    <span class="id-value">Dublin, Ireland</span>
+                  </div>
+                  <div class="id-row">
+                    <span class="id-label">Coordinates:</span>
+                    <span class="id-value amber">53.3498°N, 6.2603°W</span>
+                  </div>
+                  <div class="id-row">
+                    <span class="id-label">Operator:</span>
+                    <span class="id-value">Bernard McWeeney</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Interfaces -->
+              <div class="footer-section">
+                <div class="section-header">
+                  <span class="prompt">#</span> EXTERNAL INTERFACES
+                </div>
+                <div class="interfaces">
+                  <a href="mailto:hello@bernardmcweeney.com" class="interface-link">
+                    <span class="int-name">eth0</span>
+                    <span class="int-desc">email</span>
+                    <span class="led on"></span>
+                  </a>
+                  <a href="https://github.com/BernardMcWeeney" target="_blank" rel="noopener" class="interface-link">
+                    <span class="int-name">eth1</span>
+                    <span class="int-desc">github</span>
+                    <span class="led on"></span>
+                  </a>
+                  <a href="https://x.com/BMcWeeneyIE" target="_blank" rel="noopener" class="interface-link">
+                    <span class="int-name">eth2</span>
+                    <span class="int-desc">x.com</span>
+                    <span class="led on"></span>
+                  </a>
+                  <a href="/rss.xml" class="interface-link">
+                    <span class="int-name">eth3</span>
+                    <span class="int-desc">rss</span>
+                    <span class="led on blink"></span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- System Info -->
+              <div class="footer-section">
+                <div class="section-header">
+                  <span class="prompt">#</span> SYSTEM INFO
+                </div>
+                <div class="sys-info">
+                  <div class="sys-row">
+                    <span class="sys-label">OS:</span>
+                    <span class="sys-value">Astro 5.x</span>
+                  </div>
+                  <div class="sys-row">
+                    <span class="sys-label">Host:</span>
+                    <span class="sys-value">Cloudflare Workers</span>
+                  </div>
+                  <div class="sys-row">
+                    <span class="sys-label">Theme:</span>
+                    <span class="sys-value">Rack v2.0</span>
+                  </div>
+                  <div class="sys-row">
+                    <span class="sys-label">Status:</span>
+                    <span class="sys-value green">All Systems Nominal</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom bar -->
+            <div class="footer-bottom">
+              <div class="copyright">
+                © {year} Bernard McWeeney · All rights reserved
+              </div>
+              <div class="footer-status">
+                <span class="led on pulse"></span>
+                <span>OPERATIONAL</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .rack-footer {
+    margin-top: 2rem;
+    padding-bottom: 1rem;
+  }
+
+  .footer-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-grid {
+      grid-template-columns: 1fr 1fr 1fr;
+    }
+  }
+
+  .footer-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .section-header {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-term-dark);
+    padding-bottom: 0.25rem;
+    border-bottom: 1px dashed var(--color-border);
+  }
+
+  .section-header .prompt {
+    color: var(--color-primary);
+    margin-right: 0.25rem;
+  }
+
+  /* ID Block */
+  .id-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .id-row {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 11px;
+  }
+
+  .id-label {
+    color: var(--color-term-dark);
+    min-width: 80px;
+  }
+
+  .id-value {
+    color: var(--color-term-white);
+  }
+
+  .id-value.cyan { color: var(--color-term-cyan); }
+  .id-value.amber { color: var(--color-term-amber); }
+
+  /* Interfaces */
+  .interfaces {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .interface-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.4rem;
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    font-size: 11px;
+    transition: all 0.15s ease;
+  }
+
+  .interface-link:hover {
+    border-color: var(--color-term-green);
+    background: var(--color-surface);
+  }
+
+  .int-name {
+    color: var(--color-term-cyan);
+    min-width: 35px;
+  }
+
+  .int-desc {
+    color: var(--color-term-gray);
+    flex: 1;
+  }
+
+  .interface-link:hover .int-desc {
+    color: var(--color-term-green);
+  }
+
+  .interface-link .led {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* System Info */
+  .sys-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .sys-row {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 11px;
+  }
+
+  .sys-label {
+    color: var(--color-term-dark);
+    min-width: 50px;
+  }
+
+  .sys-value {
+    color: var(--color-term-gray);
+  }
+
+  .sys-value.green {
+    color: var(--color-term-green);
+  }
+
+  /* Footer Bottom */
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 10px;
+  }
+
+  .copyright {
+    color: var(--color-term-dark);
+  }
+
+  .footer-status {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-term-green);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-status .led {
+    width: 6px;
+    height: 6px;
+  }
+</style>

@@ -1,0 +1,68 @@
+---
+import "../styles/rack.css";
+import RackHeader from "../components/RackHeader.astro";
+import RackFooter from "../components/RackFooter.astro";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Bernard McWeeney's personal server rack" } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Meta -->
+    <title>{title} | bernard-srv01</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalURL} />
+    
+    <!-- OG -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:title" content={`${title} | bernard-srv01`} />
+    <meta property="og:description" content={description} />
+    
+    <!-- Theme prevention script - runs before render -->
+    <script is:inline>
+      (function() {
+        const theme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (theme === 'light' || (!theme && !prefersDark)) {
+          document.documentElement.classList.add('light');
+        }
+      })();
+    </script>
+    
+    <meta name="theme-color" content="#080808" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#f5f5f5" media="(prefers-color-scheme: light)" />
+  </head>
+  
+  <body>
+    <RackHeader />
+    
+    <main class="container">
+      <div class="rack">
+        <div class="rack-inner">
+          <slot />
+        </div>
+      </div>
+    </main>
+    
+    <RackFooter />
+  </body>
+</html>

@@ -1,0 +1,592 @@
+---
+/**
+ * Rack Header v2.0
+ * Enhanced Cisco-style console with theme toggle and live stats
+ */
+
+const pathname = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'HOME', port: 'Gi0/0', desc: 'Main interface' },
+  { href: '/about/', label: 'ABOUT', port: 'Gi0/1', desc: 'System info' },
+  { href: '/blog/', label: 'LOGS', port: 'Gi0/2', desc: 'Blog posts' },
+  { href: '/projects/', label: 'SERVICES', port: 'Gi0/3', desc: 'Active projects' },
+  { href: '/notes/', label: 'NOTES', port: 'Gi0/4', desc: 'Quick notes' },
+  { href: '/archive/', label: 'ARCHIVE', port: 'Gi0/5', desc: 'All content' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return pathname === '/';
+  return pathname.startsWith(href);
+}
+---
+
+<header class="rack-header">
+  <div class="container">
+    <!-- Top status bar with live data -->
+    <div class="status-bar">
+      <div class="status-left">
+        <span class="hostname">
+          <span class="led on pulse"></span>
+          bernard-srv01
+        </span>
+        <span class="separator">|</span>
+        <span class="uptime" id="uptime">uptime: 0d 00:00:00</span>
+      </div>
+      
+      <div class="status-center">
+        <span class="console-badge">CONSOLE</span>
+      </div>
+      
+      <div class="status-right">
+        <span class="stat-item">
+          <span class="stat-label">CPU</span>
+          <span class="stat-val" id="cpu-usage">--</span>
+        </span>
+        <span class="stat-item">
+          <span class="stat-label">MEM</span>
+          <span class="stat-val" id="mem-usage">--</span>
+        </span>
+        <span class="connection-badge" id="connection-badge">
+          <span class="led on"></span>
+          <span id="conn-text">ONLINE</span>
+        </span>
+      </div>
+    </div>
+
+    <!-- Main navigation -->
+    <nav class="nav-bar">
+      <div class="brand">
+        <a href="/" class="brand-link">
+          <span class="brand-name">MCWEENEY</span>
+          <span class="brand-model">WS-C2960X-24</span>
+        </a>
+      </div>
+      
+      <div class="port-row">
+        {navLinks.map((link) => (
+          <a 
+            href={link.href}
+            class:list={['port-link', { active: isActive(link.href) }]}
+            title={`${link.port} - ${link.desc}`}
+          >
+            <span class="port-led"></span>
+            <span class="port-number">{link.port}</span>
+            <span class="port-label">{link.label}</span>
+          </a>
+        ))}
+      </div>
+
+      <div class="nav-actions">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+          <span class="toggle-track">
+            <span class="toggle-icon sun">☀</span>
+            <span class="toggle-icon moon">☾</span>
+            <span class="toggle-thumb"></span>
+          </span>
+        </button>
+      </div>
+
+      <button id="mobile-toggle" class="mobile-toggle" aria-label="Menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="mobile-menu hidden">
+      <div class="mobile-header">
+        <span class="prompt">[bernard@srv01]$</span>
+        <span class="command">show interfaces brief</span>
+      </div>
+      <div class="mobile-body">
+        {navLinks.map(link => (
+          <a 
+            href={link.href}
+            class:list={['mobile-link', { active: isActive(link.href) }]}
+          >
+            <span class="interface">{link.port}</span>
+            <span class="status">{isActive(link.href) ? 'up' : 'down'}</span>
+            <span class="description">{link.label}</span>
+            <span class="led-indicator">
+              <span class:list={['led', { on: isActive(link.href) }]}></span>
+            </span>
+          </a>
+        ))}
+      </div>
+      <div class="mobile-footer">
+        <button id="mobile-theme-toggle" class="btn btn-sm">
+          <span class="theme-icon">◐</span> Toggle Mode
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  .rack-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-chassis);
+    border-bottom: 2px solid var(--color-border);
+  }
+
+  /* Status Bar */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.3rem 0.5rem;
+    background: var(--color-panel);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 10px;
+    gap: 1rem;
+  }
+
+  .status-left, .status-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .hostname {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-term-cyan);
+    font-weight: 600;
+  }
+
+  .hostname .led {
+    width: 5px;
+    height: 5px;
+  }
+
+  .separator {
+    color: var(--color-term-dark);
+  }
+
+  .uptime {
+    color: var(--color-term-dark);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .console-badge {
+    padding: 0.15rem 0.5rem;
+    background: var(--color-primary);
+    color: var(--color-rack);
+    font-weight: 700;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .stat-label {
+    color: var(--color-term-dark);
+    font-size: 9px;
+  }
+
+  .stat-val {
+    color: var(--color-term-green);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .connection-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.15rem 0.4rem;
+    background: rgba(0, 255, 65, 0.1);
+    border: 1px solid var(--color-term-green-dim);
+    border-radius: 2px;
+    color: var(--color-term-green);
+    font-size: 9px;
+    font-weight: 600;
+  }
+
+  .connection-badge .led {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* Nav Bar */
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
+  }
+
+  .brand-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    padding-right: 1rem;
+    border-right: 1px solid var(--color-border);
+  }
+
+  .brand-name {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-primary);
+    letter-spacing: 0.05em;
+  }
+
+  .brand-model {
+    font-size: 8px;
+    color: var(--color-term-dark);
+    letter-spacing: 0.1em;
+  }
+
+  .port-row {
+    display: none;
+    align-items: center;
+    gap: 2px;
+    flex: 1;
+  }
+
+  @media (min-width: 900px) {
+    .port-row {
+      display: flex;
+    }
+  }
+
+  .port-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 0.35rem 0.5rem;
+    background: var(--color-chassis);
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all 0.15s ease;
+    min-width: 60px;
+  }
+
+  .port-link:hover {
+    border-color: var(--color-term-green);
+    background: var(--color-panel);
+  }
+
+  .port-link.active {
+    border-color: var(--color-primary);
+    background: var(--color-primary-dim);
+  }
+
+  .port-led {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-led-off);
+    transition: all 0.15s ease;
+  }
+
+  .port-link:hover .port-led {
+    background: var(--color-led-green);
+    box-shadow: var(--glow-green);
+  }
+
+  .port-link.active .port-led {
+    background: var(--color-primary);
+    box-shadow: var(--glow-primary);
+    animation: led-blink 1s ease-in-out infinite;
+  }
+
+  .port-number {
+    font-size: 8px;
+    color: var(--color-term-dark);
+  }
+
+  .port-label {
+    font-size: 9px;
+    font-weight: 600;
+    color: var(--color-term-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .port-link:hover .port-label {
+    color: var(--color-term-green);
+  }
+
+  .port-link.active .port-label {
+    color: var(--color-primary);
+  }
+
+  .nav-actions {
+    display: none;
+    margin-left: auto;
+  }
+
+  @media (min-width: 900px) {
+    .nav-actions {
+      display: flex;
+    }
+  }
+
+  /* Theme Toggle Switch */
+  .theme-toggle {
+    position: relative;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .toggle-track {
+    display: flex;
+    align-items: center;
+    width: 52px;
+    height: 26px;
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+    border-radius: 13px;
+    padding: 2px;
+    position: relative;
+  }
+
+  .toggle-icon {
+    position: absolute;
+    font-size: 12px;
+    transition: opacity 0.2s ease;
+  }
+
+  .toggle-icon.sun {
+    left: 6px;
+    color: var(--color-term-amber);
+    opacity: 0;
+  }
+
+  .toggle-icon.moon {
+    right: 6px;
+    color: var(--color-term-cyan);
+    opacity: 1;
+  }
+
+  :global(.light) .toggle-icon.sun { opacity: 1; }
+  :global(.light) .toggle-icon.moon { opacity: 0; }
+
+  .toggle-thumb {
+    position: absolute;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--color-term-green);
+    border-radius: 50%;
+    transition: transform 0.2s ease, background 0.2s ease;
+    box-shadow: var(--glow-green);
+  }
+
+  :global(.light) .toggle-thumb {
+    transform: translateX(26px);
+    background: var(--color-primary);
+    box-shadow: var(--glow-primary);
+  }
+
+  /* Mobile Toggle */
+  .mobile-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    width: 36px;
+    height: 36px;
+    margin-left: auto;
+    padding: 8px;
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+    cursor: pointer;
+  }
+
+  @media (min-width: 900px) {
+    .mobile-toggle {
+      display: none;
+    }
+  }
+
+  .mobile-toggle .bar {
+    width: 100%;
+    height: 2px;
+    background: var(--color-term-green);
+    transition: all 0.2s ease;
+  }
+
+  .mobile-toggle:hover .bar {
+    background: var(--color-term-white);
+  }
+
+  /* Mobile Menu */
+  .mobile-menu {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .mobile-menu.hidden {
+    display: none;
+  }
+
+  .mobile-header {
+    padding: 0.5rem 0.75rem;
+    background: var(--color-panel);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 10px;
+  }
+
+  .mobile-header .prompt {
+    color: var(--color-term-cyan);
+  }
+
+  .mobile-header .command {
+    color: var(--color-term-white);
+    margin-left: 0.5rem;
+  }
+
+  .mobile-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobile-link {
+    display: grid;
+    grid-template-columns: 60px 40px 1fr 30px;
+    gap: 0.5rem;
+    align-items: center;
+    padding: 0.6rem 0.75rem;
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 11px;
+  }
+
+  .mobile-link:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-link .interface {
+    color: var(--color-term-cyan);
+  }
+
+  .mobile-link .status {
+    color: var(--color-term-dark);
+  }
+
+  .mobile-link.active .status {
+    color: var(--color-term-green);
+  }
+
+  .mobile-link .description {
+    color: var(--color-term-gray);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .mobile-link.active .description {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .mobile-link .led-indicator {
+    display: flex;
+    justify-content: center;
+  }
+
+  .mobile-footer {
+    padding: 0.75rem;
+    background: var(--color-panel);
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Hide things on small screens */
+  @media (max-width: 640px) {
+    .status-center, .status-right .stat-item {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // ====== Uptime Counter ======
+  const startTime = Date.now();
+  const uptimeEl = document.getElementById('uptime');
+  
+  function updateUptime() {
+    const elapsed = Date.now() - startTime;
+    const days = Math.floor(elapsed / 86400000);
+    const hours = Math.floor((elapsed % 86400000) / 3600000);
+    const mins = Math.floor((elapsed % 3600000) / 60000);
+    const secs = Math.floor((elapsed % 60000) / 1000);
+    
+    if (uptimeEl) {
+      uptimeEl.textContent = `uptime: ${days}d ${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+  }
+  
+  updateUptime();
+  setInterval(updateUptime, 1000);
+
+  // ====== Simulated CPU/MEM ======
+  const cpuEl = document.getElementById('cpu-usage');
+  const memEl = document.getElementById('mem-usage');
+  
+  function updateStats() {
+    if (cpuEl) {
+      const cpu = Math.floor(Math.random() * 15) + 5;
+      cpuEl.textContent = `${cpu}%`;
+    }
+    if (memEl) {
+      const mem = Math.floor(Math.random() * 20) + 30;
+      memEl.textContent = `${mem}%`;
+    }
+  }
+  
+  updateStats();
+  setInterval(updateStats, 3000);
+
+  // ====== Connection Status ======
+  const connBadge = document.getElementById('connection-badge');
+  const connText = document.getElementById('conn-text');
+  const connLed = connBadge?.querySelector('.led');
+  
+  function updateConnection() {
+    const online = navigator.onLine;
+    if (connText) connText.textContent = online ? 'ONLINE' : 'OFFLINE';
+    if (connLed) {
+      connLed.classList.toggle('on', online);
+      connLed.classList.toggle('red', !online);
+    }
+    if (connBadge) {
+      connBadge.style.borderColor = online ? 'var(--color-term-green-dim)' : 'rgba(255, 51, 51, 0.3)';
+      connBadge.style.color = online ? 'var(--color-term-green)' : 'var(--color-led-red)';
+    }
+  }
+  
+  window.addEventListener('online', updateConnection);
+  window.addEventListener('offline', updateConnection);
+  updateConnection();
+
+  // ====== Theme Toggle ======
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isLight = html.classList.toggle('light');
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  }
+  
+  document.getElementById('theme-toggle')?.addEventListener('click', toggleTheme);
+  document.getElementById('mobile-theme-toggle')?.addEventListener('click', toggleTheme);
+
+  // ====== Mobile Menu Toggle ======
+  const mobileToggle = document.getElementById('mobile-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  mobileToggle?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+  });
+</script>

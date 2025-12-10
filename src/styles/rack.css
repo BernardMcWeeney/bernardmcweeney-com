@@ -1,0 +1,1108 @@
+@import "tailwindcss";
+
+/* ============================================================
+   BERNARD'S RACK v2.0 - IT Infrastructure Interface
+   Now with light mode + enhanced networking visuals
+   ============================================================ */
+
+@theme {
+  /* ─────────────────────────────────────────────────────────
+     DARK MODE Colors (Default)
+     ───────────────────────────────────────────────────────── */
+  
+  /* Backgrounds */
+  --color-rack: #080808;
+  --color-chassis: #0e0e0e;
+  --color-panel: #141414;
+  --color-bezel: #1a1a1a;
+  --color-surface: #1e1e1e;
+  --color-elevated: #252525;
+  
+  /* Terminal Text - Enhanced contrast */
+  --color-term-green: #00ff41;
+  --color-term-green-bright: #39ff14;
+  --color-term-green-dim: #00802b;
+  --color-term-amber: #ffbf00;
+  --color-term-amber-dim: #806000;
+  --color-term-cyan: #00ffff;
+  --color-term-cyan-dim: #008080;
+  --color-term-white: #f0f0f0;
+  --color-term-gray: #909090;
+  --color-term-dark: #505050;
+  
+  /* Status LEDs */
+  --color-led-green: #00ff00;
+  --color-led-amber: #ffaa00;
+  --color-led-red: #ff3333;
+  --color-led-blue: #0099ff;
+  --color-led-purple: #aa33ff;
+  --color-led-off: #2a2a2a;
+  
+  /* Brand - Cisco Orange */
+  --color-primary: #ff6600;
+  --color-primary-bright: #ff8533;
+  --color-primary-dim: rgba(255, 102, 0, 0.15);
+  --color-primary-glow: rgba(255, 102, 0, 0.6);
+  
+  /* Network Status Colors */
+  --color-connected: #00ff41;
+  --color-warning: #ffbf00;
+  --color-critical: #ff3333;
+  --color-tunnel: #aa33ff;
+  --color-encrypted: #00ffff;
+  
+  /* Borders */
+  --color-rail: #2a2a2a;
+  --color-rail-hole: #1a1a1a;
+  --color-border: #2a2a2a;
+  --color-border-bright: #3a3a3a;
+  --color-border-active: var(--color-term-green);
+  
+  /* ─────────────────────────────────────────────────────────
+     Typography
+     ───────────────────────────────────────────────────────── */
+  --font-mono: 'JetBrains Mono', 'Cascadia Code', 'SF Mono', 'Consolas', monospace;
+  --font-system: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  /* ─────────────────────────────────────────────────────────
+     Effects
+     ───────────────────────────────────────────────────────── */
+  --glow-green: 0 0 10px rgba(0, 255, 65, 0.6);
+  --glow-amber: 0 0 10px rgba(255, 191, 0, 0.6);
+  --glow-cyan: 0 0 10px rgba(0, 255, 255, 0.6);
+  --glow-primary: 0 0 15px var(--color-primary-glow);
+  --glow-purple: 0 0 10px rgba(170, 51, 255, 0.6);
+  
+  --radius-sm: 2px;
+  --radius-md: 4px;
+}
+
+/* ============================================================
+   LIGHT MODE - Clean Server Room Aesthetic
+   ============================================================ */
+.light {
+  --color-rack: #f5f5f5;
+  --color-chassis: #ffffff;
+  --color-panel: #fafafa;
+  --color-bezel: #f0f0f0;
+  --color-surface: #e8e8e8;
+  --color-elevated: #e0e0e0;
+  
+  --color-term-green: #008f11;
+  --color-term-green-bright: #00a814;
+  --color-term-green-dim: #b3e6b8;
+  --color-term-amber: #b38600;
+  --color-term-amber-dim: #fff3cd;
+  --color-term-cyan: #007a7a;
+  --color-term-cyan-dim: #b3e6e6;
+  --color-term-white: #1a1a1a;
+  --color-term-gray: #505050;
+  --color-term-dark: #909090;
+  
+  --color-led-off: #d0d0d0;
+  --color-border: #d0d0d0;
+  --color-border-bright: #b0b0b0;
+  --color-rail: #d8d8d8;
+  --color-rail-hole: #c8c8c8;
+  
+  --glow-green: 0 0 8px rgba(0, 143, 17, 0.3);
+  --glow-amber: 0 0 8px rgba(179, 134, 0, 0.3);
+  --glow-cyan: 0 0 8px rgba(0, 122, 122, 0.3);
+}
+
+.light body::after {
+  opacity: 0;
+}
+
+/* ============================================================
+   Base Styles
+   ============================================================ */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--color-term-green);
+  background: var(--color-rack);
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* CRT scan line effect (dark mode only) */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(0, 0, 0, 0.15) 1px,
+    rgba(0, 0, 0, 0.15) 2px
+  );
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.3;
+}
+
+/* ============================================================
+   Container
+   ============================================================ */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding-inline: 1.5rem;
+  }
+}
+
+/* ============================================================
+   The Rack - Main wrapper
+   ============================================================ */
+.rack {
+  position: relative;
+  background: var(--color-chassis);
+  border: 1px solid var(--color-border);
+  margin: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+/* Rack mounting rails */
+.rack::before,
+.rack::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 18px;
+  background: 
+    repeating-linear-gradient(
+      180deg,
+      var(--color-rail) 0px,
+      var(--color-rail) 2px,
+      var(--color-rail-hole) 2px,
+      var(--color-rail-hole) 7px,
+      var(--color-rail) 7px,
+      var(--color-rail) 16px
+    );
+  pointer-events: none;
+}
+
+.rack::before { left: 0; }
+.rack::after { right: 0; }
+
+.rack-inner {
+  margin: 0 22px;
+  padding: 4px 0;
+}
+
+/* ============================================================
+   Blade / Unit - Individual rack units
+   ============================================================ */
+.blade {
+  position: relative;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  margin: 4px 0;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.blade:hover {
+  border-color: var(--color-border-bright);
+}
+
+/* Blade faceplate */
+.blade-face {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(180deg, var(--color-surface) 0%, var(--color-panel) 100%);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* LED cluster */
+.led-cluster {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-led-off);
+  transition: all 0.3s ease;
+}
+
+.led.on { 
+  background: var(--color-led-green); 
+  box-shadow: var(--glow-green); 
+}
+.led.amber { 
+  background: var(--color-led-amber); 
+  box-shadow: var(--glow-amber); 
+}
+.led.red { 
+  background: var(--color-led-red); 
+}
+.led.blue { 
+  background: var(--color-led-blue); 
+}
+.led.purple { 
+  background: var(--color-led-purple); 
+  box-shadow: var(--glow-purple); 
+}
+.led.cyan {
+  background: var(--color-term-cyan);
+  box-shadow: var(--glow-cyan);
+}
+
+.led.blink {
+  animation: led-blink 1s ease-in-out infinite;
+}
+
+.led.fast-blink {
+  animation: led-blink 0.3s ease-in-out infinite;
+}
+
+.led.pulse {
+  animation: led-pulse 2s ease-in-out infinite;
+}
+
+@keyframes led-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.2; }
+}
+
+@keyframes led-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.9); }
+}
+
+/* Blade label */
+.blade-label {
+  flex: 1;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-term-white);
+}
+
+.blade-label .model {
+  font-weight: 400;
+  color: var(--color-term-dark);
+  font-size: 9px;
+  margin-left: 0.5rem;
+}
+
+/* Blade content */
+.blade-content {
+  padding: 1rem;
+  background: var(--color-chassis);
+}
+
+/* ============================================================
+   Terminal / Console
+   ============================================================ */
+.terminal {
+  background: var(--color-chassis);
+  border: 1px solid var(--color-border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  background: var(--color-panel);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-term-dark);
+  font-size: 10px;
+}
+
+.terminal-header .dots {
+  display: flex;
+  gap: 4px;
+}
+
+.terminal-header .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-led-off);
+}
+
+.terminal-header .dot.red { background: #ff5f56; }
+.terminal-header .dot.yellow { background: #ffbd2e; }
+.terminal-header .dot.green { background: #27ca40; }
+
+.terminal-header .title {
+  color: var(--color-term-gray);
+  margin-left: 0.5rem;
+}
+
+.terminal-body {
+  padding: 0.75rem;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.terminal-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
+  line-height: 1.5;
+}
+
+.prompt {
+  color: var(--color-term-cyan);
+  white-space: nowrap;
+}
+
+.command {
+  color: var(--color-term-white);
+}
+
+.output {
+  color: var(--color-term-green);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.output.error { color: var(--color-led-red); }
+.output.warning { color: var(--color-term-amber); }
+.output.info { color: var(--color-term-cyan); }
+.output.muted { color: var(--color-term-dark); }
+
+/* Cursor */
+.cursor {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background: var(--color-term-green);
+  animation: cursor-blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+
+@keyframes cursor-blink {
+  50% { opacity: 0; }
+}
+
+/* ============================================================
+   Network Elements
+   ============================================================ */
+
+/* Patch Panel */
+.patch-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  padding: 8px;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+}
+
+.port {
+  position: relative;
+  width: 28px;
+  height: 20px;
+  background: var(--color-chassis);
+  border: 1px solid var(--color-border-bright);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  color: var(--color-term-dark);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.port:hover {
+  border-color: var(--color-primary);
+  color: var(--color-term-white);
+}
+
+.port.active {
+  background: rgba(0, 255, 65, 0.1);
+  border-color: var(--color-term-green);
+  color: var(--color-term-green);
+}
+
+.port.active::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 4px;
+  height: 4px;
+  background: var(--color-led-green);
+  border-radius: 50%;
+  box-shadow: var(--glow-green);
+  animation: led-blink 1s ease-in-out infinite;
+}
+
+/* Cable connections */
+.cable {
+  position: absolute;
+  background: var(--color-primary);
+  border-radius: 2px;
+  opacity: 0.8;
+}
+
+.cable.horizontal { height: 3px; }
+.cable.vertical { width: 3px; }
+
+.cable.data-flow {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-primary) 0px,
+    var(--color-primary) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  animation: data-transfer 0.5s linear infinite;
+}
+
+@keyframes data-transfer {
+  from { background-position: 0 0; }
+  to { background-position: 8px 0; }
+}
+
+/* VPN Tunnel Visualization */
+.vpn-tunnel {
+  position: relative;
+  padding: 0.5rem 0.75rem;
+  background: rgba(170, 51, 255, 0.1);
+  border: 1px dashed var(--color-tunnel);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.vpn-tunnel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(170, 51, 255, 0.2), transparent);
+  animation: tunnel-flow 2s linear infinite;
+}
+
+@keyframes tunnel-flow {
+  from { left: -50%; }
+  to { left: 100%; }
+}
+
+.vpn-tunnel .tunnel-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 10px;
+  color: var(--color-tunnel);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Bandwidth Meter */
+.bandwidth-meter {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bandwidth-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bandwidth-label {
+  font-size: 9px;
+  color: var(--color-term-dark);
+  min-width: 24px;
+}
+
+.bandwidth-track {
+  flex: 1;
+  height: 6px;
+  background: var(--color-chassis);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+}
+
+.bandwidth-fill {
+  height: 100%;
+  background: var(--color-term-green);
+  transition: width 0.3s ease;
+}
+
+.bandwidth-fill.warning { background: var(--color-term-amber); }
+.bandwidth-fill.critical { background: var(--color-led-red); }
+
+.bandwidth-value {
+  font-size: 9px;
+  color: var(--color-term-gray);
+  min-width: 50px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Firewall Rules */
+.firewall-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  background: var(--color-panel);
+  border-left: 3px solid var(--color-term-green);
+  font-size: 10px;
+  margin-bottom: 2px;
+}
+
+.firewall-rule.deny {
+  border-left-color: var(--color-led-red);
+}
+
+.firewall-rule .rule-action {
+  font-weight: 600;
+  text-transform: uppercase;
+  min-width: 45px;
+}
+
+.firewall-rule .rule-action.allow { color: var(--color-term-green); }
+.firewall-rule .rule-action.deny { color: var(--color-led-red); }
+
+.firewall-rule .rule-proto {
+  color: var(--color-term-cyan);
+  min-width: 35px;
+}
+
+.firewall-rule .rule-port {
+  color: var(--color-term-amber);
+}
+
+.firewall-rule .rule-source {
+  color: var(--color-term-gray);
+  flex: 1;
+}
+
+/* Connection Status */
+.connection-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+}
+
+.connection-status.connected {
+  border-color: var(--color-term-green-dim);
+  background: rgba(0, 255, 65, 0.05);
+}
+
+.connection-status.disconnected {
+  border-color: rgba(255, 51, 51, 0.3);
+  background: rgba(255, 51, 51, 0.05);
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-term-green);
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-decoration: none;
+}
+
+.btn:hover {
+  color: var(--color-term-white);
+  border-color: var(--color-term-green);
+  box-shadow: var(--glow-green);
+}
+
+.btn-primary {
+  color: var(--color-rack);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-bright);
+  box-shadow: var(--glow-primary);
+  color: var(--color-rack);
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 9px;
+}
+
+.btn-ghost {
+  background: transparent;
+  border-color: transparent;
+}
+
+.btn-ghost:hover {
+  background: var(--color-panel);
+  border-color: var(--color-border);
+}
+
+/* ============================================================
+   Badges
+   ============================================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.15rem 0.4rem;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-term-gray);
+}
+
+.badge-green {
+  color: var(--color-term-green);
+  border-color: var(--color-term-green-dim);
+  background: rgba(0, 255, 65, 0.1);
+}
+
+.badge-amber {
+  color: var(--color-term-amber);
+  border-color: var(--color-term-amber-dim);
+  background: rgba(255, 191, 0, 0.1);
+}
+
+.badge-red {
+  color: var(--color-led-red);
+  border-color: rgba(255, 51, 51, 0.3);
+  background: rgba(255, 51, 51, 0.1);
+}
+
+.badge-cyan {
+  color: var(--color-term-cyan);
+  border-color: var(--color-term-cyan-dim);
+  background: rgba(0, 255, 255, 0.1);
+}
+
+.badge-purple {
+  color: var(--color-tunnel);
+  border-color: rgba(170, 51, 255, 0.3);
+  background: rgba(170, 51, 255, 0.1);
+}
+
+.badge-primary {
+  color: var(--color-primary);
+  border-color: rgba(255, 102, 0, 0.3);
+  background: var(--color-primary-dim);
+}
+
+/* ============================================================
+   Statistics / Data Display
+   ============================================================ */
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.stat-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-term-dark);
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-term-green);
+  text-shadow: var(--glow-green);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.stat-value.amber {
+  color: var(--color-term-amber);
+  text-shadow: var(--glow-amber);
+}
+
+.stat-value.cyan {
+  color: var(--color-term-cyan);
+  text-shadow: var(--glow-cyan);
+}
+
+.stat-value.primary {
+  color: var(--color-primary);
+  text-shadow: var(--glow-primary);
+}
+
+.stat-value.sm {
+  font-size: 14px;
+}
+
+/* ============================================================
+   Monitor Cards
+   ============================================================ */
+.monitor-card {
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+.monitor-card:hover {
+  border-color: var(--color-border-bright);
+}
+
+.monitor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.6rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.monitor-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-term-gray);
+}
+
+.monitor-title .icon {
+  color: var(--color-primary);
+}
+
+.monitor-body {
+  padding: 0.6rem;
+}
+
+/* ============================================================
+   Progress / Load Bars
+   ============================================================ */
+.load-bar {
+  height: 4px;
+  background: var(--color-chassis);
+  border: 1px solid var(--color-border);
+  overflow: hidden;
+  border-radius: 1px;
+}
+
+.load-fill {
+  height: 100%;
+  background: var(--color-term-green);
+  box-shadow: var(--glow-green);
+  transition: width 0.5s ease;
+}
+
+.load-fill.amber {
+  background: var(--color-term-amber);
+  box-shadow: var(--glow-amber);
+}
+
+.load-fill.primary {
+  background: var(--color-primary);
+  box-shadow: var(--glow-primary);
+}
+
+/* ============================================================
+   ASCII Art
+   ============================================================ */
+.ascii {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.15;
+  color: var(--color-term-green);
+  white-space: pre;
+}
+
+.ascii.primary {
+  color: var(--color-primary);
+  text-shadow: var(--glow-primary);
+}
+
+.ascii.sm { font-size: 8px; }
+.ascii.lg { font-size: 12px; }
+
+/* ============================================================
+   Prose / Content
+   ============================================================ */
+.prose {
+  color: var(--color-term-white);
+  font-family: var(--font-system);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  font-family: var(--font-mono);
+  color: var(--color-term-green);
+  margin: 2rem 0 1rem;
+  font-weight: 600;
+}
+
+.prose h1 { font-size: 1.75rem; }
+.prose h2 { font-size: 1.35rem; }
+.prose h3 { font-size: 1.15rem; }
+
+.prose p {
+  margin-bottom: 1.25rem;
+}
+
+.prose a {
+  color: var(--color-term-cyan);
+  text-decoration: underline;
+  text-decoration-color: var(--color-term-cyan-dim);
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  text-decoration-color: var(--color-term-cyan);
+}
+
+.prose strong {
+  color: var(--color-term-green);
+  font-weight: 600;
+}
+
+.prose code {
+  padding: 0.15rem 0.35rem;
+  background: var(--color-panel);
+  border: 1px solid var(--color-border);
+  color: var(--color-term-amber);
+  font-size: 0.9em;
+  border-radius: var(--radius-sm);
+}
+
+.prose pre {
+  padding: 1rem;
+  background: var(--color-chassis);
+  border: 1px solid var(--color-border);
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.prose pre code {
+  padding: 0;
+  background: none;
+  border: none;
+}
+
+.prose blockquote {
+  margin: 1.5rem 0;
+  padding: 0.75rem 1rem;
+  border-left: 3px solid var(--color-primary);
+  background: var(--color-panel);
+  color: var(--color-term-gray);
+}
+
+.prose ul, .prose ol {
+  padding-left: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+.prose li::marker {
+  color: var(--color-primary);
+}
+
+.prose hr {
+  margin: 2rem 0;
+  border: none;
+  border-top: 1px dashed var(--color-border);
+}
+
+.prose img {
+  max-width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+/* ============================================================
+   Grid Utilities
+   ============================================================ */
+.grid-2 {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-3 {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.grid-4 {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (min-width: 768px) {
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ============================================================
+   Animations
+   ============================================================ */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { 
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes packet-flow {
+  0% { transform: translateX(-100%); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+.animate-slide-up { animation: slide-up 0.4s ease-out; }
+
+.stagger > * { animation: slide-up 0.4s ease-out backwards; }
+.stagger > *:nth-child(1) { animation-delay: 0ms; }
+.stagger > *:nth-child(2) { animation-delay: 50ms; }
+.stagger > *:nth-child(3) { animation-delay: 100ms; }
+.stagger > *:nth-child(4) { animation-delay: 150ms; }
+.stagger > *:nth-child(5) { animation-delay: 200ms; }
+.stagger > *:nth-child(6) { animation-delay: 250ms; }
+
+/* ============================================================
+   Scrollbar
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-chassis);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-bright);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-term-dark);
+}
+
+/* ============================================================
+   Selection
+   ============================================================ */
+::selection {
+  background: var(--color-term-green);
+  color: var(--color-rack);
+}
+
+/* ============================================================
+   Focus States
+   ============================================================ */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Reduced Motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   Utility Classes
+   ============================================================ */
+.font-mono { font-family: var(--font-mono); }
+.text-green { color: var(--color-term-green); }
+.text-amber { color: var(--color-term-amber); }
+.text-cyan { color: var(--color-term-cyan); }
+.text-primary { color: var(--color-primary); }
+.text-white { color: var(--color-term-white); }
+.text-gray { color: var(--color-term-gray); }
+.text-muted { color: var(--color-term-dark); }
+
+.hidden { display: none !important; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

@@ -1,74 +1,177 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { getCollection } from "astro:content";
+import RackLayout from "../../layouts/RackLayout.astro";
+// import { getCollection } from "astro:content";
 
-// Try to get notes if the collection exists
-let notes: any[] = [];
-try {
-  notes = (await getCollection("notes")).filter((p: any) => !p.data?.draft);
-  notes.sort((a: any, b: any) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf());
-} catch {
-  // Collection doesn't exist yet
-}
+// Uncomment when notes collection is set up
+// const notes = (await getCollection("notes"))
+//   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Placeholder notes for demo
+const notes: any[] = [];
 ---
 
-<Layout 
+<RackLayout 
   title="Notes" 
-  description="Quick thoughts, snippets, and TILs."
+  description="Quick notes, TILs, and snippets from Bernard McWeeney"
 >
-  <div class="container py-8 md:py-12">
-    
-    <!-- Page Header -->
-    <header class="mb-10">
-      <h1 class="text-3xl md:text-4xl font-semibold text-[var(--color-text-primary)]">
-        Notes
-      </h1>
-      <p class="text-[var(--color-text-secondary)] mt-2 max-w-2xl">
-        Quick thoughts, snippets, and things I've learned. Less polished than blog posts, 
-        but hopefully still useful.
-      </p>
-    </header>
-
-    <!-- Notes List -->
-    {notes.length === 0 ? (
-      <div class="card p-8 text-center">
-        <p class="text-[var(--color-text-muted)]">
-          No notes yet. This section is for quick thoughts and TILs — coming soon!
-        </p>
+  <!-- Header -->
+  <div class="blade" data-unit="1U">
+    <div class="blade-face">
+      <div class="led-cluster">
+        <span class="led on"></span>
+        <span class="led amber blink"></span>
       </div>
-    ) : (
-      <div class="space-y-3">
-        {notes.map(note => {
-          const date = new Date(note.data.date).toLocaleDateString('en-IE', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric',
-          });
-          return (
-            <a 
-              href={`/notes/${note.slug}/`}
-              class="card card-interactive block p-4"
-            >
-              <div class="flex items-start justify-between gap-4">
-                <div>
-                  <h2 class="font-mono text-base font-medium text-[var(--color-text-primary)]">
-                    {note.data.title}
-                  </h2>
-                  {note.data.description && (
-                    <p class="text-sm text-[var(--color-text-muted)] mt-1">
-                      {note.data.description}
-                    </p>
-                  )}
-                </div>
-                <span class="text-xs font-mono text-[var(--color-text-dimmed)] flex-shrink-0">
-                  {date}
+      <span class="blade-label">
+        NOTES
+        <span class="model">/home/bernard/notes/</span>
+      </span>
+    </div>
+  </div>
+
+  <!-- Terminal Header -->
+  <div class="blade" data-unit="1U">
+    <div class="blade-content" style="padding: 0.75rem;">
+      <div class="terminal" style="border: none; background: transparent;">
+        <div class="terminal-line">
+          <span class="prompt">[bernard@srv01 ~]$</span>
+          <span class="command">ls -la ~/notes/</span>
+        </div>
+        {notes.length > 0 ? (
+          <div class="terminal-line">
+            <span class="output muted">total {notes.length}</span>
+          </div>
+        ) : (
+          <div class="terminal-line">
+            <span class="output muted">drwxr-xr-x 2 bernard bernard 4096 Dec 10 00:00 .</span>
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+
+  {notes.length === 0 ? (
+    <!-- Empty State -->
+    <div class="blade" data-unit="3U">
+      <div class="blade-content">
+        <div class="empty-state">
+          <div class="empty-terminal">
+            <div class="terminal-line">
+              <span class="prompt">[bernard@srv01 ~/notes]$</span>
+              <span class="command">cat README.md</span>
+            </div>
+            <div class="terminal-line">
+              <span class="output">
+# Notes Directory
+
+This section is under construction.
+Quick notes, TILs, and code snippets will appear here soon.
+
+Check back later or follow along on GitHub.
+              </span>
+            </div>
+            <div class="terminal-line">
+              <span class="prompt">[bernard@srv01 ~/notes]$</span>
+              <span class="cursor"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <!-- Notes List -->
+    <div class="blade" data-unit="3U">
+      <div class="blade-content">
+        <div class="notes-grid stagger">
+          {notes.map((note: any) => (
+            <a href={`/notes/${note.slug}/`} class="note-card">
+              <div class="note-header">
+                <span class="led on"></span>
+                <span class="note-date">
+                  {new Date(note.data.date).toISOString().slice(0, 10)}
                 </span>
               </div>
+              <span class="note-title">{note.data.title}</span>
+              {note.data.tags && (
+                <div class="note-tags">
+                  {note.data.tags.slice(0, 2).map((tag: string) => (
+                    <span class="badge">{tag}</span>
+                  ))}
+                </div>
+              )}
             </a>
-          );
-        })}
+          ))}
+        </div>
       </div>
-    )}
+    </div>
+  )}
+</RackLayout>
 
-  </div>
-</Layout>
+<style>
+  .empty-state {
+    padding: 2rem 0;
+  }
+
+  .empty-terminal {
+    max-width: 600px;
+  }
+
+  .empty-terminal .output {
+    white-space: pre-wrap;
+    line-height: 1.6;
+  }
+
+  .notes-grid {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .note-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    padding: 0.75rem;
+    background: var(--color-panel);
+    border: 1px solid var(--color-border);
+    text-decoration: none;
+    transition: all 0.15s ease;
+  }
+
+  .note-card:hover {
+    border-color: var(--color-term-green);
+    background: var(--color-surface);
+  }
+
+  .note-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .note-header .led {
+    width: 5px;
+    height: 5px;
+  }
+
+  .note-date {
+    font-size: 10px;
+    color: var(--color-term-cyan);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .note-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-term-white);
+  }
+
+  .note-card:hover .note-title {
+    color: var(--color-term-green);
+  }
+
+  .note-tags {
+    display: flex;
+    gap: 4px;
+    margin-top: 0.25rem;
+  }
+</style>
