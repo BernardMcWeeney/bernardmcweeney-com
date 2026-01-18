@@ -1,0 +1,99 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const skills = {
+  infrastructure: ["Microsoft 365", "Azure AD", "Google Workspace", "Intune", "Active Directory"],
+  development: ["Astro", "React", "TypeScript", "Tailwind CSS", "WordPress", "PHP"],
+  automation: ["PowerShell", "Graph API", "Python", "Bash", "Docker"],
+};
+---
+
+<Layout
+  title="About"
+  description="Learn more about Bernard McWeeney - IT Administrator and Web Developer based in Dublin, Ireland."
+>
+  <div class="container">
+    <header class="page-header">
+      <h1>About Me</h1>
+      <p>IT Administrator and Web Developer based in Dublin, Ireland.</p>
+    </header>
+
+    <div class="about-content">
+      <section class="about-section">
+        <div class="card" style="padding: 2rem;">
+          <h2>Background</h2>
+          <div class="prose" style="margin-top: 1rem;">
+            <p>
+              I'm Bernard McWeeney, an IT Administrator and Web Developer with a passion for
+              building efficient systems and beautiful web experiences. Based in Dublin, Ireland,
+              I work with businesses to manage their IT infrastructure and develop custom web solutions.
+            </p>
+            <p>
+              My work spans from managing Microsoft 365 environments and Azure AD to building
+              modern websites with frameworks like Astro and React. I believe in automation
+              and use tools like PowerShell and the Graph API to streamline repetitive tasks.
+            </p>
+            <p>
+              When I'm not working, you'll find me exploring new technologies, contributing to
+              open-source projects, or enjoying Dublin's vibrant tech community.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <h2>Skills</h2>
+
+        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
+          <div class="card">
+            <h3 style="margin-bottom: 1rem; font-size: 1rem; color: var(--color-accent);">Infrastructure</h3>
+            <div class="skills-grid">
+              {skills.infrastructure.map((skill) => (
+                <span class="skill-tag">{skill}</span>
+              ))}
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-bottom: 1rem; font-size: 1rem; color: var(--color-accent);">Development</h3>
+            <div class="skills-grid">
+              {skills.development.map((skill) => (
+                <span class="skill-tag">{skill}</span>
+              ))}
+            </div>
+          </div>
+
+          <div class="card">
+            <h3 style="margin-bottom: 1rem; font-size: 1rem; color: var(--color-accent);">Automation</h3>
+            <div class="skills-grid">
+              {skills.automation.map((skill) => (
+                <span class="skill-tag">{skill}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <h2>Get in Touch</h2>
+        <div class="card" style="padding: 2rem; margin-top: 1rem;">
+          <p style="margin-bottom: 1.5rem; color: var(--color-text);">
+            I'm always happy to connect with fellow developers, potential collaborators,
+            or anyone interested in IT and web development.
+          </p>
+          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+            <a href="mailto:hello@bernardmcweeney.com" class="btn btn-primary">
+              Email Me
+            </a>
+            <a href="https://linkedin.com/in/bernardmcweeney" target="_blank" rel="noopener" class="btn">
+              LinkedIn
+            </a>
+            <a href="https://github.com/BernardMcWeeney" target="_blank" rel="noopener" class="btn">
+              GitHub
+            </a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</Layout>

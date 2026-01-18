@@ -1,0 +1,80 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const projects = [
+  {
+    name: "Greenberry",
+    status: "active",
+    description: "Web development and IT services for Irish businesses. Offering custom WordPress development, React applications, and IT infrastructure management.",
+    tech: ["WordPress", "React", "Azure", "Microsoft 365"],
+    link: "https://greenberry.ie",
+  },
+  {
+    name: "bernardmcweeney.com",
+    status: "active",
+    description: "My personal portfolio and blog, built with Astro and deployed on Cloudflare. Features a clean, airy design with dark mode support.",
+    tech: ["Astro", "Tailwind CSS", "Cloudflare"],
+    link: "https://bernardmcweeney.com",
+  },
+  {
+    name: "Parish Core",
+    status: "development",
+    description: "A WordPress plugin designed to help Catholic parishes manage their online presence, including mass times, events, and parish information.",
+    tech: ["WordPress", "PHP", "React", "MySQL"],
+    link: null,
+  },
+  {
+    name: "Cureation",
+    status: "planned",
+    description: "A fan site dedicated to The Cure, featuring discography information, setlists, and community features.",
+    tech: ["Astro", "Tailwind CSS"],
+    link: null,
+  },
+];
+---
+
+<Layout
+  title="Projects"
+  description="Projects and work by Bernard McWeeney - web development, WordPress plugins, and more."
+>
+  <div class="container">
+    <header class="page-header">
+      <h1>Projects</h1>
+      <p>A collection of things I've built and am working on.</p>
+    </header>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="grid" style="gap: 1.5rem;">
+        {projects.map((project) => (
+          <a
+            href={project.link || "#"}
+            class="card card-link"
+            target={project.link ? "_blank" : undefined}
+            rel={project.link ? "noopener" : undefined}
+            style={!project.link ? "pointer-events: none;" : ""}
+          >
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+              <h3 style="font-size: 1.25rem; color: var(--color-text);">{project.name}</h3>
+              <span class={`project-status ${project.status}`}>
+                {project.status === "active" ? "Live" : project.status === "development" ? "In Development" : "Planned"}
+              </span>
+            </div>
+            <p style="color: var(--color-text-muted); line-height: 1.6; margin-bottom: 1rem;">
+              {project.description}
+            </p>
+            <div class="project-tech">
+              {project.tech.map((t) => (
+                <span class="tech-tag">{t}</span>
+              ))}
+            </div>
+            {project.link && (
+              <div style="margin-top: 1rem; color: var(--color-accent); font-size: 0.875rem;">
+                Visit site &rarr;
+              </div>
+            )}
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
