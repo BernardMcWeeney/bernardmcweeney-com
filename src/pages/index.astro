@@ -1,305 +1,70 @@
 ---
-import RackLayout from "../layouts/RackLayout.astro";
-import RackHero from "../components/RackHero.astro";
-import SystemMonitors from "../components/SystemMonitors.astro";
-import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
 
-// Fetch posts
-const posts = (await getCollection("blog"))
-  .filter(p => !p.data.draft)
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
+const projects = [
+  {
+    name: "Greenberry",
+    status: "active",
+    description: "Web development and IT services for Irish businesses",
+    tech: ["WordPress", "React", "Azure"],
+    link: "https://greenberry.ie",
+  },
+  {
+    name: "bernardmcweeney.com",
+    status: "active",
+    description: "Personal portfolio built with Astro",
+    tech: ["Astro", "Tailwind", "Cloudflare"],
+    link: "https://bernardmcweeney.com",
+  },
+  {
+    name: "Parish Core",
+    status: "development",
+    description: "WordPress plugin for Catholic parish management",
+    tech: ["WordPress", "PHP", "React"],
+    link: null,
+  },
+];
 ---
 
-<RackLayout 
-  title="Home" 
-  description="Bernard McWeeney's personal server rack - IT administrator, web developer, Dublin Ireland"
+<Layout
+  title="Bernard McWeeney"
+  description="IT Administrator and Web Developer based in Dublin, Ireland"
 >
-  <!-- Hero / System Console -->
-  <RackHero />
-  
-  <!-- System Monitors -->
-  <SystemMonitors />
-  
-  <!-- Recent Logs (Blog Posts) -->
-  <div class="blade" data-unit="2U">
-    <div class="blade-face">
-      <div class="led-cluster">
-        <span class="led on"></span>
-        <span class="led on blink"></span>
-      </div>
-      <span class="blade-label">
-        RECENT LOGS
-        <span class="model">/var/log/blog</span>
-      </span>
-      <a href="/blog/" class="btn btn-sm" style="margin-left:auto;">
-        tail -f →
-      </a>
+  <section class="hero">
+    <h1>Bernard McWeeney</h1>
+    <p>
+      IT Administrator and Web Developer based in Dublin.
+      I build web applications and manage IT infrastructure for businesses.
+    </p>
+    <div class="social-links">
+      <a href="mailto:hello@bernardmcweeney.com">hello@bernardmcweeney.com</a>
     </div>
-    
-    <div class="blade-content">
-      {posts.length === 0 ? (
-        <div class="terminal">
-          <div class="terminal-header">
-            <div class="dots">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-            </div>
-            <span class="title">/var/log/blog</span>
-          </div>
-          <div class="terminal-body">
-            <div class="terminal-line">
-              <span class="prompt">[bernard@srv01 ~]$</span>
-              <span class="command">ls -la /var/log/blog/</span>
-            </div>
-            <div class="terminal-line">
-              <span class="output muted">total 0</span>
-            </div>
-            <div class="terminal-line">
-              <span class="output">No log entries found. Check back soon.</span>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div class="log-entries stagger">
-          {posts.map((post) => {
-            const date = new Date(post.data.pubDate);
-            const timestamp = date.toISOString().slice(0, 10);
-            const time = date.toISOString().slice(11, 19);
-            return (
-              <a href={`/blog/${post.slug}/`} class="log-entry">
-                <span class="log-led"></span>
-                <span class="log-timestamp">{timestamp}</span>
-                <span class="log-time">{time}</span>
-                <span class="log-title">{post.data.title}</span>
-                <div class="log-tags">
-                  {post.data.tags?.slice(0, 2).map(tag => (
-                    <span class="badge">{tag}</span>
-                  ))}
-                </div>
-              </a>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  </div>
-  
-  <!-- Services / Quick Links -->
-  <div class="blade" data-unit="1U">
-    <div class="blade-face">
-      <div class="led-cluster">
-        <span class="led on"></span>
-        <span class="led on"></span>
-      </div>
-      <span class="blade-label">
-        SERVICES
-        <span class="model">systemctl list-units --type=service</span>
-      </span>
-    </div>
-    
-    <div class="blade-content">
-      <div class="services-grid grid-4">
-        <a href="/about/" class="service-unit">
-          <div class="service-header">
-            <span class="service-icon">◎</span>
-            <span class="led on"></span>
-          </div>
-          <span class="service-name">about.service</span>
-          <span class="service-status">● active (running)</span>
-          <span class="service-desc">Personal info & background</span>
-        </a>
-        
-        <a href="/projects/" class="service-unit">
-          <div class="service-header">
-            <span class="service-icon">◇</span>
-            <span class="led on"></span>
-          </div>
-          <span class="service-name">projects.service</span>
-          <span class="service-status">● active (running)</span>
-          <span class="service-desc">Active builds & missions</span>
-        </a>
-        
-        <a href="/notes/" class="service-unit">
-          <div class="service-header">
-            <span class="service-icon">◆</span>
-            <span class="led amber blink"></span>
-          </div>
-          <span class="service-name">notes.service</span>
-          <span class="service-status">● active (running)</span>
-          <span class="service-desc">Quick notes & TILs</span>
-        </a>
-        
-        <a href="https://github.com/BernardMcWeeney" target="_blank" rel="noopener" class="service-unit external">
-          <div class="service-header">
-            <span class="service-icon">⬡</span>
-            <span class="led on"></span>
-          </div>
-          <span class="service-name">github.service</span>
-          <span class="service-status">● active (exited)</span>
-          <span class="service-desc">Source repositories ↗</span>
-        </a>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Patch Panel (Decorative) -->
-  <div class="blade" data-unit="1U">
-    <div class="blade-face">
-      <span class="blade-label">
-        PATCH PANEL A
-        <span class="model">CAT6A · 24-PORT</span>
-      </span>
-    </div>
-    <div class="patch-panel">
-      {Array.from({ length: 24 }).map((_, i) => (
-        <span 
-          class:list={['port', { 
-            active: [0, 1, 2, 3, 5, 6, 11, 12].includes(i),
-          }]}
-          title={`Port ${i + 1}`}
+  </section>
+
+  <section class="projects">
+    <h2>Projects</h2>
+    <div class="project-list">
+      {projects.map((project) => (
+        <a
+          href={project.link || "#"}
+          class="project"
+          target={project.link ? "_blank" : undefined}
+          rel={project.link ? "noopener" : undefined}
         >
-          {i + 1}
-        </span>
+          <div class="project-header">
+            <span class="project-name">{project.name}</span>
+            <span class={`project-status ${project.status}`}>
+              {project.status === "active" ? "Live" : "In Development"}
+            </span>
+          </div>
+          <p class="project-desc">{project.description}</p>
+          <div class="project-tech">
+            {project.tech.map((t) => (
+              <span class="tech-tag">{t}</span>
+            ))}
+          </div>
+        </a>
       ))}
     </div>
-  </div>
-</RackLayout>
-
-<style>
-  /* Log Entries */
-  .log-entries {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-
-  .log-entry {
-    display: grid;
-    grid-template-columns: auto auto auto 1fr auto;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.5rem 0.75rem;
-    background: var(--color-panel);
-    border: 1px solid var(--color-border);
-    text-decoration: none;
-    transition: all 0.15s ease;
-  }
-
-  .log-entry:hover {
-    background: var(--color-surface);
-    border-color: var(--color-term-green);
-  }
-
-  .log-led {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--color-term-green);
-    box-shadow: var(--glow-green);
-    flex-shrink: 0;
-  }
-
-  .log-timestamp {
-    font-size: 10px;
-    color: var(--color-term-cyan);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .log-time {
-    font-size: 9px;
-    color: var(--color-term-dark);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .log-title {
-    font-size: 12px;
-    color: var(--color-term-white);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .log-entry:hover .log-title {
-    color: var(--color-term-green);
-  }
-
-  .log-tags {
-    display: flex;
-    gap: 4px;
-  }
-
-  @media (max-width: 640px) {
-    .log-entry {
-      grid-template-columns: auto auto 1fr;
-    }
-    .log-time, .log-tags {
-      display: none;
-    }
-  }
-
-  /* Services Grid */
-  .services-grid {
-    gap: 0.5rem;
-  }
-
-  .service-unit {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    padding: 0.75rem;
-    background: var(--color-panel);
-    border: 1px solid var(--color-border);
-    text-decoration: none;
-    transition: all 0.15s ease;
-  }
-
-  .service-unit:hover {
-    border-color: var(--color-primary);
-    background: var(--color-primary-dim);
-  }
-
-  .service-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.25rem;
-  }
-
-  .service-icon {
-    font-size: 16px;
-    color: var(--color-term-gray);
-  }
-
-  .service-unit:hover .service-icon {
-    color: var(--color-primary);
-  }
-
-  .service-header .led {
-    width: 5px;
-    height: 5px;
-  }
-
-  .service-name {
-    font-size: 10px;
-    font-weight: 600;
-    color: var(--color-term-white);
-  }
-
-  .service-status {
-    font-size: 9px;
-    color: var(--color-term-green);
-  }
-
-  .service-desc {
-    font-size: 9px;
-    color: var(--color-term-dark);
-    margin-top: 0.25rem;
-  }
-
-  .service-unit.external .service-name::after {
-    content: ' ↗';
-    color: var(--color-term-dark);
-  }
-</style>
+  </section>
+</Layout>
