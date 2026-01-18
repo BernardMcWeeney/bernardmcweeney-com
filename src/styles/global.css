@@ -1,50 +1,28 @@
-/* Airy Cloud Design System */
+/* Cloud & Sky Design System */
 @import "tailwindcss";
 
 @theme {
   --font-sans: "Inter", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", monospace;
 
-  /* Light, airy colors */
-  --color-sky: #f0f7ff;
+  /* Sky palette */
+  --color-sky-light: #e0f2fe;
+  --color-sky: #7dd3fc;
+  --color-sky-deep: #0ea5e9;
+  --color-sky-dark: #0284c7;
+
+  /* Cloud whites */
   --color-cloud: #ffffff;
-  --color-mist: #f8fafc;
-  --color-fog: #e2e8f0;
-  --color-storm: #64748b;
-  --color-night: #1e293b;
+  --color-cloud-soft: #f8fafc;
+  --color-cloud-shadow: #e2e8f0;
 
-  /* Accent - soft sky blue */
-  --color-accent: #3b82f6;
-  --color-accent-soft: #dbeafe;
-  --color-accent-hover: #2563eb;
+  /* Text */
+  --color-text: #0f172a;
+  --color-text-muted: #64748b;
 
-  /* Semantic */
-  --color-bg: var(--color-sky);
-  --color-surface: var(--color-cloud);
-  --color-border: var(--color-fog);
-  --color-text: var(--color-night);
-  --color-text-muted: var(--color-storm);
-
-  /* Shadows - soft and cloud-like */
-  --shadow-sm: 0 1px 2px rgba(148, 163, 184, 0.1);
-  --shadow-md: 0 4px 20px rgba(148, 163, 184, 0.15);
-  --shadow-lg: 0 10px 40px rgba(148, 163, 184, 0.2);
-  --shadow-float: 0 20px 60px rgba(148, 163, 184, 0.25);
-}
-
-/* Dark mode - soft night sky */
-.dark {
-  --color-bg: #0f172a;
-  --color-surface: #1e293b;
-  --color-border: #334155;
-  --color-text: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --color-accent-soft: #1e3a5f;
-
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
-  --shadow-float: 0 20px 60px rgba(0, 0, 0, 0.6);
+  /* Accent */
+  --color-accent: #0ea5e9;
+  --color-accent-hover: #0284c7;
 }
 
 /* Base */
@@ -63,53 +41,206 @@ body {
   font-size: 16px;
   line-height: 1.7;
   color: var(--color-text);
-  background: var(--color-bg);
+  background: linear-gradient(180deg, #e0f2fe 0%, #ffffff 300px, #ffffff 100%);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Subtle gradient background */
-body::before {
-  content: '';
+/* Dark mode */
+.dark body {
+  background: linear-gradient(180deg, #0c4a6e 0%, #0f172a 300px, #0f172a 100%);
+  color: #f1f5f9;
+}
+
+.dark {
+  --color-cloud: #1e293b;
+  --color-cloud-soft: #334155;
+  --color-cloud-shadow: #475569;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+}
+
+/* ============================================
+   FLOATING CLOUDS - The Magic!
+   ============================================ */
+.clouds {
   position: fixed;
-  inset: 0;
-  background:
-    radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(147, 51, 234, 0.05) 0%, transparent 50%);
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 400px;
   pointer-events: none;
-  z-index: -1;
+  overflow: hidden;
+  z-index: 0;
 }
 
-.dark body::before {
-  background:
-    radial-gradient(ellipse at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 80%, rgba(147, 51, 234, 0.08) 0%, transparent 50%);
+.cloud {
+  position: absolute;
+  background: white;
+  border-radius: 100px;
+  opacity: 0.9;
 }
 
-/* Layout */
+.cloud::before,
+.cloud::after {
+  content: '';
+  position: absolute;
+  background: inherit;
+  border-radius: 50%;
+}
+
+.cloud-1 {
+  width: 200px;
+  height: 60px;
+  top: 80px;
+  left: 10%;
+  animation: float-cloud 25s ease-in-out infinite;
+}
+
+.cloud-1::before {
+  width: 100px;
+  height: 80px;
+  top: -50px;
+  left: 20px;
+}
+
+.cloud-1::after {
+  width: 120px;
+  height: 90px;
+  top: -60px;
+  right: 20px;
+}
+
+.cloud-2 {
+  width: 150px;
+  height: 50px;
+  top: 120px;
+  right: 15%;
+  animation: float-cloud 30s ease-in-out infinite reverse;
+  animation-delay: -5s;
+}
+
+.cloud-2::before {
+  width: 80px;
+  height: 60px;
+  top: -40px;
+  left: 15px;
+}
+
+.cloud-2::after {
+  width: 90px;
+  height: 70px;
+  top: -45px;
+  right: 15px;
+}
+
+.cloud-3 {
+  width: 120px;
+  height: 40px;
+  top: 200px;
+  left: 50%;
+  opacity: 0.6;
+  animation: float-cloud 35s ease-in-out infinite;
+  animation-delay: -10s;
+}
+
+.cloud-3::before {
+  width: 60px;
+  height: 50px;
+  top: -30px;
+  left: 10px;
+}
+
+.cloud-3::after {
+  width: 70px;
+  height: 55px;
+  top: -35px;
+  right: 10px;
+}
+
+.cloud-4 {
+  width: 180px;
+  height: 55px;
+  top: 60px;
+  left: 70%;
+  opacity: 0.7;
+  animation: float-cloud 28s ease-in-out infinite reverse;
+  animation-delay: -15s;
+}
+
+.cloud-4::before {
+  width: 90px;
+  height: 70px;
+  top: -45px;
+  left: 20px;
+}
+
+.cloud-4::after {
+  width: 100px;
+  height: 75px;
+  top: -50px;
+  right: 15px;
+}
+
+.dark .cloud {
+  background: rgba(148, 163, 184, 0.15);
+}
+
+@keyframes float-cloud {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(30px) translateY(-10px);
+  }
+  50% {
+    transform: translateX(15px) translateY(5px);
+  }
+  75% {
+    transform: translateX(-20px) translateY(-5px);
+  }
+}
+
+/* ============================================
+   Layout
+   ============================================ */
 .container {
   width: 100%;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 1.5rem;
+  position: relative;
+  z-index: 1;
 }
 
-.container-wide {
-  max-width: 1100px;
-}
-
-/* Typography */
+/* ============================================
+   Typography
+   ============================================ */
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-weight: 600;
-  line-height: 1.3;
+  font-weight: 700;
+  line-height: 1.2;
   letter-spacing: -0.02em;
-  color: var(--color-text);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 1.75rem; }
+h1 {
+  font-size: 3rem;
+  background: linear-gradient(135deg, var(--color-sky-dark) 0%, var(--color-sky-deep) 50%, var(--color-sky) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  font-size: 1.75rem;
+  color: var(--color-sky-dark);
+}
+
+.dark h2 {
+  color: var(--color-sky);
+}
+
 h3 { font-size: 1.25rem; }
-h4 { font-size: 1.125rem; }
 
 p {
   margin: 0;
@@ -119,26 +250,28 @@ p {
 a {
   color: var(--color-accent);
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 a:hover {
   color: var(--color-accent-hover);
 }
 
-/* Header */
+/* ============================================
+   Header - Sky gradient
+   ============================================ */
 .header {
-  padding: 1.5rem 0;
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--color-border);
+  padding: 1.25rem 0;
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.95) 0%, rgba(56, 189, 248, 0.9) 100%);
+  backdrop-filter: blur(10px);
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: 0 4px 30px rgba(14, 165, 233, 0.2);
 }
 
 .dark .header {
-  background: rgba(30, 41, 59, 0.8);
+  background: linear-gradient(135deg, rgba(12, 74, 110, 0.95) 0%, rgba(7, 89, 133, 0.9) 100%);
 }
 
 .header nav {
@@ -148,122 +281,130 @@ a:hover {
 }
 
 .logo {
-  font-weight: 600;
-  font-size: 1.125rem;
-  color: var(--color-text);
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: white;
   text-decoration: none;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .logo:hover {
-  color: var(--color-accent);
+  color: white;
+  opacity: 0.9;
 }
 
 .nav-links {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.25rem;
   align-items: center;
 }
 
 .nav-link {
   padding: 0.5rem 1rem;
   font-size: 0.9rem;
-  color: var(--color-text-muted);
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.9);
   text-decoration: none;
   border-radius: 9999px;
   transition: all 0.2s ease;
 }
 
 .nav-link:hover {
-  color: var(--color-text);
-  background: var(--color-accent-soft);
+  color: white;
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .nav-link.active {
-  color: var(--color-accent);
-  background: var(--color-accent-soft);
+  color: white;
+  background: rgba(255, 255, 255, 0.25);
 }
 
-/* Hero */
+/* ============================================
+   Hero
+   ============================================ */
 .hero {
-  padding: 5rem 0 4rem;
+  padding: 6rem 0 5rem;
   text-align: center;
+  position: relative;
 }
 
 .hero h1 {
-  margin-bottom: 1rem;
-  font-size: 3rem;
-  background: linear-gradient(135deg, var(--color-text) 0%, var(--color-storm) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  margin-bottom: 1.5rem;
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
 }
 
 .hero p {
   font-size: 1.25rem;
-  max-width: 560px;
+  max-width: 550px;
   margin: 0 auto;
   line-height: 1.8;
+  color: var(--color-text-muted);
 }
 
 .hero-links {
   display: flex;
   gap: 1rem;
   justify-content: center;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   flex-wrap: wrap;
 }
 
-/* Buttons */
+/* ============================================
+   Buttons - Cloud-like
+   ============================================ */
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.9rem;
-  font-weight: 500;
+  padding: 0.875rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
   color: var(--color-text-muted);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--color-cloud);
+  border: none;
   border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
   text-decoration: none;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 4px 15px rgba(148, 163, 184, 0.2),
+              0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .btn:hover {
   color: var(--color-text);
-  border-color: var(--color-accent);
-  box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(148, 163, 184, 0.3),
+              0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 .btn-primary {
   color: white;
-  background: var(--color-accent);
-  border-color: var(--color-accent);
+  background: linear-gradient(135deg, var(--color-sky-deep) 0%, var(--color-sky-dark) 100%);
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.4);
 }
 
 .btn-primary:hover {
-  background: var(--color-accent-hover);
-  border-color: var(--color-accent-hover);
   color: white;
+  box-shadow: 0 8px 30px rgba(14, 165, 233, 0.5);
 }
 
-/* Cards - cloud-like */
+/* ============================================
+   Cards - Fluffy clouds
+   ============================================ */
 .card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  transition: all 0.3s ease;
-  box-shadow: var(--shadow-sm);
+  background: var(--color-cloud);
+  border-radius: 1.5rem;
+  padding: 1.75rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 4px 20px rgba(148, 163, 184, 0.15),
+              0 1px 3px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(226, 232, 240, 0.5);
 }
 
 .card:hover {
-  box-shadow: var(--shadow-lg);
-  transform: translateY(-4px);
-  border-color: transparent;
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(148, 163, 184, 0.25),
+              0 8px 16px rgba(14, 165, 233, 0.1);
 }
 
 .card-link {
@@ -271,43 +412,55 @@ a:hover {
   display: block;
 }
 
-/* Section */
+/* ============================================
+   Sections
+   ============================================ */
 .section {
   padding: 4rem 0;
 }
 
 .section-header {
-  margin-bottom: 2rem;
+  text-align: center;
+  margin-bottom: 3rem;
 }
 
 .section-title {
-  font-size: 0.875rem;
-  font-weight: 600;
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-accent);
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.15em;
+  color: var(--color-sky-deep);
+  background: var(--color-sky-light);
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  margin-bottom: 1rem;
+}
+
+.dark .section-title {
+  background: rgba(14, 165, 233, 0.2);
+  color: var(--color-sky);
 }
 
 .section-heading {
-  font-size: 1.75rem;
+  font-size: 2rem;
 }
 
-/* Grid */
+/* ============================================
+   Grid
+   ============================================ */
 .grid {
   display: grid;
   gap: 1.5rem;
 }
 
 .grid-2 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
 }
 
-.grid-3 {
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-}
-
-/* Blog Post Card */
+/* ============================================
+   Blog Cards
+   ============================================ */
 .post-card {
   display: flex;
   flex-direction: column;
@@ -316,18 +469,19 @@ a:hover {
 
 .post-date {
   font-size: 0.8rem;
-  color: var(--color-text-muted);
+  color: var(--color-sky-deep);
+  font-weight: 500;
 }
 
 .post-title {
   font-size: 1.125rem;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--color-text);
   transition: color 0.2s ease;
 }
 
 .card:hover .post-title {
-  color: var(--color-accent);
+  color: var(--color-sky-dark);
 }
 
 .post-excerpt {
@@ -343,42 +497,56 @@ a:hover {
   margin-top: 0.5rem;
 }
 
-/* Tags */
+/* ============================================
+   Tags - Little clouds
+   ============================================ */
 .tag {
   display: inline-flex;
-  padding: 0.25rem 0.75rem;
+  padding: 0.3rem 0.85rem;
   font-size: 0.75rem;
-  font-weight: 500;
-  color: var(--color-accent);
-  background: var(--color-accent-soft);
+  font-weight: 600;
+  color: var(--color-sky-dark);
+  background: var(--color-sky-light);
   border-radius: 9999px;
+  transition: all 0.2s ease;
 }
 
-/* Project Card */
+.card:hover .tag {
+  background: linear-gradient(135deg, var(--color-sky-light) 0%, #bae6fd 100%);
+}
+
+.dark .tag {
+  background: rgba(14, 165, 233, 0.2);
+  color: var(--color-sky);
+}
+
+/* ============================================
+   Project Status
+   ============================================ */
 .project-status {
   font-size: 0.75rem;
-  padding: 0.25rem 0.75rem;
+  padding: 0.3rem 0.85rem;
   border-radius: 9999px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .project-status.active {
-  background: #dcfce7;
-  color: #16a34a;
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+  color: #15803d;
 }
 
 .dark .project-status.active {
-  background: #14532d;
+  background: rgba(34, 197, 94, 0.2);
   color: #4ade80;
 }
 
 .project-status.development {
-  background: #fef3c7;
-  color: #d97706;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #b45309;
 }
 
 .dark .project-status.development {
-  background: #451a03;
+  background: rgba(234, 179, 8, 0.2);
   color: #fbbf24;
 }
 
@@ -393,21 +561,23 @@ a:hover {
   font-size: 0.75rem;
   font-family: var(--font-mono);
   color: var(--color-text-muted);
-  padding: 0.25rem 0.5rem;
-  background: var(--color-mist);
-  border-radius: 0.25rem;
+  padding: 0.25rem 0.6rem;
+  background: var(--color-cloud-soft);
+  border-radius: 0.5rem;
 }
 
-.dark .tech-tag {
-  background: var(--color-border);
-}
-
-/* Footer */
+/* ============================================
+   Footer
+   ============================================ */
 .footer {
   padding: 3rem 0;
   margin-top: auto;
   text-align: center;
-  border-top: 1px solid var(--color-border);
+  background: linear-gradient(180deg, transparent 0%, var(--color-sky-light) 100%);
+}
+
+.dark .footer {
+  background: linear-gradient(180deg, transparent 0%, rgba(12, 74, 110, 0.3) 100%);
 }
 
 .footer p {
@@ -423,43 +593,54 @@ a:hover {
 
 .footer-links a {
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
 }
 
 .footer-links a:hover {
-  color: var(--color-accent);
+  color: var(--color-sky-dark);
 }
 
-/* Theme Toggle */
+/* ============================================
+   Theme Toggle - Sun/Moon
+   ============================================ */
 .theme-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  width: 42px;
+  height: 42px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
   border-radius: 50%;
   cursor: pointer;
-  color: var(--color-text-muted);
-  transition: all 0.2s ease;
+  color: white;
+  transition: all 0.3s ease;
 }
 
 .theme-toggle:hover {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(20deg);
 }
 
-/* Prose - Article content */
+/* ============================================
+   Prose - Article content
+   ============================================ */
 .prose {
   color: var(--color-text);
   line-height: 1.8;
   font-size: 1.0625rem;
 }
 
-.prose h1, .prose h2, .prose h3, .prose h4 {
+.prose h1, .prose h2, .prose h3 {
+  color: var(--color-sky-dark);
   margin-top: 2.5rem;
   margin-bottom: 1rem;
+}
+
+.dark .prose h1, .dark .prose h2, .dark .prose h3 {
+  color: var(--color-sky);
 }
 
 .prose h1:first-child,
@@ -473,40 +654,75 @@ a:hover {
 }
 
 .prose a {
-  color: var(--color-accent);
+  color: var(--color-sky-dark);
   text-decoration: underline;
+  text-decoration-color: var(--color-sky-light);
   text-underline-offset: 3px;
+  text-decoration-thickness: 2px;
 }
 
-.prose strong {
-  font-weight: 600;
-  color: var(--color-text);
+.prose a:hover {
+  text-decoration-color: var(--color-sky-dark);
 }
 
 .prose code {
   font-family: var(--font-mono);
   font-size: 0.875em;
-  padding: 0.2rem 0.4rem;
-  background: var(--color-mist);
-  border-radius: 0.25rem;
+  padding: 0.2rem 0.5rem;
+  background: var(--color-sky-light);
+  border-radius: 0.375rem;
+  color: var(--color-sky-dark);
 }
 
 .dark .prose code {
-  background: var(--color-border);
+  background: rgba(14, 165, 233, 0.2);
+  color: var(--color-sky);
 }
 
 .prose pre {
-  padding: 1.25rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: 0.75rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-radius: 1rem;
   overflow-x: auto;
-  margin: 1.5rem 0;
+  margin: 2rem 0;
+}
+
+.dark .prose pre {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
 }
 
 .prose pre code {
   padding: 0;
   background: transparent;
+  color: var(--color-text);
+}
+
+.prose blockquote {
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, var(--color-sky-light) 0%, #bae6fd 100%);
+  border-left: 4px solid var(--color-sky-deep);
+  border-radius: 0 1rem 1rem 0;
+  font-style: italic;
+}
+
+.dark .prose blockquote {
+  background: rgba(14, 165, 233, 0.15);
+}
+
+.prose blockquote p {
+  margin: 0;
+  color: var(--color-sky-dark);
+}
+
+.dark .prose blockquote p {
+  color: var(--color-sky);
+}
+
+.prose img {
+  max-width: 100%;
+  border-radius: 1rem;
+  box-shadow: 0 10px 40px rgba(148, 163, 184, 0.2);
 }
 
 .prose ul, .prose ol {
@@ -518,41 +734,25 @@ a:hover {
   margin-bottom: 0.5rem;
 }
 
-.prose blockquote {
-  margin: 1.5rem 0;
-  padding: 1rem 1.5rem;
-  background: var(--color-accent-soft);
-  border-left: 4px solid var(--color-accent);
-  border-radius: 0 0.5rem 0.5rem 0;
-  font-style: italic;
-}
-
-.prose blockquote p {
-  color: var(--color-text);
-  margin: 0;
-}
-
-.prose img {
-  max-width: 100%;
-  border-radius: 0.75rem;
-  box-shadow: var(--shadow-md);
-}
-
 .prose hr {
   margin: 3rem 0;
   border: none;
-  border-top: 1px solid var(--color-border);
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--color-sky-light), transparent);
+  border-radius: 2px;
 }
 
-/* Article Header */
+/* ============================================
+   Article Header
+   ============================================ */
 .article-header {
   margin-bottom: 3rem;
   padding-bottom: 2rem;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 2px solid var(--color-sky-light);
 }
 
 .article-header h1 {
-  font-size: 2.25rem;
+  font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
@@ -565,93 +765,245 @@ a:hover {
   font-size: 0.9rem;
 }
 
-/* Page Header */
+/* ============================================
+   Page Header
+   ============================================ */
 .page-header {
-  padding: 3rem 0;
+  padding: 4rem 0 3rem;
   text-align: center;
 }
 
 .page-header h1 {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .page-header p {
   font-size: 1.125rem;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-/* About Page */
+/* ============================================
+   About Page
+   ============================================ */
 .about-content {
   display: grid;
-  gap: 3rem;
+  gap: 2.5rem;
 }
 
 .about-section h2 {
   margin-bottom: 1rem;
   font-size: 1.25rem;
+  color: var(--color-sky-dark);
+}
+
+.dark .about-section h2 {
+  color: var(--color-sky);
 }
 
 .skills-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .skill-tag {
-  padding: 0.5rem 1rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  padding: 0.6rem 1.25rem;
+  background: var(--color-cloud);
   border-radius: 9999px;
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   color: var(--color-text-muted);
-  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(148, 163, 184, 0.15);
+  transition: all 0.3s ease;
 }
 
 .skill-tag:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(14, 165, 233, 0.2);
+  color: var(--color-sky-dark);
 }
 
-/* Responsive */
+/* ============================================
+   Mobile Responsive
+   ============================================ */
 @media (max-width: 768px) {
-  h1, .hero h1 { font-size: 2rem; }
-  h2 { font-size: 1.5rem; }
+  .clouds {
+    height: 250px;
+  }
+
+  .cloud-1 {
+    width: 140px;
+    height: 45px;
+    top: 60px;
+    left: 5%;
+  }
+
+  .cloud-1::before {
+    width: 70px;
+    height: 55px;
+    top: -35px;
+  }
+
+  .cloud-1::after {
+    width: 80px;
+    height: 60px;
+    top: -40px;
+  }
+
+  .cloud-2 {
+    width: 100px;
+    height: 35px;
+    top: 100px;
+    right: 10%;
+  }
+
+  .cloud-2::before {
+    width: 50px;
+    height: 40px;
+    top: -25px;
+  }
+
+  .cloud-2::after {
+    width: 55px;
+    height: 45px;
+    top: -30px;
+  }
+
+  .cloud-3, .cloud-4 {
+    display: none;
+  }
+
+  h1 {
+    font-size: 2.25rem;
+  }
 
   .hero {
-    padding: 3rem 0;
+    padding: 4rem 0 3rem;
+  }
+
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
   }
 
   .nav-links {
-    gap: 0.25rem;
+    gap: 0;
   }
 
   .nav-link {
-    padding: 0.5rem 0.75rem;
+    padding: 0.4rem 0.6rem;
     font-size: 0.8rem;
+  }
+
+  .logo {
+    font-size: 1.1rem;
   }
 
   .section {
     padding: 3rem 0;
   }
+
+  .card {
+    padding: 1.25rem;
+    border-radius: 1rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-links {
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
 }
 
-/* Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+@media (max-width: 480px) {
+  .container {
+    padding: 0 1rem;
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero-links .btn {
+    width: 100%;
+    max-width: 250px;
+    justify-content: center;
+  }
+
+  .header nav {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .nav-links {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+  }
+}
+
+/* ============================================
+   Animations
+   ============================================ */
+@keyframes float-up {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
 }
 
 .animate-float {
-  animation: float 6s ease-in-out infinite;
+  animation: float-up 4s ease-in-out infinite;
 }
 
-/* Focus states */
+/* ============================================
+   Focus & Selection
+   ============================================ */
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 3px solid var(--color-sky);
   outline-offset: 2px;
 }
 
-/* Selection */
 ::selection {
-  background: var(--color-accent);
+  background: var(--color-sky);
   color: white;
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  .cloud,
+  .animate-float,
+  .card,
+  .btn {
+    animation: none !important;
+    transition: none !important;
+  }
 }
