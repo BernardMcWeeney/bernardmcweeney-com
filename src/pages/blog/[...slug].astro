@@ -1,177 +1,45 @@
 ---
-import RackLayout from "../../layouts/RackLayout.astro";
-import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
   return posts.map((post) => ({
     params: { slug: post.slug },
-    props: { post },
+    props: post,
   }));
 }
 
-const { post } = Astro.props;
-const { Content } = await post.render();
-
-const date = new Date(post.data.pubDate);
-const formattedDate = date.toISOString().slice(0, 10);
-const formattedTime = date.toISOString().slice(11, 19);
+const post = Astro.props;
+const { Content } = await render(post);
 ---
 
-<RackLayout 
-  title={post.data.title}
-  description={post.data.description}
->
-  <!-- Navigation Blade -->
-  <div class="blade" data-unit="1U">
-    <div class="blade-face">
-      <div class="led-cluster">
-        <span class="led on blink"></span>
-      </div>
-      <span class="blade-label">
-        LOG VIEWER
-        <span class="model">/var/log/blog/{post.slug}.log</span>
-      </span>
-      <a href="/blog/" class="btn btn-sm" style="margin-left: auto;">
-        ← cd ..
-      </a>
-    </div>
-  </div>
-
-  <!-- Post Header -->
-  <div class="blade" data-unit="1U">
-    <div class="blade-content">
-      <div class="post-meta">
-        <div class="meta-row">
-          <span class="meta-label">TIMESTAMP:</span>
-          <span class="meta-value cyan">{formattedDate} {formattedTime}</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">TITLE:</span>
-          <span class="meta-value white">{post.data.title}</span>
-        </div>
-        {post.data.description && (
-          <div class="meta-row">
-            <span class="meta-label">SUMMARY:</span>
-            <span class="meta-value">{post.data.description}</span>
-          </div>
-        )}
-        {post.data.tags && post.data.tags.length > 0 && (
-          <div class="meta-row">
-            <span class="meta-label">TAGS:</span>
-            <div class="meta-tags">
-              {post.data.tags.map(tag => (
-                <span class="badge badge-primary">{tag}</span>
-              ))}
-            </div>
+<Layout title={post.data.title} description={post.data.description}>
+  <article class="container" style="padding-top: 2rem; padding-bottom: 4rem;">
+    <header class="article-header">
+      <h1>{post.data.title}</h1>
+      <div class="article-meta">
+        <time datetime={post.data.pubDate.toISOString()}>
+          {post.data.pubDate.toLocaleDateString("en-IE", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </time>
+        {post.data.tags && (
+          <div class="post-tags">
+            {post.data.tags.map((tag) => (
+              <span class="tag">{tag}</span>
+            ))}
           </div>
         )}
       </div>
+    </header>
+    <div class="prose">
+      <Content />
     </div>
-  </div>
-
-  <!-- Post Content -->
-  <div class="blade" data-unit="4U">
-    <div class="blade-face">
-      <div class="led-cluster">
-        <span class="led on"></span>
-        <span class="led on"></span>
-      </div>
-      <span class="blade-label">
-        CONTENT
-        <span class="model">cat {post.slug}.log</span>
-      </span>
+    <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--color-border);">
+      <a href="/blog" class="btn">&larr; Back to Blog</a>
     </div>
-    
-    <div class="blade-content">
-      <article class="prose">
-        <Content />
-      </article>
-    </div>
-  </div>
-
-  <!-- Post Footer -->
-  <div class="blade" data-unit="1U">
-    <div class="blade-content">
-      <div class="post-footer">
-        <div class="footer-info">
-          <span class="led on pulse"></span>
-          <span>End of log entry</span>
-        </div>
-        <div class="footer-actions">
-          <a href="/blog/" class="btn btn-sm">
-            ← All Logs
-          </a>
-          <button class="btn btn-sm" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-            ↑ Top
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</RackLayout>
-
-<style>
-  .post-meta {
-    display: flex;
-    flex-direction: column;
-    gap: 0.4rem;
-  }
-
-  .meta-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    font-size: 12px;
-  }
-
-  .meta-label {
-    color: var(--color-term-dark);
-    min-width: 90px;
-    flex-shrink: 0;
-  }
-
-  .meta-value {
-    color: var(--color-term-gray);
-  }
-
-  .meta-value.cyan {
-    color: var(--color-term-cyan);
-    font-variant-numeric: tabular-nums;
-  }
-
-  .meta-value.white {
-    color: var(--color-term-white);
-    font-weight: 600;
-  }
-
-  .meta-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-  }
-
-  .post-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .footer-info {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 11px;
-    color: var(--color-term-green);
-  }
-
-  .footer-info .led {
-    width: 6px;
-    height: 6px;
-  }
-
-  .footer-actions {
-    display: flex;
-    gap: 0.5rem;
-  }
-</style>
+  </article>
+</Layout>
