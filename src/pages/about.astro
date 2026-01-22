@@ -2,51 +2,76 @@
 import Layout from "../layouts/Layout.astro";
 
 const skills = {
-  infrastructure: ["Microsoft 365", "Azure AD", "Google Workspace", "Intune", "Active Directory"],
+  infrastructure: ["Microsoft 365", "Azure AD", "Intune", "Active Directory", "Google Workspace"],
   development: ["Astro", "React", "TypeScript", "Tailwind CSS", "WordPress", "PHP"],
   automation: ["PowerShell", "Graph API", "Python", "Bash", "Docker"],
 };
+
+const interests = [
+  "Community tech projects",
+  "Open source",
+  "The Cure (the band)",
+  "Irish history",
+  "A decent cup of tea",
+];
 ---
 
 <Layout
   title="About"
-  description="Learn more about Bernard McWeeney - IT Administrator and Web Developer based in Dublin, Ireland."
+  description="A bit about Bernard McWeeney - tech enthusiast from Meath, Ireland, now based in Dublin."
 >
   <div class="container">
     <header class="page-header">
       <h1>About Me</h1>
-      <p>IT Administrator and Web Developer based in Dublin, Ireland.</p>
+      <p>The short version: I like building things that help people.</p>
     </header>
 
     <div class="about-content">
       <section class="about-section">
-        <div class="card" style="padding: 2rem;">
-          <h2>Background</h2>
-          <div class="prose" style="margin-top: 1rem;">
+        <div class="card story-card">
+          <h2>The Story</h2>
+          <div class="prose">
             <p>
-              I'm Bernard McWeeney, an IT Administrator and Web Developer with a passion for
-              building efficient systems and beautiful web experiences. Based in Dublin, Ireland,
-              I work with businesses to manage their IT infrastructure and develop custom web solutions.
+              I'm Bernard, originally from Meath but based in Dublin these days. I've been
+              messing about with computers since I was young enough to not know any better,
+              and somehow turned that into a career.
             </p>
             <p>
-              My work spans from managing Microsoft 365 environments and Azure AD to building
-              modern websites with frameworks like Astro and React. I believe in automation
-              and use tools like PowerShell and the Graph API to streamline repetitive tasks.
+              During the day, I work as an IT Administrator, helping businesses keep their
+              technology running without wanting to throw it out the window. It's a mix of
+              Microsoft 365 administration, Azure cloud services, and general "the printer
+              isn't working" support.
             </p>
             <p>
-              When I'm not working, you'll find me exploring new technologies, contributing to
-              open-source projects, or enjoying Dublin's vibrant tech community.
+              Outside of that, I build websites and web applications. I started
+              <a href="/projects/greenberry">Greenberry</a> to help Irish small businesses
+              get online without being ripped off. There's a lot of overpriced, overcomplicated
+              solutions out there, and I thought I could do better. The jury's still out on
+              whether I was right.
+            </p>
+            <p>
+              I've a particular interest in using tech for good. Whether it's helping a
+              parish get their website sorted, building tools for community groups, or just
+              lending a hand to someone doing something worthwhile, that's the work that
+              gets me out of bed. Well, that and the mortgage.
             </p>
           </div>
         </div>
       </section>
 
       <section class="about-section">
-        <h2>Skills</h2>
+        <h2>What I Work With</h2>
+        <p class="section-intro">
+          I'm not going to claim to be an expert in everything, but here's what I spend
+          most of my time with:
+        </p>
 
-        <div style="display: grid; gap: 1.5rem; margin-top: 1rem;">
+        <div class="skills-cards">
           <div class="card">
-            <h3 style="margin-bottom: 1rem; font-size: 1rem; color: var(--color-accent);">Infrastructure</h3>
+            <h3>Infrastructure & IT</h3>
+            <p class="skills-description">
+              The bread and butter. Keeping businesses running on Microsoft's finest.
+            </p>
             <div class="skills-grid">
               {skills.infrastructure.map((skill) => (
                 <span class="skill-tag">{skill}</span>
@@ -55,7 +80,10 @@ const skills = {
           </div>
 
           <div class="card">
-            <h3 style="margin-bottom: 1rem; font-size: 1rem; color: var(--color-accent);">Development</h3>
+            <h3>Web Development</h3>
+            <p class="skills-description">
+              Building things for the internet, one component at a time.
+            </p>
             <div class="skills-grid">
               {skills.development.map((skill) => (
                 <span class="skill-tag">{skill}</span>
@@ -64,7 +92,10 @@ const skills = {
           </div>
 
           <div class="card">
-            <h3 style="margin-bottom: 1rem; font-size: 1rem; color: var(--color-accent);">Automation</h3>
+            <h3>Automation</h3>
+            <p class="skills-description">
+              Making computers do the boring bits so humans don't have to.
+            </p>
             <div class="skills-grid">
               {skills.automation.map((skill) => (
                 <span class="skill-tag">{skill}</span>
@@ -75,15 +106,38 @@ const skills = {
       </section>
 
       <section class="about-section">
-        <h2>Get in Touch</h2>
-        <div class="card" style="padding: 2rem; margin-top: 1rem;">
-          <p style="margin-bottom: 1.5rem; color: var(--color-text);">
-            I'm always happy to connect with fellow developers, potential collaborators,
-            or anyone interested in IT and web development.
+        <h2>Beyond the Code</h2>
+        <div class="card">
+          <p style="margin-bottom: 1rem; color: var(--color-text);">
+            When I'm not staring at a screen, you might find me:
           </p>
-          <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <ul class="interests-list">
+            {interests.map((interest) => (
+              <li>{interest}</li>
+            ))}
+          </ul>
+          <p style="margin-top: 1rem; color: var(--color-text-muted); font-style: italic;">
+            I'm also known to have strong opinions about tea, the correct way to make
+            a sandwich, and why the M50 is a disaster at rush hour.
+          </p>
+        </div>
+      </section>
+
+      <section class="about-section">
+        <h2>Get in Touch</h2>
+        <div class="card contact-card">
+          <p>
+            Whether you've got a project in mind, want to chat about tech, or just want
+            to argue about The Cure's best album (it's <em>Disintegration</em>, by the way),
+            I'm happy to hear from you.
+          </p>
+          <p>
+            I'm particularly interested in hearing from community groups, charities, or
+            anyone doing something good who needs a hand with technology.
+          </p>
+          <div class="contact-links">
             <a href="mailto:hello@bernardmcweeney.com" class="btn btn-primary">
-              Email Me
+              Drop Me an Email
             </a>
             <a href="https://linkedin.com/in/bernardmcweeney" target="_blank" rel="noopener" class="btn">
               LinkedIn
@@ -97,3 +151,86 @@ const skills = {
     </div>
   </div>
 </Layout>
+
+<style>
+  .story-card {
+    padding: 2.5rem;
+  }
+
+  .story-card h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-intro {
+    color: var(--color-text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .skills-cards {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .skills-cards h3 {
+    color: var(--color-sky-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  .dark .skills-cards h3 {
+    color: var(--color-sky);
+  }
+
+  .skills-description {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .interests-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .interests-list li {
+    padding: 0.5rem 1rem;
+    background: var(--color-sky-light);
+    border-radius: 9999px;
+    font-size: 0.9rem;
+    color: var(--color-sky-dark);
+  }
+
+  .dark .interests-list li {
+    background: rgba(14, 165, 233, 0.2);
+    color: var(--color-sky);
+  }
+
+  .contact-card {
+    padding: 2rem;
+  }
+
+  .contact-card p {
+    color: var(--color-text);
+    margin-bottom: 1rem;
+    line-height: 1.7;
+  }
+
+  .contact-card p:last-of-type {
+    margin-bottom: 1.5rem;
+  }
+
+  .contact-links {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  @media (min-width: 768px) {
+    .skills-cards {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

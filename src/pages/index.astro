@@ -7,111 +7,154 @@ const posts = (await getCollection("blog"))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
   .slice(0, 3);
 
-const projects = [
-  {
-    name: "Greenberry",
-    status: "active",
-    description: "Web development and IT services for Irish businesses",
-    tech: ["WordPress", "React", "Azure"],
-    link: "https://greenberry.ie",
-  },
-  {
-    name: "Parish Core",
-    status: "development",
-    description: "WordPress plugin for Catholic parish management",
-    tech: ["WordPress", "PHP", "React"],
-    link: null,
-  },
-];
+const featuredProjects = (await getCollection("projects"))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 2);
+
+const statusLabels = {
+  active: "Live",
+  development: "In Development",
+  planned: "Planned",
+  archived: "Archived",
+};
 ---
 
 <Layout
   title="Home"
-  description="Bernard McWeeney - IT Administrator and Web Developer based in Dublin, Ireland. Building web applications and managing IT infrastructure."
+  description="Bernard McWeeney - A tech enthusiast from Meath, Ireland. Building things with code, helping people and causes along the way."
 >
   <div class="container">
     <!-- Hero -->
     <section class="hero">
-      <h1>Hi, I'm Bernard</h1>
+      <h1>Howya, I'm Bernard</h1>
       <p>
-        IT Administrator and Web Developer based in Dublin, Ireland.
-        I build web applications and manage IT infrastructure for businesses.
+        I'm a tech enthusiast from Meath with a habit of building things.
+        I work on web projects, manage IT systems, and try to use technology
+        to help people and causes that matter. Based in Dublin these days.
       </p>
       <div class="hero-links">
-        <a href="/projects" class="btn btn-primary">View Projects</a>
-        <a href="/about" class="btn">About Me</a>
-      </div>
-    </section>
-
-    <!-- Recent Posts -->
-    <section class="section">
-      <div class="section-header">
-        <span class="section-title">Blog</span>
-        <h2 class="section-heading">Recent Posts</h2>
-      </div>
-      <div class="grid grid-2">
-        {posts.map((post) => (
-          <a href={`/blog/${post.slug}`} class="card card-link">
-            <article class="post-card">
-              <time class="post-date" datetime={post.data.pubDate.toISOString()}>
-                {post.data.pubDate.toLocaleDateString("en-IE", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </time>
-              <h3 class="post-title">{post.data.title}</h3>
-              <p class="post-excerpt">{post.data.description}</p>
-              {post.data.tags && (
-                <div class="post-tags">
-                  {post.data.tags.slice(0, 2).map((tag) => (
-                    <span class="tag">{tag}</span>
-                  ))}
-                </div>
-              )}
-            </article>
-          </a>
-        ))}
-      </div>
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="/blog" class="btn">View All Posts</a>
+        <a href="/projects" class="btn btn-primary">See What I'm Working On</a>
+        <a href="/about" class="btn">A Bit About Me</a>
       </div>
     </section>
 
     <!-- Featured Projects -->
+    {featuredProjects.length > 0 && (
+      <section class="section">
+        <div class="section-header">
+          <span class="section-title">Projects</span>
+          <h2 class="section-heading">Things I'm Building</h2>
+        </div>
+        <div class="grid grid-2">
+          {featuredProjects.map((project) => (
+            <a href={`/projects/${project.slug}`} class="card card-link">
+              <div class="post-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                  <h3 class="post-title">{project.data.title}</h3>
+                  <span class={`project-status ${project.data.status}`}>
+                    {statusLabels[project.data.status]}
+                  </span>
+                </div>
+                {project.data.tagline && (
+                  <p style="font-size: 0.9rem; color: var(--color-sky-deep); margin-bottom: 0.5rem;">
+                    {project.data.tagline}
+                  </p>
+                )}
+                <p class="post-excerpt">{project.data.description}</p>
+                {project.data.tech && (
+                  <div class="project-tech">
+                    {project.data.tech.slice(0, 3).map((t) => (
+                      <span class="tech-tag">{t}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </a>
+          ))}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="/projects" class="btn">View All Projects</a>
+        </div>
+      </section>
+    )}
+
+    <!-- Recent Posts -->
+    {posts.length > 0 && (
+      <section class="section">
+        <div class="section-header">
+          <span class="section-title">Writing</span>
+          <h2 class="section-heading">Recent Thoughts</h2>
+        </div>
+        <div class="grid grid-2">
+          {posts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="card card-link">
+              <article class="post-card">
+                <time class="post-date" datetime={post.data.pubDate.toISOString()}>
+                  {post.data.pubDate.toLocaleDateString("en-IE", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </time>
+                <h3 class="post-title">{post.data.title}</h3>
+                <p class="post-excerpt">{post.data.description}</p>
+                {post.data.tags && (
+                  <div class="post-tags">
+                    {post.data.tags.slice(0, 2).map((tag) => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </article>
+            </a>
+          ))}
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+          <a href="/blog" class="btn">All Posts</a>
+        </div>
+      </section>
+    )}
+
+    <!-- Quick About -->
     <section class="section">
-      <div class="section-header">
-        <span class="section-title">Work</span>
-        <h2 class="section-heading">Featured Projects</h2>
-      </div>
-      <div class="grid grid-2">
-        {projects.map((project) => (
-          <a
-            href={project.link || "/projects"}
-            class="card card-link"
-            target={project.link ? "_blank" : undefined}
-            rel={project.link ? "noopener" : undefined}
-          >
-            <div class="post-card">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <h3 class="post-title">{project.name}</h3>
-                <span class={`project-status ${project.status}`}>
-                  {project.status === "active" ? "Live" : "In Development"}
-                </span>
-              </div>
-              <p class="post-excerpt">{project.description}</p>
-              <div class="project-tech">
-                {project.tech.map((t) => (
-                  <span class="tech-tag">{t}</span>
-                ))}
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-      <div style="text-align: center; margin-top: 2rem;">
-        <a href="/projects" class="btn">View All Projects</a>
+      <div class="card quick-about">
+        <h2>What I Do</h2>
+        <p>
+          By day, I'm an IT Administrator helping businesses keep their tech running smoothly.
+          By night (and weekends, and the odd lunch break), I build websites and web applications.
+        </p>
+        <p>
+          I've a particular soft spot for projects that help communities and causes.
+          If you're doing something good and need a hand with the tech side of things,
+          I'm usually happy to have a chat.
+        </p>
+        <div style="margin-top: 1.5rem;">
+          <a href="/about" class="btn btn-primary">More About Me</a>
+        </div>
       </div>
     </section>
   </div>
 </Layout>
+
+<style>
+  .quick-about {
+    padding: 2.5rem;
+    text-align: center;
+  }
+
+  .quick-about h2 {
+    margin-bottom: 1.5rem;
+  }
+
+  .quick-about p {
+    max-width: 600px;
+    margin: 0 auto 1rem;
+    color: var(--color-text);
+    line-height: 1.8;
+  }
+
+  .quick-about p:last-of-type {
+    margin-bottom: 0;
+  }
+</style>

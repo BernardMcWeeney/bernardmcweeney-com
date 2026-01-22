@@ -32,7 +32,7 @@ const currentPath = Astro.url.pathname;
           <div class="nav-links">
             <a href="/" class:list={["nav-link", { active: currentPath === "/" }]}>Home</a>
             <a href="/blog" class:list={["nav-link", { active: currentPath.startsWith("/blog") }]}>Blog</a>
-            <a href="/projects" class:list={["nav-link", { active: currentPath === "/projects" || currentPath === "/projects/" }]}>Projects</a>
+            <a href="/projects" class:list={["nav-link", { active: currentPath.startsWith("/projects") }]}>Projects</a>
             <a href="/about" class:list={["nav-link", { active: currentPath === "/about" || currentPath === "/about/" }]}>About</a>
             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
               <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -67,7 +67,7 @@ const currentPath = Astro.url.pathname;
           <a href="https://twitter.com/BMcWeeneyIE" target="_blank" rel="noopener">Twitter</a>
           <a href="/rss.xml">RSS</a>
         </div>
-        <p>&copy; {new Date().getFullYear()} Bernard McWeeney. Dublin, Ireland.</p>
+        <p>&copy; {new Date().getFullYear()} Bernard McWeeney. Meath, Ireland.</p>
       </div>
     </footer>
 

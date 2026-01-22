@@ -1,0 +1,160 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const projects = (await getCollection("projects")).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const statusLabels = {
+  active: "Live",
+  development: "In Development",
+  planned: "Planned",
+  archived: "Archived",
+};
+---
+
+<Layout
+  title="Projects"
+  description="A collection of things I've built and am working on. From client work to passion projects."
+>
+  <div class="container">
+    <header class="page-header">
+      <h1>Projects</h1>
+      <p>Things I've built, am building, or am planning to build. A mix of client work, open source, and personal experiments.</p>
+    </header>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="projects-grid">
+        {projects.map((project) => (
+          <a href={`/projects/${project.slug}`} class="project-card card card-link">
+            {project.data.thumbnail && (
+              <div class="project-thumbnail">
+                <img src={project.data.thumbnail} alt={project.data.title} />
+              </div>
+            )}
+            <div class="project-card-content">
+              <div class="project-card-header">
+                <h2>{project.data.title}</h2>
+                <span class={`project-status ${project.data.status}`}>
+                  {statusLabels[project.data.status]}
+                </span>
+              </div>
+              {project.data.tagline && (
+                <p class="project-tagline">{project.data.tagline}</p>
+              )}
+              <p class="project-description">{project.data.description}</p>
+              {project.data.tech && (
+                <div class="project-tech">
+                  {project.data.tech.slice(0, 4).map((t) => (
+                    <span class="tech-tag">{t}</span>
+                  ))}
+                  {project.data.tech.length > 4 && (
+                    <span class="tech-tag">+{project.data.tech.length - 4}</span>
+                  )}
+                </div>
+              )}
+              <div class="project-card-footer">
+                <span class="read-more">Read more &rarr;</span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .projects-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .project-card {
+    display: block;
+    overflow: hidden;
+  }
+
+  .project-thumbnail {
+    margin: -1.75rem -1.75rem 1.5rem -1.75rem;
+    overflow: hidden;
+  }
+
+  .project-thumbnail img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .project-card:hover .project-thumbnail img {
+    transform: scale(1.05);
+  }
+
+  .project-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .project-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .project-card-header h2 {
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin: 0;
+    transition: color 0.2s ease;
+  }
+
+  .project-card:hover h2 {
+    color: var(--color-sky-dark);
+  }
+
+  .dark .project-card:hover h2 {
+    color: var(--color-sky);
+  }
+
+  .project-tagline {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-sky-deep);
+    margin: 0;
+  }
+
+  .dark .project-tagline {
+    color: var(--color-sky);
+  }
+
+  .project-description {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .project-card-footer {
+    margin-top: 0.5rem;
+  }
+
+  .read-more {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    transition: color 0.2s ease;
+  }
+
+  .project-card:hover .read-more {
+    color: var(--color-accent-hover);
+  }
+
+  @media (min-width: 640px) {
+    .projects-grid {
+      gap: 2.5rem;
+    }
+  }
+</style>
