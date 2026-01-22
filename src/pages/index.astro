@@ -19,27 +19,6 @@ const statusLabels = {
   archived: "Archived",
 };
 
-const services = [
-  {
-    icon: "globe",
-    title: "Web Development",
-    description: "Custom websites and web apps built with modern tools. Fast, accessible, and actually pleasant to use.",
-    tech: ["Astro", "React", "WordPress"],
-  },
-  {
-    icon: "server",
-    title: "IT Administration",
-    description: "Microsoft 365, Azure, and all that enterprise stuff. Keeping businesses running without the headaches.",
-    tech: ["M365", "Azure", "Intune"],
-  },
-  {
-    icon: "zap",
-    title: "Automation",
-    description: "Scripts and workflows that do the boring bits. Because life's too short for repetitive tasks.",
-    tech: ["PowerShell", "Python", "APIs"],
-  },
-];
-
 const currently = {
   working: "Parish Core WordPress plugin",
   learning: "Rust (slowly)",
@@ -86,39 +65,105 @@ const currently = {
     </div>
   </section>
 
-  <!-- What I Do -->
-  <section class="services-section">
+  <!-- Impact at a Glance -->
+  <section class="impact-section">
     <div class="container">
       <div class="section-header">
-        <span class="section-title">What I Do</span>
-        <h2 class="section-heading">Building & Fixing Things</h2>
-        <p class="section-description">
-          A mix of creative development and keeping the lights on. Here's how I spend my days.
-        </p>
+        <span class="section-title">Impact</span>
+        <h2 class="section-heading">What I Actually Do</h2>
       </div>
-      <div class="services-grid">
-        {services.map((service, i) => (
-          <div class="service-card" style={`--delay: ${i * 0.1}s`}>
-            <div class="service-icon">
-              {service.icon === "globe" && (
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
-              )}
-              {service.icon === "server" && (
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
-              )}
-              {service.icon === "zap" && (
-                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-              )}
-            </div>
-            <h3 class="service-title">{service.title}</h3>
-            <p class="service-description">{service.description}</p>
-            <div class="service-tech">
-              {service.tech.map((t) => (
-                <span class="tech-pill">{t}</span>
-              ))}
-            </div>
+
+      <!-- Stats Banner -->
+      <div class="impact-stats-banner">
+        <div class="impact-stat">
+          <span class="impact-stat-value">70k+</span>
+          <span class="impact-stat-label">Users Supported</span>
+        </div>
+        <div class="impact-stat">
+          <span class="impact-stat-value">100+</span>
+          <span class="impact-stat-label">Sites Managed</span>
+        </div>
+        <div class="impact-stat">
+          <span class="impact-stat-value">50+</span>
+          <span class="impact-stat-label">Websites Built</span>
+        </div>
+        <div class="impact-stat">
+          <span class="impact-stat-value">7+</span>
+          <span class="impact-stat-label">Years Experience</span>
+        </div>
+      </div>
+
+      <!-- Impact Areas Grid -->
+      <div class="impact-areas-grid">
+        <a href="/projects#enterprise" class="impact-area-card">
+          <div class="impact-area-icon enterprise">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
           </div>
-        ))}
+          <div class="impact-area-content">
+            <h3>Enterprise IT</h3>
+            <p>Large-scale Microsoft tenant management, identity, security, and governance at public-sector scale.</p>
+          </div>
+          <span class="impact-area-arrow">&rarr;</span>
+        </a>
+
+        <a href="/projects#web" class="impact-area-card">
+          <div class="impact-area-icon web">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          </div>
+          <div class="impact-area-content">
+            <h3>Web Development</h3>
+            <p>Websites for businesses, parishes, and communities. Simple, fast, and built to last.</p>
+          </div>
+          <span class="impact-area-arrow">&rarr;</span>
+        </a>
+
+        <a href="/projects#automation" class="impact-area-card">
+          <div class="impact-area-icon automation">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
+          <div class="impact-area-content">
+            <h3>Automation</h3>
+            <p>PowerShell, scripting, and workflows. Making computers do the boring bits.</p>
+          </div>
+          <span class="impact-area-arrow">&rarr;</span>
+        </a>
+
+        <a href="/projects#consultancy" class="impact-area-card">
+          <div class="impact-area-icon consultancy">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+          </div>
+          <div class="impact-area-content">
+            <h3>IT Consultancy</h3>
+            <p>Strategic advice for organisations who need clarity, not jargon.</p>
+          </div>
+          <span class="impact-area-arrow">&rarr;</span>
+        </a>
+
+        <a href="/projects#hardware" class="impact-area-card">
+          <div class="impact-area-icon hardware">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+          </div>
+          <div class="impact-area-content">
+            <h3>Hardware & Infra</h3>
+            <p>Streaming setups, networking, home automation. Real-world problems.</p>
+          </div>
+          <span class="impact-area-arrow">&rarr;</span>
+        </a>
+
+        <a href="/projects#writing" class="impact-area-card">
+          <div class="impact-area-icon writing">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+          </div>
+          <div class="impact-area-content">
+            <h3>Writing & Culture</h3>
+            <p>Music writing, fan archives, and local history projects.</p>
+          </div>
+          <span class="impact-area-arrow">&rarr;</span>
+        </a>
+      </div>
+
+      <div class="section-footer">
+        <a href="/projects" class="btn btn-primary">See All Work &rarr;</a>
       </div>
     </div>
   </section>
@@ -416,43 +461,166 @@ const currently = {
     50% { transform: translateX(-50%) translateY(12px); opacity: 0.3; }
   }
 
-  /* Services Section */
-  .services-section {
+  /* Impact Section */
+  .impact-section {
     padding: 5rem 0;
     background: linear-gradient(180deg, transparent 0%, var(--color-sky-light) 50%, transparent 100%);
   }
 
-  .dark .services-section {
+  .dark .impact-section {
     background: linear-gradient(180deg, transparent 0%, rgba(14, 165, 233, 0.05) 50%, transparent 100%);
   }
 
-  .section-description {
-    color: var(--color-text-muted);
-    max-width: 500px;
-    margin: 1rem auto 0;
-  }
-
-  .services-grid {
+  .impact-stats-banner {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
-  }
-
-  .service-card {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
     background: var(--color-cloud);
-    border-radius: 1.5rem;
-    padding: 2rem;
-    border: 1px solid rgba(226, 232, 240, 0.5);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    animation: fade-up 0.6s ease-out backwards;
-    animation-delay: var(--delay);
+    border-radius: 1rem;
+    margin: 2rem 0;
+    box-shadow: 0 4px 20px rgba(148, 163, 184, 0.1);
   }
 
-  .service-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(148, 163, 184, 0.2);
-    border-color: var(--color-sky-light);
+  @media (min-width: 640px) {
+    .impact-stats-banner {
+      grid-template-columns: repeat(4, 1fr);
+      padding: 2rem;
+    }
+  }
+
+  .impact-stat {
+    text-align: center;
+  }
+
+  .impact-stat-value {
+    display: block;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-sky-dark);
+    line-height: 1.2;
+  }
+
+  .dark .impact-stat-value {
+    color: var(--color-sky);
+  }
+
+  .impact-stat-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .impact-areas-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .impact-area-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-cloud);
+    border-radius: 1rem;
+    text-decoration: none;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .impact-area-card:hover {
+    border-color: var(--color-sky);
+    transform: translateX(4px);
+    box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
+  }
+
+  .impact-area-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .impact-area-icon.enterprise {
+    background: rgba(14, 165, 233, 0.15);
+    color: var(--color-sky-dark);
+  }
+
+  .impact-area-icon.web {
+    background: rgba(34, 197, 94, 0.15);
+    color: #15803d;
+  }
+
+  .impact-area-icon.automation {
+    background: rgba(245, 158, 11, 0.15);
+    color: #d97706;
+  }
+
+  .impact-area-icon.consultancy {
+    background: rgba(168, 85, 247, 0.15);
+    color: #7c3aed;
+  }
+
+  .impact-area-icon.hardware {
+    background: rgba(236, 72, 153, 0.15);
+    color: #db2777;
+  }
+
+  .impact-area-icon.writing {
+    background: rgba(99, 102, 241, 0.15);
+    color: #4f46e5;
+  }
+
+  .dark .impact-area-icon.enterprise { color: var(--color-sky); }
+  .dark .impact-area-icon.web { color: #4ade80; }
+  .dark .impact-area-icon.automation { color: #fbbf24; }
+  .dark .impact-area-icon.consultancy { color: #a78bfa; }
+  .dark .impact-area-icon.hardware { color: #f472b6; }
+  .dark .impact-area-icon.writing { color: #818cf8; }
+
+  .impact-area-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .impact-area-content h3 {
+    font-size: 1rem;
+    margin: 0 0 0.25rem 0;
+    color: var(--color-text);
+    transition: color 0.2s ease;
+  }
+
+  .impact-area-card:hover h3 {
+    color: var(--color-sky-dark);
+  }
+
+  .dark .impact-area-card:hover h3 {
+    color: var(--color-sky);
+  }
+
+  .impact-area-content p {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  .impact-area-arrow {
+    color: var(--color-text-muted);
+    font-size: 1.25rem;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .impact-area-card:hover .impact-area-arrow {
+    transform: translateX(4px);
+    color: var(--color-sky-deep);
   }
 
   @keyframes fade-up {
@@ -460,50 +628,6 @@ const currently = {
       opacity: 0;
       transform: translateY(20px);
     }
-  }
-
-  .service-icon {
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, var(--color-sky-light) 0%, #bae6fd 100%);
-    border-radius: 1rem;
-    color: var(--color-sky-dark);
-    margin-bottom: 1.5rem;
-  }
-
-  .dark .service-icon {
-    background: rgba(14, 165, 233, 0.2);
-    color: var(--color-sky);
-  }
-
-  .service-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.75rem;
-    color: var(--color-text);
-  }
-
-  .service-description {
-    color: var(--color-text-muted);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
-  }
-
-  .service-tech {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .tech-pill {
-    padding: 0.35rem 0.75rem;
-    background: var(--color-cloud-soft);
-    border-radius: 9999px;
-    font-size: 0.8rem;
-    color: var(--color-text-muted);
-    font-weight: 500;
   }
 
   /* Projects Section */

@@ -2,9 +2,14 @@
 import Layout from "../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
 
-const projects = (await getCollection("projects")).sort(
-  (a, b) => a.data.order - b.data.order
-);
+const allProjects = await getCollection("projects");
+
+// Helper function to get projects by slugs
+function getProjectsBySlugs(slugs: string[]) {
+  return slugs
+    .map(slug => allProjects.find(p => p.slug === slug))
+    .filter((p): p is typeof allProjects[number] => p !== undefined);
+}
 
 const statusLabels = {
   active: "Live",
@@ -12,149 +17,564 @@ const statusLabels = {
   planned: "Planned",
   archived: "Archived",
 };
+
+// Impact areas with key metrics and selected projects
+const impactAreas = [
+  {
+    id: "enterprise",
+    title: "Enterprise IT & Microsoft",
+    subtitle: "Day job. Large-scale systems.",
+    stats: [
+      { value: "70k+", label: "Users" },
+      { value: "100+", label: "Sites" },
+      { value: "3,500", label: "Staff" },
+    ],
+    description: "End-to-end ownership of a large public-sector Microsoft tenant. Identity, security, devices, governance, and automation at scale. This isn't help desk work — it's tenant stewardship.",
+    highlights: [
+      "Microsoft 365, Entra ID, Intune, Defender ecosystem",
+      "Hybrid-to-cloud identity modernisation",
+      "Cloudflare consolidation across ~100 domains",
+      "Risk frameworks, GDPR, and audit readiness",
+      "Copilot AI pilot and governance programme",
+    ],
+    projects: ["enterprise-it-portfolio", "entra-id-architecture", "intune-rollout", "cloudflare-consolidation", "copilot-governance"],
+  },
+  {
+    id: "web",
+    title: "Web Design & Digital Services",
+    subtitle: "Helping businesses and communities get online.",
+    stats: [
+      { value: "50+", label: "Websites" },
+      { value: "7+", label: "Years" },
+    ],
+    description: "Building and maintaining websites for businesses, parishes, schools, and community organisations. Emphasis on simplicity, longevity, and actually being useful rather than flashy.",
+    highlights: [
+      "Greenberry — web services for Irish businesses",
+      "Parish and school websites with ongoing support",
+      "Churchify — technology for churches",
+      "Long-term stewardship, not just launches",
+    ],
+    projects: ["greenberry", "community-websites", "churchify", "parish-core"],
+  },
+  {
+    id: "writing",
+    title: "Writing & Cultural Projects",
+    subtitle: "Personal passions. No algorithms.",
+    description: "Music writing, fan archives, and local history. Built to last, not to chase engagement metrics.",
+    highlights: [
+      "BernardOnTheAux — music reviews and gig notes",
+      "Cureation — The Cure fan archive",
+      "Dowth.ie — Boyne Valley history and archaeology",
+    ],
+    projects: ["bernardontheaux", "cureation", "dowth"],
+  },
+  {
+    id: "hardware",
+    title: "Hardware & Infrastructure",
+    subtitle: "Physical systems. Real-world problems.",
+    description: "Streaming setups for churches, home automation, networking, and the kind of hands-on work where you actually have to plug things in.",
+    highlights: [
+      "Volunteer-friendly church streaming systems",
+      "Home Assistant and self-hosted services",
+      "UniFi networking and surveillance",
+      "Online donation systems for parishes",
+    ],
+    projects: ["church-streaming", "home-automation", "network-infrastructure"],
+  },
+  {
+    id: "automation",
+    title: "Automation & Efficiency",
+    subtitle: "Making computers do the boring bits.",
+    stats: [
+      { value: "1000s", label: "Hours saved" },
+    ],
+    description: "PowerShell scripts, bulk operations, reporting dashboards, and process automation. If something tedious happens more than twice, it gets automated.",
+    highlights: [
+      "User lifecycle automation at enterprise scale",
+      "Power BI dashboards for licensing and costs",
+      "Bulk operations and naming convention enforcement",
+      "Graph API integrations and scheduled tasks",
+      "Excel-driven workflows for non-technical teams",
+    ],
+    projects: ["automation-powershell", "m365-governance"],
+  },
+  {
+    id: "consultancy",
+    title: "IT Consultancy & Strategy",
+    subtitle: "Helping others navigate technology.",
+    description: "Strategic advice for organisations who need clarity, not jargon. Waymark exists to help businesses make sensible technology decisions without getting lost.",
+    highlights: [
+      "Waymark — IT consultancy focused on clarity",
+      "Microsoft 365 strategy and architecture",
+      "Security posture and governance reviews",
+      "Vendor selection and migration planning",
+      "Making technology disappear into the background",
+    ],
+    projects: ["waymark", "cloud-migrations", "security-frameworks", "risk-governance"],
+  },
+];
 ---
 
 <Layout
   title="Projects"
-  description="A collection of things I've built and am working on. From client work to passion projects."
+  description="A collection of things I've built and am working on. From enterprise IT at public-sector scale to parish websites."
 >
   <div class="container">
     <header class="page-header">
-      <h1>Projects</h1>
-      <p>Things I've built, am building, or am planning to build. A mix of client work, open source, and personal experiments.</p>
+      <h1>What I've Built</h1>
+      <p class="page-intro">
+        A mix of professional work, side projects, and community contributions.
+        Some generate revenue, some serve communities, some are just for the joy of building.
+      </p>
     </header>
 
-    <section class="section" style="padding-top: 0;">
-      <div class="projects-grid">
-        {projects.map((project) => (
-          <a href={`/projects/${project.slug}`} class="project-card card card-link">
-            {project.data.thumbnail && (
-              <div class="project-thumbnail">
-                <img src={project.data.thumbnail} alt={project.data.title} />
+    <!-- Quick Stats -->
+    <div class="quick-stats">
+      <div class="stat-item">
+        <span class="stat-value">70k+</span>
+        <span class="stat-label">Users supported</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">100+</span>
+        <span class="stat-label">Sites managed</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">50+</span>
+        <span class="stat-label">Websites built</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value">{allProjects.length}</span>
+        <span class="stat-label">Active projects</span>
+      </div>
+    </div>
+
+    <!-- Impact Areas -->
+    {impactAreas.map((area, index) => {
+      const areaProjects = getProjectsBySlugs(area.projects);
+      return (
+        <section class="impact-section" id={area.id}>
+          <div class="impact-header">
+            <div class="impact-title-group">
+              <span class="impact-number">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h2>{area.title}</h2>
+                <p class="impact-subtitle">{area.subtitle}</p>
+              </div>
+            </div>
+            {area.stats && (
+              <div class="impact-stats">
+                {area.stats.map(stat => (
+                  <div class="mini-stat">
+                    <span class="mini-stat-value">{stat.value}</span>
+                    <span class="mini-stat-label">{stat.label}</span>
+                  </div>
+                ))}
               </div>
             )}
-            <div class="project-card-content">
-              <div class="project-card-header">
-                <h2>{project.data.title}</h2>
+          </div>
+
+          <div class="impact-content">
+            <div class="impact-description">
+              <p>{area.description}</p>
+              <ul class="impact-highlights">
+                {area.highlights.map(highlight => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="impact-projects">
+              <h3>Selected Projects</h3>
+              <div class="project-links">
+                {areaProjects.map(project => (
+                  <a href={`/projects/${project.slug}`} class="project-link">
+                    <span class="project-link-title">{project.data.title}</span>
+                    <span class="project-link-arrow">&rarr;</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    })}
+
+    <!-- Everything Else -->
+    <section class="everything-else">
+      <h2>Everything Else</h2>
+      <p class="section-intro">
+        Experiments, concepts, and the inevitable domain portfolio.
+        Some of these will become something. Some won't. That's fine.
+      </p>
+
+      <div class="other-projects-grid">
+        {allProjects
+          .filter(p => !impactAreas.some(area => area.projects.includes(p.slug)))
+          .sort((a, b) => a.data.order - b.data.order)
+          .map(project => (
+            <a href={`/projects/${project.slug}`} class="other-project-card">
+              <div class="other-project-header">
+                <h3>{project.data.title}</h3>
                 <span class={`project-status ${project.data.status}`}>
                   {statusLabels[project.data.status]}
                 </span>
               </div>
-              {project.data.tagline && (
-                <p class="project-tagline">{project.data.tagline}</p>
-              )}
-              <p class="project-description">{project.data.description}</p>
-              {project.data.tech && (
-                <div class="project-tech">
-                  {project.data.tech.slice(0, 4).map((t) => (
-                    <span class="tech-tag">{t}</span>
-                  ))}
-                  {project.data.tech.length > 4 && (
-                    <span class="tech-tag">+{project.data.tech.length - 4}</span>
-                  )}
-                </div>
-              )}
-              <div class="project-card-footer">
-                <span class="read-more">Read more &rarr;</span>
-              </div>
-            </div>
-          </a>
-        ))}
+              <p>{project.data.tagline || project.data.description}</p>
+            </a>
+          ))
+        }
       </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="projects-cta">
+      <p>
+        Interested in working together? I'm particularly keen to help
+        community groups, charities, and anyone doing something worthwhile.
+      </p>
+      <a href="mailto:hello@bernardmcweeney.com" class="btn btn-primary">Get in Touch</a>
     </section>
   </div>
 </Layout>
 
 <style>
-  .projects-grid {
+  .page-intro {
+    font-size: 1.1rem;
+    color: var(--color-text-muted);
+    max-width: 600px;
+  }
+
+  /* Quick Stats */
+  .quick-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+    background: var(--color-cloud);
+    border-radius: 1rem;
+    margin-bottom: 3rem;
+    box-shadow: 0 4px 20px rgba(148, 163, 184, 0.1);
+  }
+
+  @media (min-width: 640px) {
+    .quick-stats {
+      grid-template-columns: repeat(4, 1fr);
+      padding: 2rem;
+    }
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-sky-dark);
+    line-height: 1.2;
+  }
+
+  .dark .stat-value {
+    color: var(--color-sky);
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Impact Sections */
+  .impact-section {
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--color-cloud-shadow);
+    scroll-margin-top: 80px;
+  }
+
+  .impact-section:last-of-type {
+    border-bottom: none;
+  }
+
+  .impact-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .impact-header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+  }
+
+  .impact-title-group {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  .impact-number {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-sky-deep);
+    padding: 0.25rem 0.5rem;
+    background: var(--color-sky-light);
+    border-radius: 0.25rem;
+    line-height: 1;
+  }
+
+  .dark .impact-number {
+    background: rgba(14, 165, 233, 0.2);
+    color: var(--color-sky);
+  }
+
+  .impact-title-group h2 {
+    font-size: 1.5rem;
+    margin: 0 0 0.25rem 0;
+    color: var(--color-text);
+  }
+
+  .impact-subtitle {
+    color: var(--color-text-muted);
+    margin: 0;
+    font-size: 0.95rem;
+  }
+
+  .impact-stats {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .mini-stat {
+    text-align: center;
+  }
+
+  .mini-stat-value {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--color-sky-dark);
+  }
+
+  .dark .mini-stat-value {
+    color: var(--color-sky);
+  }
+
+  .mini-stat-label {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .impact-content {
     display: grid;
     gap: 2rem;
   }
 
-  .project-card {
-    display: block;
-    overflow: hidden;
+  @media (min-width: 768px) {
+    .impact-content {
+      grid-template-columns: 1.5fr 1fr;
+      gap: 3rem;
+    }
   }
 
-  .project-thumbnail {
-    margin: -1.75rem -1.75rem 1.5rem -1.75rem;
-    overflow: hidden;
+  .impact-description p {
+    color: var(--color-text);
+    line-height: 1.7;
+    margin: 0 0 1rem 0;
   }
 
-  .project-thumbnail img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    transition: transform 0.3s ease;
+  .impact-highlights {
+    list-style: none;
+    padding: 0;
+    margin: 0;
   }
 
-  .project-card:hover .project-thumbnail img {
-    transform: scale(1.05);
+  .impact-highlights li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
   }
 
-  .project-card-content {
+  .impact-highlights li::before {
+    content: '→';
+    position: absolute;
+    left: 0;
+    color: var(--color-sky-deep);
+  }
+
+  .dark .impact-highlights li::before {
+    color: var(--color-sky);
+  }
+
+  .impact-projects h3 {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text-muted);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .project-links {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
-  .project-card-header {
+  .project-link {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 1rem;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--color-cloud);
+    border-radius: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
   }
 
-  .project-card-header h2 {
-    font-size: 1.5rem;
+  .project-link:hover {
+    background: var(--color-sky-light);
+    border-color: var(--color-sky);
+    transform: translateX(4px);
+  }
+
+  .dark .project-link:hover {
+    background: rgba(14, 165, 233, 0.15);
+  }
+
+  .project-link-title {
+    font-weight: 500;
     color: var(--color-text);
-    margin: 0;
-    transition: color 0.2s ease;
+    font-size: 0.9rem;
   }
 
-  .project-card:hover h2 {
+  .project-link:hover .project-link-title {
     color: var(--color-sky-dark);
   }
 
-  .dark .project-card:hover h2 {
+  .dark .project-link:hover .project-link-title {
     color: var(--color-sky);
   }
 
-  .project-tagline {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--color-sky-deep);
-    margin: 0;
-  }
-
-  .dark .project-tagline {
-    color: var(--color-sky);
-  }
-
-  .project-description {
+  .project-link-arrow {
     color: var(--color-text-muted);
-    line-height: 1.6;
-    margin: 0;
+    transition: transform 0.2s ease;
   }
 
-  .project-card-footer {
-    margin-top: 0.5rem;
+  .project-link:hover .project-link-arrow {
+    transform: translateX(4px);
+    color: var(--color-sky-deep);
   }
 
-  .read-more {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-accent);
-    transition: color 0.2s ease;
+  /* Everything Else */
+  .everything-else {
+    padding: 3rem 0;
   }
 
-  .project-card:hover .read-more {
-    color: var(--color-accent-hover);
+  .everything-else h2 {
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .section-intro {
+    color: var(--color-text-muted);
+    margin: 0 0 1.5rem 0;
+  }
+
+  .other-projects-grid {
+    display: grid;
+    gap: 1rem;
   }
 
   @media (min-width: 640px) {
-    .projects-grid {
-      gap: 2.5rem;
+    .other-projects-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
+  }
+
+  @media (min-width: 900px) {
+    .other-projects-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .other-project-card {
+    padding: 1.25rem;
+    background: var(--color-cloud);
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .other-project-card:hover {
+    border-color: var(--color-sky);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
+  }
+
+  .other-project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .other-project-header h3 {
+    font-size: 0.95rem;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .other-project-card:hover h3 {
+    color: var(--color-sky-dark);
+  }
+
+  .dark .other-project-card:hover h3 {
+    color: var(--color-sky);
+  }
+
+  .other-project-card p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* CTA */
+  .projects-cta {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, var(--color-sky-light) 0%, rgba(125, 211, 252, 0.3) 100%);
+    border-radius: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .dark .projects-cta {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(14, 165, 233, 0.05) 100%);
+  }
+
+  .projects-cta p {
+    margin: 0 0 1.5rem 0;
+    color: var(--color-text);
+    font-size: 1.05rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1.5rem;
   }
 </style>
