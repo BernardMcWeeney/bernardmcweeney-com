@@ -32,6 +32,11 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #e0f2fe;
+}
+
+.dark html {
+  background-color: #0c4a6e;
 }
 
 body {
@@ -61,6 +66,134 @@ body {
 }
 
 /* ============================================
+   SKY BACKGROUND - Sun/Moon
+   ============================================ */
+.sky-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 500px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.celestial-body {
+  position: absolute;
+  top: 60px;
+  right: 10%;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fef3c7 0%, #fcd34d 50%, #f59e0b 100%);
+  box-shadow:
+    0 0 60px rgba(251, 191, 36, 0.4),
+    0 0 120px rgba(251, 191, 36, 0.2),
+    inset -10px -10px 20px rgba(245, 158, 11, 0.3);
+  animation: celestial-glow 4s ease-in-out infinite;
+}
+
+.dark .celestial-body {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  box-shadow:
+    0 0 40px rgba(226, 232, 240, 0.5),
+    0 0 80px rgba(226, 232, 240, 0.2),
+    inset -8px -8px 16px rgba(148, 163, 184, 0.4);
+}
+
+.dark .celestial-body::before {
+  content: '';
+  position: absolute;
+  top: 12px;
+  left: 18px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.4);
+}
+
+.dark .celestial-body::after {
+  content: '';
+  position: absolute;
+  bottom: 20px;
+  right: 15px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(148, 163, 184, 0.3);
+}
+
+@keyframes celestial-glow {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+  }
+}
+
+/* ============================================
+   FLOATING PARTICLES
+   ============================================ */
+.particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 600px;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.particle {
+  --scroll-offset: 0px;
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+  transform: translateY(calc(var(--scroll-offset) * -1));
+}
+
+.particle:nth-child(1) { top: 100px; left: 15%; animation: float-particle 8s ease-in-out infinite; }
+.particle:nth-child(2) { top: 180px; left: 25%; animation: float-particle 12s ease-in-out infinite reverse; animation-delay: -2s; }
+.particle:nth-child(3) { top: 80px; left: 45%; animation: float-particle 10s ease-in-out infinite; animation-delay: -4s; }
+.particle:nth-child(4) { top: 220px; left: 60%; animation: float-particle 14s ease-in-out infinite reverse; animation-delay: -1s; }
+.particle:nth-child(5) { top: 140px; left: 75%; animation: float-particle 9s ease-in-out infinite; animation-delay: -3s; }
+.particle:nth-child(6) { top: 260px; left: 35%; animation: float-particle 11s ease-in-out infinite reverse; animation-delay: -5s; }
+.particle:nth-child(7) { top: 50px; left: 85%; animation: float-particle 13s ease-in-out infinite; animation-delay: -2s; }
+.particle:nth-child(8) { top: 300px; left: 20%; animation: float-particle 15s ease-in-out infinite reverse; }
+
+.dark .particle {
+  background: rgba(125, 211, 252, 0.6);
+  box-shadow: 0 0 8px rgba(125, 211, 252, 0.4);
+}
+
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(calc(var(--scroll-offset) * -1)) translateX(0) scale(1);
+    opacity: 0.6;
+  }
+  25% {
+    transform: translateY(calc(-20px + var(--scroll-offset) * -1)) translateX(10px) scale(1.2);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(calc(-5px + var(--scroll-offset) * -1)) translateX(-5px) scale(0.8);
+    opacity: 0.4;
+  }
+  75% {
+    transform: translateY(calc(-15px + var(--scroll-offset) * -1)) translateX(-10px) scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* ============================================
    FLOATING CLOUDS - The Magic!
    ============================================ */
 .clouds {
@@ -68,17 +201,26 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: 400px;
+  height: 500px;
   pointer-events: none;
   overflow: hidden;
   z-index: 0;
 }
 
 .cloud {
+  --mouse-x: 0px;
+  --mouse-y: 0px;
+  --scroll-offset: 0px;
   position: absolute;
   background: white;
   border-radius: 100px;
   opacity: 0.9;
+  transform: translate(
+    calc(var(--mouse-x)),
+    calc(var(--mouse-y) + var(--scroll-offset) * -1)
+  );
+  transition: opacity 0.3s ease;
+  will-change: transform;
 }
 
 .cloud::before,
@@ -89,12 +231,14 @@ body {
   border-radius: 50%;
 }
 
+/* Cloud 1 - Large, front left */
 .cloud-1 {
   width: 200px;
   height: 60px;
   top: 80px;
-  left: 10%;
-  animation: float-cloud 25s ease-in-out infinite;
+  left: 8%;
+  animation: float-cloud-1 25s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(148, 163, 184, 0.15));
 }
 
 .cloud-1::before {
@@ -111,13 +255,14 @@ body {
   right: 20px;
 }
 
+/* Cloud 2 - Medium, right side */
 .cloud-2 {
   width: 150px;
   height: 50px;
   top: 120px;
-  right: 15%;
-  animation: float-cloud 30s ease-in-out infinite reverse;
-  animation-delay: -5s;
+  right: 12%;
+  animation: float-cloud-2 30s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(148, 163, 184, 0.12));
 }
 
 .cloud-2::before {
@@ -134,38 +279,39 @@ body {
   right: 15px;
 }
 
+/* Cloud 3 - Small, center background */
 .cloud-3 {
-  width: 120px;
-  height: 40px;
-  top: 200px;
-  left: 50%;
-  opacity: 0.6;
-  animation: float-cloud 35s ease-in-out infinite;
-  animation-delay: -10s;
+  width: 100px;
+  height: 35px;
+  top: 220px;
+  left: 45%;
+  opacity: 0.5;
+  animation: float-cloud-3 35s ease-in-out infinite;
 }
 
 .cloud-3::before {
-  width: 60px;
-  height: 50px;
-  top: -30px;
+  width: 50px;
+  height: 40px;
+  top: -25px;
   left: 10px;
 }
 
 .cloud-3::after {
-  width: 70px;
-  height: 55px;
-  top: -35px;
-  right: 10px;
+  width: 60px;
+  height: 45px;
+  top: -28px;
+  right: 8px;
 }
 
+/* Cloud 4 - Large, upper right */
 .cloud-4 {
   width: 180px;
   height: 55px;
-  top: 60px;
-  left: 70%;
-  opacity: 0.7;
-  animation: float-cloud 28s ease-in-out infinite reverse;
-  animation-delay: -15s;
+  top: 50px;
+  left: 65%;
+  opacity: 0.75;
+  animation: float-cloud-4 28s ease-in-out infinite;
+  filter: drop-shadow(0 10px 20px rgba(148, 163, 184, 0.1));
 }
 
 .cloud-4::before {
@@ -182,23 +328,127 @@ body {
   right: 15px;
 }
 
-.dark .cloud {
-  background: rgba(148, 163, 184, 0.15);
+/* Cloud 5 - Tiny, far background left */
+.cloud-5 {
+  width: 80px;
+  height: 28px;
+  top: 280px;
+  left: 20%;
+  opacity: 0.4;
+  animation: float-cloud-5 40s ease-in-out infinite;
 }
 
-@keyframes float-cloud {
-  0%, 100% {
-    transform: translateX(0) translateY(0);
-  }
-  25% {
-    transform: translateX(30px) translateY(-10px);
-  }
-  50% {
-    transform: translateX(15px) translateY(5px);
-  }
-  75% {
-    transform: translateX(-20px) translateY(-5px);
-  }
+.cloud-5::before {
+  width: 40px;
+  height: 32px;
+  top: -20px;
+  left: 8px;
+}
+
+.cloud-5::after {
+  width: 45px;
+  height: 35px;
+  top: -22px;
+  right: 6px;
+}
+
+/* Cloud 6 - Medium, lower right */
+.cloud-6 {
+  width: 130px;
+  height: 42px;
+  top: 180px;
+  right: 25%;
+  opacity: 0.55;
+  animation: float-cloud-6 32s ease-in-out infinite;
+}
+
+.cloud-6::before {
+  width: 65px;
+  height: 52px;
+  top: -32px;
+  left: 12px;
+}
+
+.cloud-6::after {
+  width: 72px;
+  height: 56px;
+  top: -35px;
+  right: 10px;
+}
+
+/* Cloud 7 - Large background, very slow */
+.cloud-7 {
+  width: 220px;
+  height: 65px;
+  top: 320px;
+  left: 55%;
+  opacity: 0.3;
+  animation: float-cloud-7 50s ease-in-out infinite;
+}
+
+.cloud-7::before {
+  width: 110px;
+  height: 85px;
+  top: -55px;
+  left: 25px;
+}
+
+.cloud-7::after {
+  width: 130px;
+  height: 95px;
+  top: -62px;
+  right: 22px;
+}
+
+.dark .cloud {
+  background: rgba(148, 163, 184, 0.12);
+  filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.2));
+}
+
+/* Individual cloud animations for varied movement */
+@keyframes float-cloud-1 {
+  0%, 100% { transform: translate(var(--mouse-x), calc(var(--mouse-y) + var(--scroll-offset) * -1)); }
+  25% { transform: translate(calc(35px + var(--mouse-x)), calc(-12px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  50% { transform: translate(calc(18px + var(--mouse-x)), calc(8px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  75% { transform: translate(calc(-25px + var(--mouse-x)), calc(-5px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+}
+
+@keyframes float-cloud-2 {
+  0%, 100% { transform: translate(var(--mouse-x), calc(var(--mouse-y) + var(--scroll-offset) * -1)); }
+  20% { transform: translate(calc(-20px + var(--mouse-x)), calc(-8px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  40% { transform: translate(calc(-35px + var(--mouse-x)), calc(5px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  60% { transform: translate(calc(-15px + var(--mouse-x)), calc(12px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  80% { transform: translate(calc(10px + var(--mouse-x)), calc(-3px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+}
+
+@keyframes float-cloud-3 {
+  0%, 100% { transform: translate(var(--mouse-x), calc(var(--mouse-y) + var(--scroll-offset) * -1)); }
+  33% { transform: translate(calc(25px + var(--mouse-x)), calc(-15px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  66% { transform: translate(calc(-20px + var(--mouse-x)), calc(10px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+}
+
+@keyframes float-cloud-4 {
+  0%, 100% { transform: translate(var(--mouse-x), calc(var(--mouse-y) + var(--scroll-offset) * -1)); }
+  25% { transform: translate(calc(-30px + var(--mouse-x)), calc(-10px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  50% { transform: translate(calc(-15px + var(--mouse-x)), calc(6px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  75% { transform: translate(calc(20px + var(--mouse-x)), calc(-4px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+}
+
+@keyframes float-cloud-5 {
+  0%, 100% { transform: translate(var(--mouse-x), calc(var(--mouse-y) + var(--scroll-offset) * -1)); }
+  50% { transform: translate(calc(40px + var(--mouse-x)), calc(-8px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+}
+
+@keyframes float-cloud-6 {
+  0%, 100% { transform: translate(var(--mouse-x), calc(var(--mouse-y) + var(--scroll-offset) * -1)); }
+  30% { transform: translate(calc(15px + var(--mouse-x)), calc(-12px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  70% { transform: translate(calc(-25px + var(--mouse-x)), calc(8px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+}
+
+@keyframes float-cloud-7 {
+  0%, 100% { transform: translate(var(--mouse-x), calc(var(--mouse-y) + var(--scroll-offset) * -1)); }
+  40% { transform: translate(calc(-35px + var(--mouse-x)), calc(-6px + var(--mouse-y) + var(--scroll-offset) * -1)); }
+  80% { transform: translate(calc(20px + var(--mouse-x)), calc(4px + var(--mouse-y) + var(--scroll-offset) * -1)); }
 }
 
 /* ============================================
@@ -392,19 +642,53 @@ a:hover {
    Cards - Fluffy clouds
    ============================================ */
 .card {
+  position: relative;
   background: var(--color-cloud);
   border-radius: 1.5rem;
   padding: 1.75rem;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  box-shadow: 0 4px 20px rgba(148, 163, 184, 0.15),
-              0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow:
+    0 4px 20px rgba(148, 163, 184, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.03);
   border: 1px solid rgba(226, 232, 240, 0.5);
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(14, 165, 233, 0.08) 0%,
+    transparent 50%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.card:hover::before {
+  opacity: 1;
 }
 
 .card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(148, 163, 184, 0.25),
-              0 8px 16px rgba(14, 165, 233, 0.1);
+  transform: translateY(-10px) scale(1.01);
+  box-shadow:
+    0 25px 50px rgba(148, 163, 184, 0.25),
+    0 15px 30px rgba(14, 165, 233, 0.12),
+    0 0 0 1px rgba(14, 165, 233, 0.1);
+  border-color: rgba(14, 165, 233, 0.2);
+}
+
+.dark .card:hover {
+  box-shadow:
+    0 25px 50px rgba(0, 0, 0, 0.4),
+    0 15px 30px rgba(14, 165, 233, 0.15),
+    0 0 0 1px rgba(14, 165, 233, 0.2);
 }
 
 .card-link {
@@ -847,8 +1131,27 @@ a:hover {
    Mobile Responsive
    ============================================ */
 @media (max-width: 768px) {
+  .sky-bg {
+    height: 300px;
+  }
+
+  .celestial-body {
+    width: 50px;
+    height: 50px;
+    top: 40px;
+    right: 8%;
+  }
+
   .clouds {
-    height: 250px;
+    height: 280px;
+  }
+
+  .particles {
+    height: 300px;
+  }
+
+  .particle:nth-child(n+5) {
+    display: none;
   }
 
   .cloud-1 {
@@ -889,7 +1192,27 @@ a:hover {
     top: -30px;
   }
 
-  .cloud-3, .cloud-4 {
+  .cloud-3 {
+    width: 70px;
+    height: 25px;
+    top: 160px;
+    left: 40%;
+    opacity: 0.4;
+  }
+
+  .cloud-3::before {
+    width: 35px;
+    height: 28px;
+    top: -18px;
+  }
+
+  .cloud-3::after {
+    width: 40px;
+    height: 32px;
+    top: -20px;
+  }
+
+  .cloud-4, .cloud-5, .cloud-6, .cloud-7 {
     display: none;
   }
 
@@ -1020,10 +1343,17 @@ a:hover {
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
   .cloud,
+  .particle,
+  .celestial-body,
   .animate-float,
   .card,
   .btn {
     animation: none !important;
     transition: none !important;
+  }
+
+  .cloud,
+  .particle {
+    transform: none !important;
   }
 }

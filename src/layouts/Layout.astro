@@ -17,12 +17,33 @@ const currentPath = Astro.url.pathname;
     <BaseHead title={title} description={description} image={image} />
   </head>
   <body class="flex flex-col min-h-screen">
+    <!-- Sky Background with Sun/Moon -->
+    <div class="sky-bg" aria-hidden="true">
+      <div class="celestial-body"></div>
+      <div class="sky-gradient"></div>
+    </div>
+
     <!-- Floating Clouds -->
-    <div class="clouds" aria-hidden="true">
-      <div class="cloud cloud-1"></div>
-      <div class="cloud cloud-2"></div>
-      <div class="cloud cloud-3"></div>
-      <div class="cloud cloud-4"></div>
+    <div class="clouds" id="clouds" aria-hidden="true">
+      <div class="cloud cloud-1" data-speed="0.02"></div>
+      <div class="cloud cloud-2" data-speed="0.015"></div>
+      <div class="cloud cloud-3" data-speed="0.025"></div>
+      <div class="cloud cloud-4" data-speed="0.018"></div>
+      <div class="cloud cloud-5" data-speed="0.012"></div>
+      <div class="cloud cloud-6" data-speed="0.022"></div>
+      <div class="cloud cloud-7" data-speed="0.008"></div>
+    </div>
+
+    <!-- Floating Particles -->
+    <div class="particles" id="particles" aria-hidden="true">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
     </div>
 
     <header class="header">
@@ -72,6 +93,7 @@ const currentPath = Astro.url.pathname;
     </footer>
 
     <script is:inline>
+      // Theme toggle
       const toggle = document.getElementById('theme-toggle');
       const sunIcon = toggle?.querySelector('.sun-icon');
       const moonIcon = toggle?.querySelector('.moon-icon');
@@ -91,6 +113,69 @@ const currentPath = Astro.url.pathname;
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
         updateIcons();
       });
+
+      // Cloud parallax on scroll
+      const clouds = document.querySelectorAll('.cloud');
+      const particles = document.querySelectorAll('.particle');
+      let ticking = false;
+
+      function updateParallax() {
+        const scrollY = window.scrollY;
+
+        clouds.forEach((cloud) => {
+          const speed = parseFloat(cloud.dataset.speed) || 0.02;
+          const yOffset = scrollY * speed * 50;
+          const currentTransform = getComputedStyle(cloud).transform;
+          cloud.style.setProperty('--scroll-offset', `${yOffset}px`);
+        });
+
+        particles.forEach((particle, i) => {
+          const speed = 0.03 + (i * 0.01);
+          const yOffset = scrollY * speed * 30;
+          particle.style.setProperty('--scroll-offset', `${yOffset}px`);
+        });
+
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
+      });
+
+      // Subtle mouse movement effect on clouds
+      let mouseX = 0;
+      let mouseY = 0;
+      let currentX = 0;
+      let currentY = 0;
+
+      document.addEventListener('mousemove', (e) => {
+        mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        mouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      });
+
+      function animateClouds() {
+        // Smooth lerp towards mouse position
+        currentX += (mouseX - currentX) * 0.02;
+        currentY += (mouseY - currentY) * 0.02;
+
+        clouds.forEach((cloud, i) => {
+          const depth = 1 + (i * 0.3);
+          const moveX = currentX * 15 * depth;
+          const moveY = currentY * 8 * depth;
+          cloud.style.setProperty('--mouse-x', `${moveX}px`);
+          cloud.style.setProperty('--mouse-y', `${moveY}px`);
+        });
+
+        requestAnimationFrame(animateClouds);
+      }
+
+      // Only enable mouse parallax on non-touch devices
+      if (window.matchMedia('(hover: hover)').matches) {
+        animateClouds();
+      }
     </script>
   </body>
 </html>

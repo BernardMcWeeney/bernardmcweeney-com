@@ -5,7 +5,7 @@ import { getCollection } from "astro:content";
 const posts = (await getCollection("blog"))
   .filter((p) => !p.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 3);
+  .slice(0, 2);
 
 const featuredProjects = (await getCollection("projects"))
   .filter((p) => p.data.featured)
@@ -18,143 +18,944 @@ const statusLabels = {
   planned: "Planned",
   archived: "Archived",
 };
+
+const services = [
+  {
+    icon: "globe",
+    title: "Web Development",
+    description: "Custom websites and web apps built with modern tools. Fast, accessible, and actually pleasant to use.",
+    tech: ["Astro", "React", "WordPress"],
+  },
+  {
+    icon: "server",
+    title: "IT Administration",
+    description: "Microsoft 365, Azure, and all that enterprise stuff. Keeping businesses running without the headaches.",
+    tech: ["M365", "Azure", "Intune"],
+  },
+  {
+    icon: "zap",
+    title: "Automation",
+    description: "Scripts and workflows that do the boring bits. Because life's too short for repetitive tasks.",
+    tech: ["PowerShell", "Python", "APIs"],
+  },
+];
+
+const currently = {
+  working: "Parish Core WordPress plugin",
+  learning: "Rust (slowly)",
+  listening: "The Cure - Disintegration",
+  reading: "Staff Engineer by Will Larson",
+};
 ---
 
 <Layout
   title="Home"
   description="Bernard McWeeney - A tech enthusiast from Meath, Ireland. Building things with code, helping people and causes along the way."
 >
-  <div class="container">
-    <!-- Hero -->
-    <section class="hero">
-      <h1>Howya, I'm Bernard</h1>
-      <p>
-        I'm a tech enthusiast from Meath with a habit of building things.
-        I work on web projects, manage IT systems, and try to use technology
-        to help people and causes that matter. Based in Dublin these days.
-      </p>
-      <div class="hero-links">
-        <a href="/projects" class="btn btn-primary">See What I'm Working On</a>
-        <a href="/about" class="btn">A Bit About Me</a>
-      </div>
-    </section>
-
-    <!-- Featured Projects -->
-    {featuredProjects.length > 0 && (
-      <section class="section">
-        <div class="section-header">
-          <span class="section-title">Projects</span>
-          <h2 class="section-heading">Things I'm Building</h2>
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          Available for projects
         </div>
-        <div class="grid grid-2">
-          {featuredProjects.map((project) => (
-            <a href={`/projects/${project.slug}`} class="card card-link">
-              <div class="post-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                  <h3 class="post-title">{project.data.title}</h3>
+        <h1 class="hero-title">
+          <span class="hero-greeting">Howya, I'm</span>
+          <span class="hero-name">Bernard</span>
+        </h1>
+        <p class="hero-subtitle">
+          Tech enthusiast from <span class="highlight">Meath, Ireland</span> with a habit of building things.
+          I make websites, wrangle IT systems, and use technology to help
+          <span class="highlight">people and causes</span> that matter.
+        </p>
+        <div class="hero-actions">
+          <a href="/projects" class="btn btn-primary btn-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path><polyline points="13 2 13 9 20 9"></polyline></svg>
+            View My Work
+          </a>
+          <a href="/about" class="btn btn-lg">
+            About Me
+          </a>
+        </div>
+        <div class="hero-scroll-hint">
+          <span>Scroll to explore</span>
+          <div class="scroll-indicator"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- What I Do -->
+  <section class="services-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-title">What I Do</span>
+        <h2 class="section-heading">Building & Fixing Things</h2>
+        <p class="section-description">
+          A mix of creative development and keeping the lights on. Here's how I spend my days.
+        </p>
+      </div>
+      <div class="services-grid">
+        {services.map((service, i) => (
+          <div class="service-card" style={`--delay: ${i * 0.1}s`}>
+            <div class="service-icon">
+              {service.icon === "globe" && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              )}
+              {service.icon === "server" && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              )}
+              {service.icon === "zap" && (
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              )}
+            </div>
+            <h3 class="service-title">{service.title}</h3>
+            <p class="service-description">{service.description}</p>
+            <div class="service-tech">
+              {service.tech.map((t) => (
+                <span class="tech-pill">{t}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Projects -->
+  {featuredProjects.length > 0 && (
+    <section class="projects-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-title">Featured Work</span>
+          <h2 class="section-heading">Things I've Built</h2>
+        </div>
+        <div class="featured-projects">
+          {featuredProjects.map((project, i) => (
+            <a href={`/projects/${project.slug}`} class="featured-project-card">
+              <div class="project-number">0{i + 1}</div>
+              <div class="project-content">
+                <div class="project-header">
+                  <h3>{project.data.title}</h3>
                   <span class={`project-status ${project.data.status}`}>
                     {statusLabels[project.data.status]}
                   </span>
                 </div>
                 {project.data.tagline && (
-                  <p style="font-size: 0.9rem; color: var(--color-sky-deep); margin-bottom: 0.5rem;">
-                    {project.data.tagline}
-                  </p>
+                  <p class="project-tagline">{project.data.tagline}</p>
                 )}
-                <p class="post-excerpt">{project.data.description}</p>
+                <p class="project-description">{project.data.description}</p>
                 {project.data.tech && (
                   <div class="project-tech">
-                    {project.data.tech.slice(0, 3).map((t) => (
+                    {project.data.tech.slice(0, 4).map((t) => (
                       <span class="tech-tag">{t}</span>
                     ))}
                   </div>
                 )}
+                <span class="project-link">
+                  Read case study
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </span>
               </div>
             </a>
           ))}
         </div>
-        <div style="text-align: center; margin-top: 2rem;">
+        <div class="section-footer">
           <a href="/projects" class="btn">View All Projects</a>
         </div>
-      </section>
-    )}
+      </div>
+    </section>
+  )}
 
-    <!-- Recent Posts -->
-    {posts.length > 0 && (
-      <section class="section">
+  <!-- Currently Section -->
+  <section class="currently-section">
+    <div class="container">
+      <div class="currently-grid">
+        <div class="currently-intro">
+          <span class="section-title">Right Now</span>
+          <h2 class="section-heading">What I'm Up To</h2>
+          <p>
+            A quick snapshot of my current focus. Updated whenever I remember to.
+          </p>
+        </div>
+        <div class="currently-items">
+          <div class="currently-item">
+            <div class="currently-icon working">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"></path><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path><path d="M2 2l7.586 7.586"></path><circle cx="11" cy="11" r="2"></circle></svg>
+            </div>
+            <div class="currently-content">
+              <span class="currently-label">Working on</span>
+              <span class="currently-value">{currently.working}</span>
+            </div>
+          </div>
+          <div class="currently-item">
+            <div class="currently-icon learning">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            </div>
+            <div class="currently-content">
+              <span class="currently-label">Learning</span>
+              <span class="currently-value">{currently.learning}</span>
+            </div>
+          </div>
+          <div class="currently-item">
+            <div class="currently-icon listening">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
+            </div>
+            <div class="currently-content">
+              <span class="currently-label">Listening to</span>
+              <span class="currently-value">{currently.listening}</span>
+            </div>
+          </div>
+          <div class="currently-item">
+            <div class="currently-icon reading">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+            </div>
+            <div class="currently-content">
+              <span class="currently-label">Reading</span>
+              <span class="currently-value">{currently.reading}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Blog Preview -->
+  {posts.length > 0 && (
+    <section class="blog-section">
+      <div class="container">
         <div class="section-header">
           <span class="section-title">Writing</span>
-          <h2 class="section-heading">Recent Thoughts</h2>
+          <h2 class="section-heading">Latest Thoughts</h2>
         </div>
-        <div class="grid grid-2">
+        <div class="blog-grid">
           {posts.map((post) => (
-            <a href={`/blog/${post.slug}`} class="card card-link">
-              <article class="post-card">
-                <time class="post-date" datetime={post.data.pubDate.toISOString()}>
+            <a href={`/blog/${post.slug}`} class="blog-card card card-link">
+              <article>
+                <time class="blog-date" datetime={post.data.pubDate.toISOString()}>
                   {post.data.pubDate.toLocaleDateString("en-IE", {
                     year: "numeric",
-                    month: "long",
+                    month: "short",
                     day: "numeric",
                   })}
                 </time>
-                <h3 class="post-title">{post.data.title}</h3>
-                <p class="post-excerpt">{post.data.description}</p>
-                {post.data.tags && (
-                  <div class="post-tags">
-                    {post.data.tags.slice(0, 2).map((tag) => (
-                      <span class="tag">{tag}</span>
-                    ))}
-                  </div>
-                )}
+                <h3 class="blog-title">{post.data.title}</h3>
+                <p class="blog-excerpt">{post.data.description}</p>
+                <span class="blog-link">
+                  Read more
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </span>
               </article>
             </a>
           ))}
         </div>
-        <div style="text-align: center; margin-top: 2rem;">
+        <div class="section-footer">
           <a href="/blog" class="btn">All Posts</a>
-        </div>
-      </section>
-    )}
-
-    <!-- Quick About -->
-    <section class="section">
-      <div class="card quick-about">
-        <h2>What I Do</h2>
-        <p>
-          By day, I'm an IT Administrator helping businesses keep their tech running smoothly.
-          By night (and weekends, and the odd lunch break), I build websites and web applications.
-        </p>
-        <p>
-          I've a particular soft spot for projects that help communities and causes.
-          If you're doing something good and need a hand with the tech side of things,
-          I'm usually happy to have a chat.
-        </p>
-        <div style="margin-top: 1.5rem;">
-          <a href="/about" class="btn btn-primary">More About Me</a>
         </div>
       </div>
     </section>
-  </div>
+  )}
+
+  <!-- Contact CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-card">
+        <div class="cta-content">
+          <h2>Got a Project in Mind?</h2>
+          <p>
+            I'm always up for a chat about web development, IT problems, or community projects.
+            If you're doing something good and need a hand with the tech side, let's talk.
+          </p>
+          <div class="cta-actions">
+            <a href="mailto:hello@bernardmcweeney.com" class="btn btn-primary btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+              Get in Touch
+            </a>
+            <a href="https://linkedin.com/in/bernardmcweeney" target="_blank" rel="noopener" class="btn btn-lg">
+              LinkedIn
+            </a>
+          </div>
+        </div>
+        <div class="cta-decoration">
+          <div class="cta-cloud cta-cloud-1"></div>
+          <div class="cta-cloud cta-cloud-2"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 </Layout>
 
 <style>
-  .quick-about {
-    padding: 2.5rem;
-    text-align: center;
+  /* Hero Section */
+  .hero-section {
+    padding: 4rem 0 6rem;
+    position: relative;
   }
 
-  .quick-about h2 {
+  .hero-content {
+    max-width: 700px;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(34, 197, 94, 0.1);
+    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-radius: 9999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #15803d;
+    margin-bottom: 2rem;
+  }
+
+  .dark .hero-badge {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+  }
+
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    background: #22c55e;
+    border-radius: 50%;
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.2); }
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    line-height: 1.1;
     margin-bottom: 1.5rem;
   }
 
-  .quick-about p {
-    max-width: 600px;
-    margin: 0 auto 1rem;
-    color: var(--color-text);
-    line-height: 1.8;
+  .hero-greeting {
+    display: block;
+    font-size: 0.5em;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    margin-bottom: 0.25rem;
+    background: none;
+    -webkit-text-fill-color: var(--color-text-muted);
   }
 
-  .quick-about p:last-of-type {
-    margin-bottom: 0;
+  .hero-name {
+    display: block;
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: var(--color-text-muted);
+    margin-bottom: 2.5rem;
+  }
+
+  .highlight {
+    color: var(--color-sky-dark);
+    font-weight: 600;
+  }
+
+  .dark .highlight {
+    color: var(--color-sky);
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 4rem;
+  }
+
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+
+  .btn svg {
+    flex-shrink: 0;
+  }
+
+  .hero-scroll-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .scroll-indicator {
+    width: 24px;
+    height: 40px;
+    border: 2px solid var(--color-cloud-shadow);
+    border-radius: 12px;
+    position: relative;
+  }
+
+  .scroll-indicator::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 8px;
+    background: var(--color-sky-deep);
+    border-radius: 2px;
+    animation: scroll-bounce 1.5s ease-in-out infinite;
+  }
+
+  @keyframes scroll-bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+    50% { transform: translateX(-50%) translateY(12px); opacity: 0.3; }
+  }
+
+  /* Services Section */
+  .services-section {
+    padding: 5rem 0;
+    background: linear-gradient(180deg, transparent 0%, var(--color-sky-light) 50%, transparent 100%);
+  }
+
+  .dark .services-section {
+    background: linear-gradient(180deg, transparent 0%, rgba(14, 165, 233, 0.05) 50%, transparent 100%);
+  }
+
+  .section-description {
+    color: var(--color-text-muted);
+    max-width: 500px;
+    margin: 1rem auto 0;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .service-card {
+    background: var(--color-cloud);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: fade-up 0.6s ease-out backwards;
+    animation-delay: var(--delay);
+  }
+
+  .service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(148, 163, 184, 0.2);
+    border-color: var(--color-sky-light);
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+  }
+
+  .service-icon {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--color-sky-light) 0%, #bae6fd 100%);
+    border-radius: 1rem;
+    color: var(--color-sky-dark);
+    margin-bottom: 1.5rem;
+  }
+
+  .dark .service-icon {
+    background: rgba(14, 165, 233, 0.2);
+    color: var(--color-sky);
+  }
+
+  .service-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    color: var(--color-text);
+  }
+
+  .service-description {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .service-tech {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tech-pill {
+    padding: 0.35rem 0.75rem;
+    background: var(--color-cloud-soft);
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    font-weight: 500;
+  }
+
+  /* Projects Section */
+  .projects-section {
+    padding: 5rem 0;
+  }
+
+  .featured-projects {
+    display: grid;
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .featured-project-card {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    padding: 2rem;
+    background: var(--color-cloud);
+    border-radius: 1.5rem;
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .featured-project-card:hover {
+    transform: translateY(-6px) scale(1.01);
+    box-shadow: 0 25px 50px rgba(148, 163, 184, 0.2);
+    border-color: rgba(14, 165, 233, 0.2);
+  }
+
+  .project-number {
+    font-size: 4rem;
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--color-sky-light) 0%, var(--color-sky) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0.5;
+  }
+
+  .project-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .project-header h3 {
+    font-size: 1.5rem;
+    color: var(--color-text);
+    margin: 0;
+  }
+
+  .project-tagline {
+    color: var(--color-sky-deep);
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .dark .project-tagline {
+    color: var(--color-sky);
+  }
+
+  .project-description {
+    color: var(--color-text-muted);
+    line-height: 1.7;
+    margin: 0.5rem 0;
+  }
+
+  .project-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    transition: gap 0.2s ease;
+  }
+
+  .featured-project-card:hover .project-link {
+    gap: 0.75rem;
+  }
+
+  .section-footer {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  /* Currently Section */
+  .currently-section {
+    padding: 5rem 0;
+    background: linear-gradient(180deg, transparent 0%, var(--color-sky-light) 50%, transparent 100%);
+  }
+
+  .dark .currently-section {
+    background: linear-gradient(180deg, transparent 0%, rgba(14, 165, 233, 0.05) 50%, transparent 100%);
+  }
+
+  .currently-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .currently-intro p {
+    color: var(--color-text-muted);
+    margin-top: 1rem;
+    line-height: 1.7;
+  }
+
+  .currently-items {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .currently-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: var(--color-cloud);
+    border-radius: 1rem;
+    border: 1px solid rgba(226, 232, 240, 0.5);
+    transition: all 0.3s ease;
+  }
+
+  .currently-item:hover {
+    transform: translateX(8px);
+    border-color: var(--color-sky-light);
+  }
+
+  .currently-icon {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  .currently-icon.working {
+    background: rgba(34, 197, 94, 0.15);
+    color: #15803d;
+  }
+
+  .currently-icon.learning {
+    background: rgba(168, 85, 247, 0.15);
+    color: #7c3aed;
+  }
+
+  .currently-icon.listening {
+    background: rgba(236, 72, 153, 0.15);
+    color: #db2777;
+  }
+
+  .currently-icon.reading {
+    background: rgba(245, 158, 11, 0.15);
+    color: #d97706;
+  }
+
+  .dark .currently-icon.working { color: #4ade80; }
+  .dark .currently-icon.learning { color: #a78bfa; }
+  .dark .currently-icon.listening { color: #f472b6; }
+  .dark .currently-icon.reading { color: #fbbf24; }
+
+  .currently-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .currently-label {
+    font-size: 0.8rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .currently-value {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  /* Blog Section */
+  .blog-section {
+    padding: 5rem 0;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+  }
+
+  .blog-card {
+    padding: 2rem;
+  }
+
+  .blog-card article {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .blog-date {
+    font-size: 0.85rem;
+    color: var(--color-sky-deep);
+    font-weight: 500;
+  }
+
+  .blog-title {
+    font-size: 1.25rem;
+    color: var(--color-text);
+    margin: 0;
+    transition: color 0.2s ease;
+  }
+
+  .blog-card:hover .blog-title {
+    color: var(--color-sky-dark);
+  }
+
+  .dark .blog-card:hover .blog-title {
+    color: var(--color-sky);
+  }
+
+  .blog-excerpt {
+    color: var(--color-text-muted);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .blog-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-accent);
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    transition: gap 0.2s ease;
+  }
+
+  .blog-card:hover .blog-link {
+    gap: 0.75rem;
+  }
+
+  /* CTA Section */
+  .cta-section {
+    padding: 5rem 0 6rem;
+  }
+
+  .cta-card {
+    position: relative;
+    padding: 4rem;
+    background: linear-gradient(135deg, var(--color-sky-deep) 0%, var(--color-sky-dark) 100%);
+    border-radius: 2rem;
+    overflow: hidden;
+  }
+
+  .cta-content {
+    position: relative;
+    z-index: 1;
+    max-width: 600px;
+  }
+
+  .cta-card h2 {
+    font-size: 2rem;
+    color: white;
+    margin-bottom: 1rem;
+  }
+
+  .cta-card p {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+  }
+
+  .cta-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cta-card .btn-primary {
+    background: white;
+    color: var(--color-sky-dark);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .cta-card .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  }
+
+  .cta-card .btn:not(.btn-primary) {
+    background: rgba(255, 255, 255, 0.15);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+  }
+
+  .cta-card .btn:not(.btn-primary):hover {
+    background: rgba(255, 255, 255, 0.25);
+  }
+
+  .cta-decoration {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    pointer-events: none;
+  }
+
+  .cta-cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 100px;
+  }
+
+  .cta-cloud::before,
+  .cta-cloud::after {
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+  }
+
+  .cta-cloud-1 {
+    width: 200px;
+    height: 60px;
+    top: 30%;
+    right: 10%;
+    animation: float-cloud-1 20s ease-in-out infinite;
+  }
+
+  .cta-cloud-1::before {
+    width: 100px;
+    height: 80px;
+    top: -50px;
+    left: 20px;
+  }
+
+  .cta-cloud-1::after {
+    width: 120px;
+    height: 90px;
+    top: -60px;
+    right: 20px;
+  }
+
+  .cta-cloud-2 {
+    width: 150px;
+    height: 45px;
+    bottom: 20%;
+    right: 25%;
+    opacity: 0.5;
+    animation: float-cloud-2 25s ease-in-out infinite;
+  }
+
+  .cta-cloud-2::before {
+    width: 75px;
+    height: 60px;
+    top: -40px;
+    left: 15px;
+  }
+
+  .cta-cloud-2::after {
+    width: 85px;
+    height: 65px;
+    top: -45px;
+    right: 12px;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 3rem 0 4rem;
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+    }
+
+    .hero-scroll-hint {
+      display: none;
+    }
+
+    .services-section,
+    .currently-section {
+      padding: 4rem 0;
+    }
+
+    .currently-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+
+    .featured-project-card {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .project-number {
+      font-size: 2.5rem;
+    }
+
+    .cta-card {
+      padding: 2.5rem 2rem;
+    }
+
+    .cta-card h2 {
+      font-size: 1.5rem;
+    }
+
+    .cta-decoration {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-actions {
+      flex-direction: column;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .cta-actions {
+      flex-direction: column;
+    }
+
+    .cta-actions .btn {
+      width: 100%;
+      justify-content: center;
+    }
   }
 </style>
