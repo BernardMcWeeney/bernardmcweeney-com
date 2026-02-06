@@ -3,6 +3,7 @@ title: "BernardOnTheAux"
 tagline: "Personal music writing, away from the algorithms"
 description: "Long-form reviews, gig write-ups, and listening notes. A deliberately slow, personal blog in the spirit of early web culture."
 status: "active"
+category: writing
 featured: true
 order: 5
 tech:

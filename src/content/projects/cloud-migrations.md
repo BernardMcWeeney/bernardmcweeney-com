@@ -3,6 +3,7 @@ title: "Cloud Platform Migrations"
 tagline: "Google Workspace to Microsoft 365 at enterprise scale"
 description: "Planning and execution of large identity and data migrations, including domain strategy, coexistence, and Chromebook considerations."
 status: "active"
+category: consultancy
 featured: false
 order: 10
 tech:

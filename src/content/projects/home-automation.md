@@ -3,6 +3,7 @@ title: "Home Automation"
 tagline: "Self-hosted smart home with a local-first approach"
 description: "A self-hosted home automation environment using Home Assistant on Raspberry Pi, integrating devices and sensors with privacy in mind."
 status: "active"
+category: hardware
 featured: false
 order: 16
 tech:

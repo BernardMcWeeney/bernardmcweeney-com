@@ -3,6 +3,7 @@ title: "The Record"
 tagline: "Digital journalism and publishing experiment"
 description: "An exploration of modern independent journalism models, sub-brands, and editorial architecture. A significant learning experience."
 status: "archived"
+category: writing
 featured: false
 order: 20
 tech:

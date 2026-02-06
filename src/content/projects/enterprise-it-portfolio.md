@@ -3,6 +3,7 @@ title: "Enterprise IT Portfolio"
 tagline: "Large-scale tenant stewardship, not just administration"
 description: "End-to-end ownership of a large public-sector Microsoft tenant supporting ~3,500 staff and ~70,000 students across 100+ sites."
 status: "active"
+category: enterprise
 featured: true
 order: 1
 tech:

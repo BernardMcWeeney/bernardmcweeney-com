@@ -3,6 +3,7 @@ title: "Cureation"
 tagline: "For fans of The Cure"
 description: "A fan site celebrating The Cure, featuring discography information, setlists, and community features."
 status: planned
+category: writing
 featured: false
 order: 4
 tech:

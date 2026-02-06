@@ -3,6 +3,7 @@ title: "Copilot & AI Governance"
 tagline: "AI introduced deliberately, not recklessly"
 description: "Planning and execution of organisational AI pilot including controlled rollout, data protection considerations, and staff guidance."
 status: "active"
+category: enterprise
 featured: false
 order: 28
 tech:

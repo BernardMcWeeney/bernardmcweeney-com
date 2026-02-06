@@ -3,6 +3,7 @@ title: "Security & Assurance Frameworks"
 tagline: "Structured approaches to remediation and risk"
 description: "Creation of remediation frameworks, go-live assurance processes, and risk tracking systems for governance, auditors, and stakeholders."
 status: "active"
+category: consultancy
 featured: false
 order: 11
 tech:

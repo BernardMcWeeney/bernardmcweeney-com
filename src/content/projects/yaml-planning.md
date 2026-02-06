@@ -3,6 +3,7 @@ title: "Data-Driven Personal Sites"
 tagline: "YAML files as a source of truth"
 description: "Experiments in structuring personal goals and projects using data files rendered into static sites for tracking and visibility."
 status: "planned"
+category: web
 featured: false
 order: 22
 tech:

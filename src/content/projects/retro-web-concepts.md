@@ -3,6 +3,7 @@ title: "Retro Web Design Concepts"
 tagline: "Nostalgia for a web that worked differently"
 description: "Exploration of 80s/90s inspired personal websites. Minimalist layouts, retro UI cues, and content-first design inspired by early web culture."
 status: "planned"
+category: web
 featured: false
 order: 21
 tech:

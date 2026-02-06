@@ -3,6 +3,7 @@ title: "This Website"
 tagline: "My corner of the internet"
 description: "A personal portfolio and blog built with Astro, designed to be fast, clean, and hopefully not too self-indulgent."
 status: active
+category: web
 featured: false
 order: 3
 tech:

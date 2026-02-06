@@ -3,6 +3,7 @@ title: "Community & Parish Websites"
 tagline: "Long-term web work for those who need it most"
 description: "A body of real-world client work for parishes, schools, and community organisations. Emphasis on longevity, accessibility, and ongoing stewardship."
 status: "active"
+category: web
 featured: true
 order: 4
 tech:

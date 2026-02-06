@@ -3,6 +3,7 @@ title: "Network & Security Infrastructure"
 tagline: "UniFi networks and surveillance systems"
 description: "Design and deployment of network infrastructure and security camera systems, with a focus on reliability and vendor consolidation."
 status: "active"
+category: hardware
 featured: false
 order: 17
 tech:

@@ -3,6 +3,7 @@ title: "Greenberry"
 tagline: "Helping Irish businesses get online"
 description: "Web development and IT services tailored for small and medium businesses across Ireland."
 status: active
+category: web
 featured: true
 order: 1
 tech:

@@ -3,6 +3,7 @@ title: "Automation & PowerShell Tooling"
 tagline: "Making computers do the boring bits"
 description: "Extensive scripting and automation for user management, reporting, auditing, and operational tasks in Microsoft environments."
 status: "active"
+category: automation
 featured: false
 order: 12
 tech:

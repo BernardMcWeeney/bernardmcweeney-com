@@ -3,6 +3,7 @@ title: "Church Live-Streaming System"
 tagline: "Volunteer-friendly streaming hardware for parishes"
 description: "A low-cost, simple live-streaming solution for churches using Raspberry Pi, physical controls, and YouTube Live integration."
 status: "active"
+category: hardware
 featured: false
 order: 9
 tech:

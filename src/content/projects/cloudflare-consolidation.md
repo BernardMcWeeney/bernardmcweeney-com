@@ -3,6 +3,7 @@ title: "Cloudflare Domain Consolidation"
 tagline: "Materially improving security posture through consolidation"
 description: "Major consolidation of ~100 site and centre domains into a centralised Cloudflare estate with unified DNS, WAF, and security management."
 status: "active"
+category: enterprise
 featured: false
 order: 30
 tech:

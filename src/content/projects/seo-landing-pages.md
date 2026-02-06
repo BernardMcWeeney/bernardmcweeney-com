@@ -3,6 +3,7 @@ title: "SEO Landing Page System"
 tagline: "Geographically targeted pages done properly"
 description: "A large-scale experiment in creating county-specific landing pages with genuinely useful, human-readable content rather than boilerplate."
 status: "development"
+category: web
 featured: false
 order: 19
 tech:

@@ -3,6 +3,7 @@ title: "Church Online Donations"
 tagline: "Simple, secure giving for parishes"
 description: "Implementation of online donation systems for churches using Stripe, supporting one-off and recurring contributions."
 status: "active"
+category: hardware
 featured: false
 order: 14
 tech:

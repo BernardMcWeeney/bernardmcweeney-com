@@ -3,6 +3,7 @@ title: "Microsoft 365 Governance"
 tagline: "Enterprise tenant architecture and security at scale"
 description: "Design and management of Microsoft cloud environments across tens of thousands of users. Entra ID, Intune, Defender, licensing, and governance."
 status: "active"
+category: enterprise
 featured: true
 order: 2
 tech:

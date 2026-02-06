@@ -3,6 +3,7 @@ title: "Clubify"
 tagline: "Digital tooling for sports clubs and community organisations"
 description: "Technology solutions for GAA clubs, sports organisations, and community groups who need modern digital infrastructure without the complexity."
 status: "planned"
+category: web
 featured: false
 order: 15
 tech:

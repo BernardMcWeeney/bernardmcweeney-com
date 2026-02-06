@@ -3,6 +3,7 @@ title: "Churchify"
 tagline: "IT and digital services for churches"
 description: "Technology solutions tailored for parishes and churches - websites, streaming, donations, and infrastructure designed for non-technical volunteers."
 status: "active"
+category: web
 featured: false
 order: 8
 tech:

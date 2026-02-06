@@ -3,6 +3,7 @@ title: "Modern Web Stack Experiments"
 tagline: "Astro, headless CMS, and the pursuit of simplicity"
 description: "Ongoing exploration of modern web technologies - static site generators, headless CMS platforms, and infrastructure that prioritises performance and longevity."
 status: "active"
+category: web
 featured: false
 order: 13
 tech:

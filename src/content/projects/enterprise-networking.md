@@ -3,6 +3,7 @@ title: "Enterprise Networking"
 tagline: "Cisco Meraki and UniFi at scale"
 description: "Design and oversight of enterprise networking across 100+ sites including Meraki management, UniFi deployments, and integration with cloud security."
 status: "active"
+category: enterprise
 featured: false
 order: 29
 tech:

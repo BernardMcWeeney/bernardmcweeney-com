@@ -3,6 +3,7 @@ title: "Azure Platform Management"
 tagline: "Cloud infrastructure as an extension of the tenant"
 description: "Governance and operational oversight of Azure services including identity-driven access, cost visibility, and secure integration with Microsoft 365."
 status: "active"
+category: enterprise
 featured: false
 order: 27
 tech:

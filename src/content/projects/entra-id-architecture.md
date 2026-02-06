@@ -3,6 +3,7 @@ title: "Entra ID Architecture & Identity"
 tagline: "Cloud-first identity at enterprise scale"
 description: "Design and management of Microsoft Entra ID architecture including administrative units, RBAC, conditional access, and hybrid-to-cloud transition."
 status: "active"
+category: enterprise
 featured: false
 order: 25
 tech:

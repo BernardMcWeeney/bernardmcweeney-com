@@ -3,6 +3,7 @@ title: "Risk & Governance Frameworks"
 tagline: "Risk as a living system, not paperwork"
 description: "Design and operation of IT risk management, GDPR compliance, security remediation, and go-live assurance processes for public-sector governance."
 status: "active"
+category: consultancy
 featured: false
 order: 31
 tech:

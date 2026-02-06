@@ -3,6 +3,7 @@ title: "Media Servers & Self-Hosting"
 tagline: "Curiosity-driven exploration of self-hosted services"
 description: "Running Jellyfin and other self-hosted services. Partly practical, partly just enjoying the tinkering."
 status: "active"
+category: hardware
 featured: false
 order: 18
 tech:

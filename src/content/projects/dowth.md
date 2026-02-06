@@ -3,6 +3,7 @@ title: "Dowth.ie"
 tagline: "History, archaeology, and mythology of the Boyne Valley"
 description: "A history and archaeology website focused on Dowth and the wider Boyne Valley. Place-based storytelling with respect for the subject matter."
 status: "development"
+category: writing
 featured: true
 order: 6
 tech:

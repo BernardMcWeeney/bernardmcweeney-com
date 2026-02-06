@@ -3,6 +3,7 @@ title: "Waymark"
 tagline: "IT consultancy focused on clarity and systems"
 description: "Strategic IT consultancy centred on infrastructure, governance, security, automation, and Microsoft cloud ecosystems."
 status: "active"
+category: consultancy
 featured: true
 order: 3
 tech:
