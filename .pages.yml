@@ -1,14 +1,100 @@
 media:
-  input: public
-  output: /
+  input: public/images
+  output: /images
 
 content:
+  - name: about
+    label: About Page
+    type: file
+    path: src/data/about.yaml
+    format: yaml
+    fields:
+      - name: title
+        label: Page Title
+        type: string
+        required: true
+      - name: subtitle
+        label: Subtitle
+        type: string
+        required: true
+      - name: story
+        label: Story Section
+        type: object
+        fields:
+          - name: title
+            label: Section Title
+            type: string
+          - name: paragraphs
+            label: Paragraphs
+            type: text
+            list: true
+      - name: skills
+        label: Skills Section
+        type: object
+        fields:
+          - name: intro
+            label: Introduction Text
+            type: string
+          - name: categories
+            label: Skill Categories
+            type: object
+            list: true
+            fields:
+              - name: name
+                label: Category Name
+                type: string
+              - name: description
+                label: Description
+                type: string
+              - name: items
+                label: Skills
+                type: string
+                list: true
+      - name: interests
+        label: Interests Section
+        type: object
+        fields:
+          - name: intro
+            label: Introduction
+            type: string
+          - name: items
+            label: Interests
+            type: string
+            list: true
+          - name: footer
+            label: Footer Text
+            type: string
+      - name: contact
+        label: Contact Section
+        type: object
+        fields:
+          - name: intro
+            label: Introduction
+            type: text
+          - name: cta
+            label: Call to Action
+            type: text
+          - name: email
+            label: Email Address
+            type: string
+          - name: linkedin
+            label: LinkedIn URL
+            type: string
+          - name: github
+            label: GitHub URL
+            type: string
+
   - name: blog
     label: Blog Posts
     type: collection
     path: src/content/blog
     format: yaml-frontmatter
-    filename: '{year}-{month}-{day}-{primary}.md'
+    filename: "{slug}.md"
+    view:
+      fields: [title, pubDate, draft]
+      primary: title
+      sort: pubDate
+      order: desc
     fields:
       - name: title
         label: Title
@@ -17,33 +103,102 @@ content:
       - name: description
         label: Description
         type: text
+        required: true
       - name: pubDate
-        label: Published Date
+        label: Publish Date
         type: date
         required: true
+      - name: updatedDate
+        label: Updated Date
+        type: date
       - name: heroImage
         label: Hero Image
         type: image
-      - name: body
-        label: Body
-        type: rich-text
-        required: true
-    view:
-      fields: [ title, pubDate ]
-      primary: title
-      sort: [ pubDate, title ]
-      default:
-        sort: pubDate
-        order: desc
+      - name: draft
+        label: Draft
+        type: boolean
+        default: false
+      - name: tags
+        label: Tags
+        type: string
+        list: true
 
-  - name: about
-    label: About Page
-    type: file
-    path: src/pages/about.astro
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    format: yaml-frontmatter
+    filename: "{slug}.md"
+    view:
+      fields: [title, category, status, order]
+      primary: title
+      sort: order
+      order: asc
     fields:
-      - name: body
-        label: Body
-        type: rich-text
+      - name: title
+        label: Project Name
+        type: string
+        required: true
+      - name: description
+        label: Description
+        type: text
+        required: true
+        description: Short description shown in the project list
+      - name: category
+        label: Category
+        type: select
+        required: true
+        description: Used for filtering on the projects page
+        options:
+          - label: Enterprise IT
+            value: enterprise
+          - label: Web & Digital
+            value: web
+          - label: Writing & Culture
+            value: writing
+          - label: Hardware & Infrastructure
+            value: hardware
+          - label: Automation
+            value: automation
+          - label: Consultancy
+            value: consultancy
+      - name: status
+        label: Status
+        type: select
+        required: true
+        options:
+          - label: Live
+            value: active
+          - label: In Development
+            value: development
+          - label: Planned
+            value: planned
+          - label: Archived
+            value: archived
+      - name: order
+        label: Display Order
+        type: number
+        default: 99
+        description: Lower numbers appear first
+      - name: heroImage
+        label: Hero Image
+        type: image
+      - name: tech
+        label: Technologies
+        type: string
+        list: true
+      - name: liveUrl
+        label: Live URL
+        type: string
+      - name: repoUrl
+        label: Repository URL
+        type: string
+      - name: role
+        label: Your Role
+        type: string
+      - name: year
+        label: Year
+        type: string
 
 settings:
   content:
