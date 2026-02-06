@@ -150,31 +150,33 @@ content:
         required: true
         description: Used for filtering on the projects page
         options:
-          - label: Enterprise IT
-            value: enterprise
-          - label: Web & Digital
-            value: web
-          - label: Writing & Culture
-            value: writing
-          - label: Hardware & Infrastructure
-            value: hardware
-          - label: Automation
-            value: automation
-          - label: Consultancy
-            value: consultancy
+          values:
+            - value: enterprise
+              label: Enterprise IT
+            - value: web
+              label: Web & Digital
+            - value: writing
+              label: Writing & Culture
+            - value: hardware
+              label: Hardware & Infrastructure
+            - value: automation
+              label: Automation
+            - value: consultancy
+              label: Consultancy
       - name: status
         label: Status
         type: select
         required: true
         options:
-          - label: Live
-            value: active
-          - label: In Development
-            value: development
-          - label: Planned
-            value: planned
-          - label: Archived
-            value: archived
+          values:
+            - value: active
+              label: Live
+            - value: development
+              label: In Development
+            - value: planned
+              label: Planned
+            - value: archived
+              label: Archived
       - name: order
         label: Display Order
         type: number
