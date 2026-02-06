@@ -1,0 +1,56 @@
+title: About Me
+subtitle: The short version - I like building things that help people.
+
+story:
+  title: The Story
+  paragraphs:
+    - I'm Bernard, originally from Meath but based in Dublin these days. I've been messing about with computers since I was young enough to not know any better, and somehow turned that into a career.
+    - During the day, I work as an IT Administrator, helping businesses keep their technology running without wanting to throw it out the window. It's a mix of Microsoft 365 administration, Azure cloud services, and general "the printer isn't working" support.
+    - "Outside of that, I build websites and web applications. I started Greenberry to help Irish small businesses get online without being ripped off. There's a lot of overpriced, overcomplicated solutions out there, and I thought I could do better. The jury's still out on whether I was right."
+    - I've a particular interest in using tech for good. Whether it's helping a parish get their website sorted, building tools for community groups, or just lending a hand to someone doing something worthwhile, that's the work that gets me out of bed. Well, that and the mortgage.
+
+skills:
+  intro: "I'm not going to claim to be an expert in everything, but here's what I spend most of my time with:"
+  categories:
+    - name: Infrastructure & IT
+      description: The bread and butter. Keeping businesses running on Microsoft's finest.
+      items:
+        - Microsoft 365
+        - Azure AD
+        - Intune
+        - Active Directory
+        - Google Workspace
+    - name: Web Development
+      description: Building things for the internet, one component at a time.
+      items:
+        - Astro
+        - React
+        - TypeScript
+        - Tailwind CSS
+        - WordPress
+        - PHP
+    - name: Automation
+      description: Making computers do the boring bits so humans don't have to.
+      items:
+        - PowerShell
+        - Graph API
+        - Python
+        - Bash
+        - Docker
+
+interests:
+  intro: "When I'm not staring at a screen, you might find me:"
+  items:
+    - Community tech projects
+    - Open source
+    - The Cure (the band)
+    - Irish history
+    - A decent cup of tea
+  footer: "I'm also known to have strong opinions about tea, the correct way to make a sandwich, and why the M50 is a disaster at rush hour."
+
+contact:
+  intro: "Whether you've got a project in mind, want to chat about tech, or just want to argue about The Cure's best album (it's Disintegration, by the way), I'm happy to hear from you."
+  cta: I'm particularly interested in hearing from community groups, charities, or anyone doing something good who needs a hand with technology.
+  email: hello@bernardmcweeney.com
+  linkedin: https://linkedin.com/in/bernardmcweeney
+  github: https://github.com/BernardMcWeeney

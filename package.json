@@ -15,15 +15,17 @@
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
-    "@astrojs/mdx": "^4.3.12",
-    "@astrojs/rss": "^4.0.14",
-    "@astrojs/sitemap": "^3.6.0",
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/rss": "^4.0.15",
+    "@astrojs/sitemap": "^3.7.0",
     "@tailwindcss/vite": "^4.1.10",
-    "astro": "^5.16.4",
+    "astro": "^5.17.1",
+    "js-yaml": "^4.1.1",
     "tailwindcss": "^4.1.10",
     "typescript": "5.8.3"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "wrangler": "4.16.1"
   },
   "scripts": {

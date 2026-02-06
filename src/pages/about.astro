@@ -1,19 +1,38 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import yaml from "js-yaml";
+import fs from "node:fs";
+import path from "node:path";
 
-const skills = {
-  infrastructure: ["Microsoft 365", "Azure AD", "Intune", "Active Directory", "Google Workspace"],
-  development: ["Astro", "React", "TypeScript", "Tailwind CSS", "WordPress", "PHP"],
-  automation: ["PowerShell", "Graph API", "Python", "Bash", "Docker"],
+const aboutPath = path.join(process.cwd(), "src/data/about.yaml");
+const aboutData = yaml.load(fs.readFileSync(aboutPath, "utf8")) as {
+  title: string;
+  subtitle: string;
+  story: {
+    title: string;
+    paragraphs: string[];
+  };
+  skills: {
+    intro: string;
+    categories: {
+      name: string;
+      description: string;
+      items: string[];
+    }[];
+  };
+  interests: {
+    intro: string;
+    items: string[];
+    footer: string;
+  };
+  contact: {
+    intro: string;
+    cta: string;
+    email: string;
+    linkedin: string;
+    github: string;
+  };
 };
-
-const interests = [
-  "Community tech projects",
-  "Open source",
-  "The Cure (the band)",
-  "Irish history",
-  "A decent cup of tea",
-];
 ---
 
 <Layout
@@ -22,86 +41,48 @@ const interests = [
 >
   <div class="container">
     <header class="page-header">
-      <h1>About Me</h1>
-      <p>The short version: I like building things that help people.</p>
+      <h1>{aboutData.title}</h1>
+      <p>{aboutData.subtitle}</p>
     </header>
 
     <div class="about-content">
       <section class="about-section">
         <div class="card story-card">
-          <h2>The Story</h2>
+          <h2>{aboutData.story.title}</h2>
           <div class="prose">
-            <p>
-              I'm Bernard, originally from Meath but based in Dublin these days. I've been
-              messing about with computers since I was young enough to not know any better,
-              and somehow turned that into a career.
-            </p>
-            <p>
-              During the day, I work as an IT Administrator, helping businesses keep their
-              technology running without wanting to throw it out the window. It's a mix of
-              Microsoft 365 administration, Azure cloud services, and general "the printer
-              isn't working" support.
-            </p>
-            <p>
-              Outside of that, I build websites and web applications. I started
-              <a href="/projects/greenberry">Greenberry</a> to help Irish small businesses
-              get online without being ripped off. There's a lot of overpriced, overcomplicated
-              solutions out there, and I thought I could do better. The jury's still out on
-              whether I was right.
-            </p>
-            <p>
-              I've a particular interest in using tech for good. Whether it's helping a
-              parish get their website sorted, building tools for community groups, or just
-              lending a hand to someone doing something worthwhile, that's the work that
-              gets me out of bed. Well, that and the mortgage.
-            </p>
+            {aboutData.story.paragraphs.map((paragraph, index) => (
+              index === 2 ? (
+                <p>
+                  Outside of that, I build websites and web applications. I started
+                  <a href="/projects/greenberry">Greenberry</a> to help Irish small businesses
+                  get online without being ripped off. There's a lot of overpriced, overcomplicated
+                  solutions out there, and I thought I could do better. The jury's still out on
+                  whether I was right.
+                </p>
+              ) : (
+                <p>{paragraph}</p>
+              )
+            ))}
           </div>
         </div>
       </section>
 
       <section class="about-section">
         <h2>What I Work With</h2>
-        <p class="section-intro">
-          I'm not going to claim to be an expert in everything, but here's what I spend
-          most of my time with:
-        </p>
+        <p class="section-intro">{aboutData.skills.intro}</p>
 
         <div class="skills-cards">
-          <div class="card">
-            <h3>Infrastructure & IT</h3>
-            <p class="skills-description">
-              The bread and butter. Keeping businesses running on Microsoft's finest.
-            </p>
-            <div class="skills-grid">
-              {skills.infrastructure.map((skill) => (
-                <span class="skill-tag">{skill}</span>
-              ))}
+          {aboutData.skills.categories.map((category) => (
+            <div class="card">
+              <h3>{category.name}</h3>
+              <p class="skills-description">{category.description}</p>
+              <div class="skills-grid">
+                {category.items.map((skill) => (
+                  <span class="skill-tag">{skill}</span>
+                ))}
+              </div>
             </div>
-          </div>
-
-          <div class="card">
-            <h3>Web Development</h3>
-            <p class="skills-description">
-              Building things for the internet, one component at a time.
-            </p>
-            <div class="skills-grid">
-              {skills.development.map((skill) => (
-                <span class="skill-tag">{skill}</span>
-              ))}
-            </div>
-          </div>
-
-          <div class="card">
-            <h3>Automation</h3>
-            <p class="skills-description">
-              Making computers do the boring bits so humans don't have to.
-            </p>
-            <div class="skills-grid">
-              {skills.automation.map((skill) => (
-                <span class="skill-tag">{skill}</span>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -109,16 +90,15 @@ const interests = [
         <h2>Beyond the Code</h2>
         <div class="card">
           <p style="margin-bottom: 1rem; color: var(--color-text);">
-            When I'm not staring at a screen, you might find me:
+            {aboutData.interests.intro}
           </p>
           <ul class="interests-list">
-            {interests.map((interest) => (
+            {aboutData.interests.items.map((interest) => (
               <li>{interest}</li>
             ))}
           </ul>
           <p style="margin-top: 1rem; color: var(--color-text-muted); font-style: italic;">
-            I'm also known to have strong opinions about tea, the correct way to make
-            a sandwich, and why the M50 is a disaster at rush hour.
+            {aboutData.interests.footer}
           </p>
         </div>
       </section>
@@ -127,22 +107,19 @@ const interests = [
         <h2>Get in Touch</h2>
         <div class="card contact-card">
           <p>
-            Whether you've got a project in mind, want to chat about tech, or just want
-            to argue about The Cure's best album (it's <em>Disintegration</em>, by the way),
-            I'm happy to hear from you.
+            {aboutData.contact.intro.split("Disintegration")[0]}
+            <em>Disintegration</em>
+            {aboutData.contact.intro.split("Disintegration")[1]}
           </p>
-          <p>
-            I'm particularly interested in hearing from community groups, charities, or
-            anyone doing something good who needs a hand with technology.
-          </p>
+          <p>{aboutData.contact.cta}</p>
           <div class="contact-links">
-            <a href="mailto:hello@bernardmcweeney.com" class="btn btn-primary">
+            <a href={`mailto:${aboutData.contact.email}`} class="btn btn-primary">
               Drop Me an Email
             </a>
-            <a href="https://linkedin.com/in/bernardmcweeney" target="_blank" rel="noopener" class="btn">
+            <a href={aboutData.contact.linkedin} target="_blank" rel="noopener" class="btn">
               LinkedIn
             </a>
-            <a href="https://github.com/BernardMcWeeney" target="_blank" rel="noopener" class="btn">
+            <a href={aboutData.contact.github} target="_blank" rel="noopener" class="btn">
               GitHub
             </a>
           </div>
