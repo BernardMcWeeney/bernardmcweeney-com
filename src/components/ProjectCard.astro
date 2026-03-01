@@ -1,0 +1,168 @@
+---
+interface Props {
+  slug: string;
+  title: string;
+  tagline?: string;
+  description: string;
+  status: "active" | "development" | "planned" | "archived";
+  tech?: string[];
+  liveUrl?: string;
+}
+
+const { slug, title, tagline, description, status, tech, liveUrl } = Astro.props;
+
+const statusLabels = {
+  active: "Live",
+  development: "In Development",
+  planned: "Planned",
+  archived: "Archived",
+};
+---
+
+<a href={`/projects/${slug}`} class="project-card">
+  <div class="project-header">
+    <h3>{title}</h3>
+    <span class={`project-status ${status}`}>{statusLabels[status]}</span>
+  </div>
+  {tagline && <p class="project-tagline">{tagline}</p>}
+  <p class="project-description">{description}</p>
+  {tech && tech.length > 0 && (
+    <div class="project-tech">
+      {tech.slice(0, 4).map((t) => (
+        <span class="tech-tag">{t}</span>
+      ))}
+      {tech.length > 4 && (
+        <span class="tech-more">+{tech.length - 4}</span>
+      )}
+    </div>
+  )}
+</a>
+
+<style>
+  .project-card {
+    display: block;
+    padding: 1.5rem;
+    background: var(--color-cloud);
+    border-radius: 0.75rem;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border: 1px solid transparent;
+  }
+
+  .project-card:hover {
+    border-color: var(--color-sky);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
+  }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
+  }
+
+  .project-header h3 {
+    font-size: 1.1rem;
+    margin: 0;
+    color: var(--color-text);
+  }
+
+  .project-card:hover h3 {
+    color: var(--color-sky-dark);
+  }
+
+  .dark .project-card:hover h3 {
+    color: var(--color-sky);
+  }
+
+  .project-status {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+
+  .project-status.active {
+    background: rgba(34, 197, 94, 0.15);
+    color: #16a34a;
+  }
+  .dark .project-status.active {
+    background: rgba(34, 197, 94, 0.2);
+    color: #4ade80;
+  }
+
+  .project-status.development {
+    background: rgba(234, 179, 8, 0.15);
+    color: #ca8a04;
+  }
+  .dark .project-status.development {
+    background: rgba(234, 179, 8, 0.2);
+    color: #facc15;
+  }
+
+  .project-status.planned {
+    background: rgba(59, 130, 246, 0.15);
+    color: #2563eb;
+  }
+  .dark .project-status.planned {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+  }
+
+  .project-status.archived {
+    background: rgba(107, 114, 128, 0.15);
+    color: #4b5563;
+  }
+  .dark .project-status.archived {
+    background: rgba(107, 114, 128, 0.2);
+    color: #9ca3af;
+  }
+
+  .project-tagline {
+    color: var(--color-sky-deep);
+    font-weight: 500;
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .dark .project-tagline {
+    color: var(--color-sky);
+  }
+
+  .project-description {
+    margin: 0 0 1rem 0;
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  .project-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tech-tag {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    background: var(--color-sky-light);
+    color: var(--color-sky-dark);
+    border-radius: 0.25rem;
+  }
+
+  .dark .tech-tag {
+    background: rgba(14, 165, 233, 0.2);
+    color: var(--color-sky);
+  }
+
+  .tech-more {
+    font-size: 0.75rem;
+    padding: 0.2rem 0.5rem;
+    color: var(--color-text-muted);
+  }
+</style>

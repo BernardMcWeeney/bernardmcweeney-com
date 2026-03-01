@@ -3,7 +3,7 @@ title: "Intune Enterprise Rollout"
 tagline: "Cloud-native endpoint management at tens of thousands scale"
 description: "Design and rollout of Microsoft Intune for device management, including Autopilot provisioning, compliance baselines, and security hardening."
 status: "active"
-category: enterprise
+category: consultancy
 featured: false
 order: 26
 tech:

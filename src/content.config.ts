@@ -20,7 +20,7 @@ const projects = defineCollection({
     tagline: z.string().optional(),
     description: z.string(),
     status: z.enum(["active", "development", "planned", "archived"]),
-    category: z.enum(["enterprise", "web", "writing", "hardware", "automation", "consultancy"]).optional(),
+    category: z.enum(["ventures", "consultancy", "websites", "hardware", "ideas"]),
     featured: z.boolean().default(false),
     order: z.number().default(99),
     heroImage: z.string().optional(),

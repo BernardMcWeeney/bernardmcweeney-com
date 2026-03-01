@@ -6,6 +6,7 @@ interface Props {
   tagline?: string;
   description: string;
   status: "active" | "development" | "planned" | "archived";
+  category?: "ventures" | "consultancy" | "websites" | "hardware" | "ideas";
   tech?: string[];
   liveUrl?: string;
   repoUrl?: string;
@@ -14,7 +15,7 @@ interface Props {
   heroImage?: string;
 }
 
-const { title, tagline, description, status, tech, liveUrl, repoUrl, role, year, heroImage } = Astro.props;
+const { title, tagline, description, status, category, tech, liveUrl, repoUrl, role, year, heroImage } = Astro.props;
 
 const statusLabels = {
   active: "Live",
@@ -22,13 +23,24 @@ const statusLabels = {
   planned: "Planned",
   archived: "Archived",
 };
+
+const groupLabels: Record<string, string> = {
+  ventures: "Ventures",
+  consultancy: "Consultancy",
+  websites: "Websites",
+  hardware: "Hardware",
+  ideas: "Ideas",
+};
+
+const backUrl = category ? `/${category}` : "/projects";
+const backLabel = category ? groupLabels[category] : "All Projects";
 ---
 
-<Layout title={title} description={description} image={heroImage}>
+<Layout title={title} description={description} image={heroImage} activeNav={category ? `/${category}` : undefined}>
   <article class="project-page">
     <div class="container">
       <header class="project-header">
-        <a href="/projects" class="back-link">&larr; All Projects</a>
+        <a href={backUrl} class="back-link">&larr; {backLabel}</a>
         
         <div class="project-title-section">
           <div class="project-title-row">
@@ -86,7 +98,7 @@ const statusLabels = {
       </div>
 
       <footer class="project-footer">
-        <a href="/projects" class="btn">View All Projects</a>
+        <a href={backUrl} class="btn">View All {backLabel}</a>
       </footer>
     </div>
   </article>

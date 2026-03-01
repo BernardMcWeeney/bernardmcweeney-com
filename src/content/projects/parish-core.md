@@ -3,7 +3,7 @@ title: "Parish Core"
 tagline: "Modern tools for parish communities"
 description: "A WordPress plugin designed to help Catholic parishes manage their online presence with ease."
 status: development
-category: web
+category: websites
 featured: true
 order: 2
 tech:

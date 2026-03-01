@@ -3,7 +3,7 @@ title: "Domain Portfolio"
 tagline: "The addiction, documented"
 description: "A large and evolving collection of domain names. Used as a sandbox for ideas, brands, and future projects."
 status: "active"
-category: web
+category: websites
 featured: false
 order: 23
 tech:
