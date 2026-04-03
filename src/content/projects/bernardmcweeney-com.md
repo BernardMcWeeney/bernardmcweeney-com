@@ -1,48 +1,25 @@
 ---
-title: "This Website"
-tagline: "My corner of the internet"
-description: "A personal portfolio and blog built with Astro, designed to be fast, clean, and hopefully not too self-indulgent."
+title: bernardmcweeney.com
+description: My personal blog and project portfolio. The site you're on right now.
 status: active
-category: websites
-featured: false
-order: 3
+order: 4
 tech:
   - Astro
   - Tailwind CSS
   - Cloudflare Workers
-  - Pages CMS
-liveUrl: "https://bernardmcweeney.com"
-repoUrl: "https://github.com/BernardMcWeeney/bernardmcweeney-com"
-role: "Everything, really"
-year: "2024"
+liveUrl: https://bernardmcweeney.com
 ---
 
-## The Idea
+bernardmcweeney.com is the central home for Bernard's work online. It brings together projects, writing, and personal context in one place without relying on a heavy CMS or a cluttered presentation layer.
 
-Every developer needs a website. Not because anyone's checking, but because it's good practice to have somewhere to point people when they ask what you do.
+## Goal
 
-I wanted something that felt personal without being over the top. Clean design, fast loading, easy to update. The cloud theme emerged because, well, Ireland. We see a lot of sky here.
+The goal of the site is to provide a clear, credible home on the web for Bernard's portfolio and writing. It should be simple to navigate, fast to load, and easy to update as projects evolve over time.
 
-## Technical Decisions
+## Purpose
 
-### Why Astro?
+Its purpose is to act as the anchor point for everything else. Rather than scattering identity across different platforms, this site gives Bernard a place to present his work on his own terms, with enough room for projects, essays, and background that help people understand the broader picture.
 
-Astro lets me write components in a way that feels natural while shipping minimal JavaScript to the browser. For a mostly-static site like this, that's exactly what I want. Plus it plays nicely with content collections, which makes managing blog posts and projects straightforward.
+## How It's Doing
 
-### Content Management
-
-The site uses [Pages CMS](https://pagescms.org) for content management. It's a Git-based CMS that creates a nice editing interface without requiring a database or external service. Content lives in markdown files, which means everything stays version-controlled and portable.
-
-### Hosting
-
-Deployed on Cloudflare Workers via their Astro adapter. Fast, globally distributed, and the free tier is more than generous for a personal site.
-
-## Design Notes
-
-The "cloud in the sky" aesthetic was a happy accident. I started with a blue gradient header and things evolved from there. The floating cloud animations add a bit of life without being distracting.
-
-Dark mode was non-negotiable. Light mode before 10am is a form of torture.
-
-## Open Source
-
-The code is [on GitHub](https://github.com/BernardMcWeeney/bernardmcweeney-com) if you're curious. Feel free to have a look, though I make no promises about code quality at 2am.
+This project is doing its job well as a clean front door to Bernard's wider work. It is active, easy to understand, and increasingly more complete as the content grows. Qualitatively, it feels like a strong foundation rather than a placeholder, which is exactly what a personal site should be.

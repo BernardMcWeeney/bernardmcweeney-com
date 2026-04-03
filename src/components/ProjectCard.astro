@@ -2,167 +2,229 @@
 interface Props {
   slug: string;
   title: string;
-  tagline?: string;
   description: string;
   status: "active" | "development" | "planned" | "archived";
   tech?: string[];
   liveUrl?: string;
+  thumbnail?: string;
+  thumbnailFit?: "cover" | "contain";
 }
 
-const { slug, title, tagline, description, status, tech, liveUrl } = Astro.props;
+const { slug, title, description, status, tech, liveUrl, thumbnail, thumbnailFit = "cover" } = Astro.props;
 
 const statusLabels = {
   active: "Live",
-  development: "In Development",
+  development: "In Dev",
   planned: "Planned",
   archived: "Archived",
 };
+
+const initials = title
+  .split(/\s+/)
+  .map((w) => w[0])
+  .join("")
+  .slice(0, 2)
+  .toUpperCase();
+
+const imageUrl = thumbnail;
 ---
 
-<a href={`/projects/${slug}`} class="project-card">
-  <div class="project-header">
-    <h3>{title}</h3>
-    <span class={`project-status ${status}`}>{statusLabels[status]}</span>
-  </div>
-  {tagline && <p class="project-tagline">{tagline}</p>}
-  <p class="project-description">{description}</p>
-  {tech && tech.length > 0 && (
-    <div class="project-tech">
-      {tech.slice(0, 4).map((t) => (
-        <span class="tech-tag">{t}</span>
-      ))}
-      {tech.length > 4 && (
-        <span class="tech-more">+{tech.length - 4}</span>
+<div class="card">
+  <a href={`/projects/${slug}`} class="card-image">
+    {imageUrl ? (
+      <img
+        src={imageUrl}
+        alt={title}
+        loading="lazy"
+        class:list={{
+          "fit-contain": thumbnailFit === "contain",
+        }}
+      />
+    ) : (
+      <div class="card-placeholder">
+        <span>{initials}</span>
+      </div>
+    )}
+  </a>
+
+  <div class="card-body">
+    <div class="card-header">
+      <a href={`/projects/${slug}`} class="card-title">{title}</a>
+      <span class={`status ${status}`}>{statusLabels[status]}</span>
+    </div>
+
+    <p class="card-desc">{description}</p>
+
+    {tech && tech.length > 0 && (
+      <div class="card-tech">
+        {tech.map((t) => (
+          <span class="tech">{t}</span>
+        ))}
+      </div>
+    )}
+
+    <div class="card-actions">
+      <a href={`/projects/${slug}`} class="link-read">Read more</a>
+      {liveUrl && (
+        <a href={liveUrl} class="link-visit" target="_blank" rel="noopener">
+          Visit &rarr;
+        </a>
       )}
     </div>
-  )}
-</a>
+  </div>
+</div>
 
 <style>
-  .project-card {
+  .card {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    height: 100%;
+    background: var(--color-bg);
+  }
+
+  .card:hover {
+    border-color: #ccc;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .card-image {
     display: block;
-    padding: 1.5rem;
-    background: var(--color-cloud);
-    border-radius: 0.75rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    border: 1px solid transparent;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--color-card-bg);
+    border-bottom: 1px solid var(--color-border);
   }
 
-  .project-card:hover {
-    border-color: var(--color-sky);
-    transform: translateX(4px);
-    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.1);
+  .card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  .project-header {
+  .card-image img.fit-contain {
+    object-fit: contain;
+    padding: 1.1rem;
+  }
+
+  .card-placeholder {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    justify-content: center;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  }
+
+  .card-placeholder span {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #adb5bd;
+    letter-spacing: 0.04em;
+  }
+
+  .card-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 1.15rem;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
     flex-wrap: wrap;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.4rem;
   }
 
-  .project-header h3 {
-    font-size: 1.1rem;
-    margin: 0;
-    color: var(--color-text);
+  .card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    text-decoration: none;
   }
 
-  .project-card:hover h3 {
-    color: var(--color-sky-dark);
+  .card-title:hover {
+    color: var(--color-accent);
   }
 
-  .dark .project-card:hover h3 {
-    color: var(--color-sky);
-  }
-
-  .project-status {
-    font-size: 0.7rem;
-    padding: 0.25rem 0.5rem;
+  .status {
+    font-size: 0.6rem;
+    padding: 0.15rem 0.4rem;
     border-radius: 9999px;
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.02em;
-    white-space: nowrap;
-  }
-
-  .project-status.active {
-    background: rgba(34, 197, 94, 0.15);
-    color: #16a34a;
-  }
-  .dark .project-status.active {
-    background: rgba(34, 197, 94, 0.2);
-    color: #4ade80;
-  }
-
-  .project-status.development {
-    background: rgba(234, 179, 8, 0.15);
-    color: #ca8a04;
-  }
-  .dark .project-status.development {
-    background: rgba(234, 179, 8, 0.2);
-    color: #facc15;
-  }
-
-  .project-status.planned {
-    background: rgba(59, 130, 246, 0.15);
-    color: #2563eb;
-  }
-  .dark .project-status.planned {
-    background: rgba(59, 130, 246, 0.2);
-    color: #60a5fa;
-  }
-
-  .project-status.archived {
-    background: rgba(107, 114, 128, 0.15);
-    color: #4b5563;
-  }
-  .dark .project-status.archived {
-    background: rgba(107, 114, 128, 0.2);
-    color: #9ca3af;
-  }
-
-  .project-tagline {
-    color: var(--color-sky-deep);
-    font-weight: 500;
-    font-size: 0.9rem;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .dark .project-tagline {
-    color: var(--color-sky);
-  }
-
-  .project-description {
-    margin: 0 0 1rem 0;
-    font-size: 0.9rem;
+    letter-spacing: 0.04em;
+    border: 1px solid var(--color-border);
     color: var(--color-text-muted);
-    line-height: 1.6;
   }
 
-  .project-tech {
+  .status.active {
+    border-color: #22c55e;
+    color: #16a34a;
+    background: #f0fdf4;
+  }
+
+  .status.development {
+    border-color: #f59e0b;
+    color: #d97706;
+    background: #fffbeb;
+  }
+
+  .card-desc {
+    font-size: 0.825rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+    margin: 0 0 0.75rem;
+    flex: 1;
+  }
+
+  .card-tech {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
+    gap: 0.3rem;
+    margin-bottom: 0.85rem;
   }
 
-  .tech-tag {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.5rem;
-    background: var(--color-sky-light);
-    color: var(--color-sky-dark);
-    border-radius: 0.25rem;
+  .tech {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.4rem;
+    background: var(--color-accent-light);
+    color: var(--color-accent);
+    border-radius: 3px;
+    font-weight: 500;
   }
 
-  .dark .tech-tag {
-    background: rgba(14, 165, 233, 0.2);
-    color: var(--color-sky);
+  .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.8rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--color-border);
   }
 
-  .tech-more {
-    font-size: 0.75rem;
-    padding: 0.2rem 0.5rem;
+  .link-read {
     color: var(--color-text-muted);
+    transition: color 0.15s;
+    font-weight: 500;
+  }
+
+  .link-read:hover {
+    color: var(--color-text);
+  }
+
+  .link-visit {
+    color: var(--color-accent);
+    font-weight: 500;
+    transition: opacity 0.15s;
+  }
+
+  .link-visit:hover {
+    opacity: 0.7;
   }
 </style>

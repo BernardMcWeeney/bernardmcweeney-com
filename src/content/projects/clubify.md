@@ -1,46 +1,21 @@
 ---
-title: "Clubify"
-tagline: "Digital tooling for sports clubs and community organisations"
-description: "Technology solutions for GAA clubs, sports organisations, and community groups who need modern digital infrastructure without the complexity."
-status: "planned"
-category: ventures
-featured: false
-order: 15
-tech:
-  - "WordPress"
-  - "Stripe"
-  - "Email Systems"
-role: "Concept Development"
-year: "2024"
+title: Clubify
+description: An experimental project exploring web tools for clubs and community groups.
+status: development
+order: 9
+liveUrl: https://clubify.ie
 ---
 
-## What It Is
+Clubify is an experimental project aimed at clubs and community organisations that need simple digital tools without the cost or complexity of enterprise platforms.
 
-Clubify is a concept for bringing the same approach I use with parishes to sports clubs and community organisations.
+## Goal
 
-GAA clubs, soccer clubs, community groups - they all face similar challenges. They need websites, membership management, communication tools, maybe event ticketing or fundraising platforms. And they're usually run by volunteers who have day jobs and families.
+The goal is to build a lighter, more approachable set of web tools for groups that often fall between consumer tools and expensive professional systems. It is about solving common organisational needs without making the software feel like a burden.
 
-## The Problem
+## Purpose
 
-Most clubs either:
-- Have no digital presence at all
-- Have a website from 2010 that nobody knows how to update
-- Got sold an expensive platform they don't fully use
-- Rely entirely on Facebook, which they don't control
+Its purpose is to explore whether the same practical, low-overhead approach used elsewhere in Bernard's work can be adapted for clubs, societies, and community groups. It broadens the portfolio into another real-world niche where the need is clear but the available options are often awkward.
 
-There's a gap for simple, affordable, maintainable solutions.
+## How It's Doing
 
-## The Vision
-
-Repeatable systems that can be deployed across multiple clubs:
-- Clean, modern websites that volunteers can actually update
-- Integrated membership and communication tools
-- Event management and ticketing
-- Fundraising and donation systems
-- Email and basic IT setup
-
-All designed for organisations where the "IT person" is whoever drew the short straw at the last committee meeting.
-
-## Current Status
-
-This is still in concept phase. The parish work proves the model works. Expanding it to clubs is the natural next step, but it needs proper time and attention to do right.
+Clubify is still early and its development status reflects that honestly. The idea is promising, especially because community organisations often need exactly this kind of lightweight support, but it is not yet as defined or mature as the more established projects. Right now it feels like a worthwhile exploration with genuine potential if the concept continues to sharpen.

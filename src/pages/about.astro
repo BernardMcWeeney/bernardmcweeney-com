@@ -1,213 +1,210 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import yaml from "js-yaml";
-import fs from "node:fs";
-import path from "node:path";
-
-const aboutPath = path.join(process.cwd(), "src/data/about.yaml");
-const aboutData = yaml.load(fs.readFileSync(aboutPath, "utf8")) as {
-  title: string;
-  subtitle: string;
-  story: {
-    title: string;
-    paragraphs: string[];
-  };
-  skills: {
-    intro: string;
-    categories: {
-      name: string;
-      description: string;
-      items: string[];
-    }[];
-  };
-  interests: {
-    intro: string;
-    items: string[];
-    footer: string;
-  };
-  contact: {
-    intro: string;
-    cta: string;
-    email: string;
-    linkedin: string;
-    github: string;
-  };
-};
 ---
 
 <Layout
   title="About"
-  description="A bit about Bernard McWeeney - tech enthusiast from Meath, Ireland, now based in Dublin."
+  description="About Bernard McWeeney, a web developer and IT consultant from Meath, Ireland."
 >
-  <div class="container">
-    <header class="page-header">
-      <h1>{aboutData.title}</h1>
-      <p>{aboutData.subtitle}</p>
+  <div class="container container--narrow about-page">
+    <header class="hero">
+      <p class="eyebrow">About</p>
+      <h1>Bernard McWeeney builds practical digital work with a strong sense of place.</h1>
+      <p class="lede">
+        Based in Meath, Ireland, Bernard works across modern web development, IT consultancy,
+        and a growing collection of independent projects spanning business, culture, and local
+        history.
+      </p>
     </header>
 
-    <div class="about-content">
-      <section class="about-section">
-        <div class="card story-card">
-          <h2>{aboutData.story.title}</h2>
-          <div class="prose">
-            {aboutData.story.paragraphs.map((paragraph, index) => (
-              index === 2 ? (
-                <p>
-                  Outside of that, I build websites and web applications. I started
-                  <a href="/projects/greenberry">Greenberry</a> to help Irish small businesses
-                  get online without being ripped off. There's a lot of overpriced, overcomplicated
-                  solutions out there, and I thought I could do better. The jury's still out on
-                  whether I was right.
-                </p>
-              ) : (
-                <p>{paragraph}</p>
-              )
-            ))}
-          </div>
-        </div>
-      </section>
+    <section class="highlight-grid" aria-label="Overview">
+      <article class="highlight-card">
+        <span class="highlight-label">Base</span>
+        <p>County Meath, building for Irish businesses, organisations, and long-term side projects.</p>
+      </article>
+      <article class="highlight-card">
+        <span class="highlight-label">Focus</span>
+        <p>Fast websites, dependable infrastructure, and tools that stay useful after launch.</p>
+      </article>
+      <article class="highlight-card">
+        <span class="highlight-label">Threads</span>
+        <p>Technology, music, and heritage work that connects digital craft with real communities.</p>
+      </article>
+    </section>
 
-      <section class="about-section">
-        <h2>What I Work With</h2>
-        <p class="section-intro">{aboutData.skills.intro}</p>
+    <section class="prose writeup">
+      <h2>A Write-Up About Bernard</h2>
+      <p>
+        Bernard McWeeney is a web developer and technology consultant from County Meath who
+        combines technical depth with a clear, practical style of problem-solving. His work spans
+        modern website development, cloud and network consulting, and a range of independent
+        digital projects built with care and long-term usefulness in mind.
+      </p>
+      <p>
+        What stands out in Bernard&apos;s work is the balance between craftsmanship and clarity. He
+        builds fast, maintainable websites, keeps infrastructure simple where possible, and focuses
+        on systems that are easy for real people to manage once the launch day excitement is over.
+        Whether the project is for a business, a parish, a cultural idea, or a personal publishing
+        platform, the goal is the same: make it solid, make it elegant, and make it genuinely
+        useful.
+      </p>
+      <p>
+        Alongside client and consultancy work, Bernard has a strong instinct for building his own
+        things. That includes projects around music, Irish heritage, and publishing on the web.
+        Together, they paint a picture of someone who is not just interested in technology for its
+        own sake, but in how it can support stories, communities, and everyday work in a more
+        thoughtful way.
+      </p>
+    </section>
 
-        <div class="skills-cards">
-          {aboutData.skills.categories.map((category) => (
-            <div class="card">
-              <h3>{category.name}</h3>
-              <p class="skills-description">{category.description}</p>
-              <div class="skills-grid">
-                {category.items.map((skill) => (
-                  <span class="skill-tag">{skill}</span>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+    <section class="detail-grid">
+      <article class="detail-card">
+        <h2>What Bernard Works On</h2>
+        <ul>
+          <li>Modern brochure and content-driven websites built for speed, clarity, and longevity.</li>
+          <li>IT consultancy around Microsoft 365, Azure, and network deployments.</li>
+          <li>Independent digital products and publishing projects, including music and media work.</li>
+          <li>Heritage-focused side projects rooted in the Boyne Valley and the surrounding area.</li>
+        </ul>
+      </article>
 
-      <section class="about-section">
-        <h2>Beyond the Code</h2>
-        <div class="card">
-          <p style="margin-bottom: 1rem; color: var(--color-text);">
-            {aboutData.interests.intro}
-          </p>
-          <ul class="interests-list">
-            {aboutData.interests.items.map((interest) => (
-              <li>{interest}</li>
-            ))}
-          </ul>
-          <p style="margin-top: 1rem; color: var(--color-text-muted); font-style: italic;">
-            {aboutData.interests.footer}
-          </p>
-        </div>
-      </section>
+      <article class="detail-card">
+        <h2>How He Tends To Work</h2>
+        <ul>
+          <li>Choose tools that reduce friction instead of adding maintenance overhead.</li>
+          <li>Prefer clear architecture, quick load times, and calm user experiences.</li>
+          <li>Build with enough flexibility to grow, but without overengineering the first version.</li>
+          <li>Keep the end result understandable for the people who need to live with it day to day.</li>
+        </ul>
+      </article>
+    </section>
 
-      <section class="about-section">
-        <h2>Get in Touch</h2>
-        <div class="card contact-card">
-          <p>
-            {aboutData.contact.intro.split("Disintegration")[0]}
-            <em>Disintegration</em>
-            {aboutData.contact.intro.split("Disintegration")[1]}
-          </p>
-          <p>{aboutData.contact.cta}</p>
-          <div class="contact-links">
-            <a href={`mailto:${aboutData.contact.email}`} class="btn btn-primary">
-              Drop Me an Email
-            </a>
-            <a href={aboutData.contact.linkedin} target="_blank" rel="noopener" class="btn">
-              LinkedIn
-            </a>
-            <a href={aboutData.contact.github} target="_blank" rel="noopener" class="btn">
-              GitHub
-            </a>
-          </div>
-        </div>
-      </section>
-    </div>
+    <section class="closing">
+      <p>
+        If the projects on this site feel varied, that&apos;s because they are. Bernard&apos;s work sits in
+        the overlap between technical reliability, independent curiosity, and a genuine interest in
+        making useful things for people and places that matter.
+      </p>
+    </section>
   </div>
 </Layout>
 
 <style>
-  .story-card {
-    padding: 2.5rem;
-  }
-
-  .story-card h2 {
-    margin-bottom: 1.5rem;
-  }
-
-  .section-intro {
-    color: var(--color-text-muted);
-    margin-bottom: 1.5rem;
-  }
-
-  .skills-cards {
+  .about-page {
     display: grid;
-    gap: 1.5rem;
+    gap: 2.5rem;
   }
 
-  .skills-cards h3 {
-    color: var(--color-sky-dark);
-    margin-bottom: 0.5rem;
-  }
-
-  .dark .skills-cards h3 {
-    color: var(--color-sky);
-  }
-
-  .skills-description {
-    font-size: 0.9rem;
-    color: var(--color-text-muted);
-    margin-bottom: 1rem;
-  }
-
-  .interests-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .interests-list li {
-    padding: 0.5rem 1rem;
-    background: var(--color-sky-light);
-    border-radius: 9999px;
-    font-size: 0.9rem;
-    color: var(--color-sky-dark);
-  }
-
-  .dark .interests-list li {
-    background: rgba(14, 165, 233, 0.2);
-    color: var(--color-sky);
-  }
-
-  .contact-card {
-    padding: 2rem;
-  }
-
-  .contact-card p {
-    color: var(--color-text);
-    margin-bottom: 1rem;
-    line-height: 1.7;
-  }
-
-  .contact-card p:last-of-type {
-    margin-bottom: 1.5rem;
-  }
-
-  .contact-links {
-    display: flex;
+  .hero {
+    display: grid;
     gap: 1rem;
-    flex-wrap: wrap;
+    padding-top: 0.25rem;
   }
 
-  @media (min-width: 768px) {
-    .skills-cards {
-      grid-template-columns: repeat(3, 1fr);
+  .eyebrow {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .hero h1 {
+    max-width: 12ch;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+  }
+
+  .lede {
+    max-width: 62ch;
+    font-size: 1.08rem;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+  }
+
+  .highlight-grid,
+  .detail-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .highlight-card,
+  .detail-card {
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+    padding: 1.4rem;
+  }
+
+  .highlight-label {
+    display: inline-block;
+    margin-bottom: 0.75rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .highlight-card p {
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  .writeup {
+    padding-top: 0.25rem;
+  }
+
+  .detail-card h2 {
+    font-size: 1.15rem;
+    letter-spacing: -0.02em;
+    margin-bottom: 1rem;
+  }
+
+  .detail-card ul {
+    list-style: none;
+    display: grid;
+    gap: 0.85rem;
+    padding: 0;
+  }
+
+  .detail-card li {
+    color: var(--color-text-muted);
+    line-height: 1.65;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .detail-card li::before {
+    content: "";
+    position: absolute;
+    top: 0.72rem;
+    left: 0;
+    width: 0.35rem;
+    height: 0.35rem;
+    border-radius: 999px;
+    background: var(--color-text);
+  }
+
+  .closing {
+    border-top: 1px solid var(--color-border);
+    padding-top: 1.75rem;
+  }
+
+  .closing p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: var(--color-text-muted);
+  }
+
+  @media (min-width: 720px) {
+    .highlight-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .detail-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>

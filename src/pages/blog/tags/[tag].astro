@@ -1,19 +1,36 @@
 ---
-import Layout from "../../layouts/Layout.astro";
+import Layout from "../../../layouts/Layout.astro";
 import { getCollection } from "astro:content";
-import { getReadingTime } from "../../utils/reading-time";
+import { getReadingTime } from "../../../utils/reading-time";
 
 const isDev = import.meta.env.DEV;
 
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  const tags = new Set<string>();
+  posts.forEach((post) => {
+    post.data.tags?.forEach((tag) => tags.add(tag));
+  });
+
+  return [...tags].map((tag) => ({
+    params: { tag },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+
 const posts = (await getCollection("blog"))
-  .filter((p) => isDev || !p.data.draft)
+  .filter((p) => (isDev || !p.data.draft) && p.data.tags?.includes(tag))
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<Layout title="Blog" description="Thoughts from Bernard McWeeney.">
+<Layout title={`Posts tagged "${tag}"`} description={`Blog posts tagged with ${tag}.`}>
   <div class="container container--narrow">
     <header class="page-header">
-      <h1>Blog</h1>
+      <a href="/blog/tags" class="back-link">&larr; All Tags</a>
+      <h1>#{tag}</h1>
+      <p class="post-count">{posts.length} post{posts.length !== 1 ? "s" : ""}</p>
     </header>
 
     <div class="posts">
@@ -30,26 +47,12 @@ const posts = (await getCollection("blog"))
             <span class="reading-time">{getReadingTime(post.body ?? "")}</span>
           </div>
           <div>
-            <h2>
-              {post.data.title}
-              {post.data.draft && <span class="draft-badge">Draft</span>}
-            </h2>
+            <h2>{post.data.title}</h2>
             <p>{post.data.description}</p>
-            {post.data.tags && post.data.tags.length > 0 && (
-              <div class="post-tags">
-                {post.data.tags.map((tag: string) => (
-                  <span class="tag">{tag}</span>
-                ))}
-              </div>
-            )}
           </div>
         </a>
       ))}
     </div>
-
-    {posts.length === 0 && (
-      <p class="empty">No posts yet.</p>
-    )}
   </div>
 </Layout>
 
@@ -58,10 +61,28 @@ const posts = (await getCollection("blog"))
     margin-bottom: 2rem;
   }
 
+  .back-link {
+    display: inline-block;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    margin-bottom: 1rem;
+    transition: color 0.15s;
+  }
+
+  .back-link:hover {
+    color: var(--color-text);
+  }
+
   .page-header h1 {
     font-size: 1.75rem;
     font-weight: 700;
     letter-spacing: -0.02em;
+    margin-bottom: 0.25rem;
+  }
+
+  .post-count {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
   }
 
   .posts {
@@ -110,21 +131,6 @@ const posts = (await getCollection("blog"))
     font-size: 1rem;
     font-weight: 600;
     margin: 0 0 0.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .draft-badge {
-    font-size: 0.6rem;
-    padding: 0.1rem 0.4rem;
-    border-radius: 9999px;
-    background: #fef3c7;
-    color: #d97706;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
   }
 
   .post p {
@@ -132,27 +138,6 @@ const posts = (await getCollection("blog"))
     color: var(--color-text-muted);
     margin: 0;
     line-height: 1.5;
-  }
-
-  .post-tags {
-    display: flex;
-    gap: 0.3rem;
-    margin-top: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    font-size: 0.65rem;
-    padding: 0.1rem 0.4rem;
-    background: var(--color-accent-light);
-    color: var(--color-accent);
-    border-radius: 3px;
-    font-weight: 500;
-  }
-
-  .empty {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
   }
 
   @media (max-width: 480px) {

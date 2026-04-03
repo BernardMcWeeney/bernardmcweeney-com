@@ -1,38 +1,21 @@
 ---
-title: "Cureation"
-tagline: "For fans of The Cure"
-description: "A fan site celebrating The Cure, featuring discography information, setlists, and community features."
-status: planned
-category: ventures
-featured: false
-order: 4
-tech:
-  - Astro
-  - Tailwind CSS
-  - Supabase
-role: "Creator"
-year: "2025"
+title: Cureation
+description: A multi-platform project spanning a website, YouTube channel, auto-poster, and more.
+status: active
+order: 7
+liveUrl: https://cureation.com
 ---
 
-## The Plan
+Cureation is a multi-platform publishing and automation project that stretches beyond a single website. It brings together content, distribution, and supporting systems across several channels.
 
-I've been a fan of The Cure since I first heard *Disintegration* as a teenager. There's something about their music that just gets better with time. Melancholy done right.
+## Goal
 
-Most Cure fan sites are, let's say, showing their age. Built in the early 2000s and maintained sporadically at best. I'd love to build something that does the band justice — a proper archive with modern UX.
+The goal is to build a connected media ecosystem rather than a standalone site. By linking together a website, video, automation, and social publishing, Cureation explores how content can move more smoothly across platforms.
 
-## Planned Features
+## Purpose
 
-- **Complete Discography** — Albums, singles, compilations, B-sides, the lot. With proper metadata and context.
-- **Setlist Archive** — Historical setlists from tours going back decades. Useful for gig-goers wondering what to expect.
-- **Song Database** — Every song, with lyrics, recording information, and live performance history.
-- **Community Features** — A place for fans to share stories, concert memories, and rare recordings.
+Its purpose is partly editorial and partly technical. On one side, it supports content creation and audience-facing work. On the other, it acts as a practical testing ground for automation, workflows, and the kind of systems thinking that turns scattered channels into a coordinated operation.
 
-## Why "Cureation"?
+## How It's Doing
 
-Cure + Curation. It's a pun. I'm not sorry.
-
-## Status
-
-This one's on the backburner for now. I've got the domain and some initial designs, but it needs dedicated time to do properly. Maybe once Parish Core is released.
-
-If you're a fellow Cure fan and want to help out, get in touch.
+Cureation appears to be active and meaningfully underway, but it is also a naturally complex project because it spans multiple formats and moving parts. Qualitatively, it looks like a strong experiment in connected publishing, with success tied less to a single polished endpoint and more to whether the overall system keeps getting better. In that sense, it seems to be progressing well as an ongoing build.

@@ -1,38 +1,24 @@
 ---
-title: "Dowth.ie"
-tagline: "History, archaeology, and mythology of the Boyne Valley"
-description: "A history and archaeology website focused on Dowth and the wider Boyne Valley. Place-based storytelling with respect for the subject matter."
-status: "development"
-category: websites
-featured: true
-order: 6
+title: Dowth
+description: A website dedicated to the history of Dowth, one of Ireland's most important passage tombs.
+status: active
+order: 5
 tech:
-  - "Astro"
-  - "Tailwind CSS"
-  - "Cloudflare"
-liveUrl: "https://dowth.ie"
-role: "Creator & Writer"
-year: "2024"
+  - Astro
+  - Cloudflare
+liveUrl: https://dowth.ie
 ---
 
-## What It Is
+Dowth is a focused heritage site dedicated to one of the Boyne Valley's most important ancient monuments. It takes a specific place and treats it with the depth and seriousness it deserves.
 
-Dowth.ie is a website dedicated to the history, archaeology, and mythology of Dowth passage tomb and the wider Boyne Valley in County Meath.
+## Goal
 
-If you're not from around here, the Boyne Valley is home to some of the most significant Neolithic monuments in Europe. Newgrange gets all the tourists, but Dowth and Knowth are equally remarkable. And the whole landscape is layered with thousands of years of human history.
+The goal is to make the history of Dowth more accessible to a wider audience. That includes helping visitors, locals, and interested readers understand why the site matters and how it fits into the wider story of Ireland's ancient landscape.
 
-## Why It Exists
+## Purpose
 
-Most information about these sites is either academic papers (inaccessible to normal people) or tourism content (surface-level). There's a gap for something in between.
+Its purpose is to create a well-made digital resource around a place that has enormous historical importance but is not always explained in a clear or engaging way online. It reflects Bernard's interest in using web publishing to support heritage, education, and local identity.
 
-I grew up near Dowth. These places were just part of the landscape, taken for granted. The older I get, the more I appreciate what's on my doorstep. This site is my attempt to document and share that appreciation.
+## How It's Doing
 
-## The Approach
-
-This isn't an academic project. I'm not an archaeologist. But I can research, synthesise, and write in a way that makes this material accessible without dumbing it down.
-
-The design is deliberately calm and timeless. No flashy animations or trendy design patterns. The subject matter deserves respect, not gimmicks.
-
-## Current State
-
-Still in early development. There's a lot of research to do and content to write. This is a long-term project, not something to rush.
+Dowth feels like a strong example of a focused project with a clear audience and a clear subject. It is active, tightly scoped, and grounded in something genuinely distinctive, which gives it lasting value even without chasing scale for its own sake. Qualitatively, it appears to be doing well as a specialised heritage resource with room to deepen over time.

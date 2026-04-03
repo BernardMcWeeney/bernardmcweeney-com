@@ -26,7 +26,7 @@ const fullTitle = title === "Home" ? "Bernard McWeeney" : `${title} — Bernard 
 <link rel="canonical" href={canonicalURL} />
 
 <!-- RSS -->
-<link rel="alternate" type="application/rss+xml" title="Bernard McWeeney's Blog" href="/rss.xml" />
+<link rel="alternate" type="application/rss+xml" title="Bernard McWeeney" href="/rss.xml" />
 
 <!-- Primary Meta -->
 <title>{fullTitle}</title>
@@ -47,15 +47,4 @@ const fullTitle = title === "Home" ? "Bernard McWeeney" : `${title} — Bernard 
 <meta name="twitter:image" content={new URL(image, Astro.url)} />
 
 <!-- Theme -->
-<meta name="theme-color" content="#f0f7ff" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: dark)" />
-
-<!-- Prevent FOUC -->
-<script is:inline>
-  (function() {
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const dark = stored ? stored === 'dark' : prefersDark;
-    document.documentElement.classList.toggle('dark', dark);
-  })();
-</script>
+<meta name="theme-color" content="#ffffff" />
