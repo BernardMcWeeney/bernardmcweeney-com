@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#ffffff"/>
+  <rect x="80" y="80" width="88" height="88" rx="18" fill="#111111"/>
+  <text x="124" y="147" font-family="system-ui, -apple-system, sans-serif" font-size="54" font-weight="700" text-anchor="middle" fill="#ffffff">B</text>
+  <text x="80" y="272" font-family="system-ui, -apple-system, sans-serif" font-size="60" font-weight="700" fill="#111111">Bernard McWeeney</text>
+  <text x="80" y="348" font-family="system-ui, -apple-system, sans-serif" font-size="30" fill="#555555">Tech enthusiast from Meath, Ireland.</text>
+  <text x="80" y="393" font-family="system-ui, -apple-system, sans-serif" font-size="30" fill="#555555">Building things with code, helping people and causes along the way.</text>
+  <rect x="80" y="510" width="1040" height="1" fill="#e5e5e5"/>
+  <text x="80" y="560" font-family="system-ui, -apple-system, sans-serif" font-size="22" fill="#aaaaaa">bernardmcweeney.com</text>
+</svg>

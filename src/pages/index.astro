@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
 import { resolveProjectThumbnail } from "../utils/project-thumbnails";
+import { SITE_DESCRIPTION } from "../consts";
 
 const projects = (await getCollection("projects"))
   .sort((a, b) => a.data.order - b.data.order);
@@ -17,7 +18,7 @@ const projectCards = await Promise.all(
 );
 ---
 
-<Layout title="Home" description="Projects by Bernard McWeeney.">
+<Layout title="Home" description={SITE_DESCRIPTION}>
   <div class="container">
     <header class="intro">
       <h1>Bernard McWeeney</h1>
