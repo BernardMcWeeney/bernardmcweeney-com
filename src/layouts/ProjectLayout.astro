@@ -7,9 +7,10 @@ interface Props {
   status: "active" | "development" | "planned" | "archived";
   tech?: string[];
   liveUrl?: string;
+  featureImage?: string;
 }
 
-const { title, description, status, tech, liveUrl } = Astro.props;
+const { title, description, status, tech, liveUrl, featureImage } = Astro.props;
 
 const statusLabels = {
   active: "Live",
@@ -48,6 +49,10 @@ const statusLabels = {
           </div>
         )}
       </header>
+
+      {featureImage && (
+        <img src={featureImage} alt={title} class="feature-image" />
+      )}
 
       <div class="project-content prose">
         <slot />
@@ -155,6 +160,15 @@ const statusLabels = {
 
   .btn:hover {
     opacity: 0.8;
+  }
+
+  .feature-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--color-border);
+    margin-bottom: 3rem;
   }
 
   .project-content {
