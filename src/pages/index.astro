@@ -20,7 +20,7 @@ const projects = (await getCollection("projects"))
       <div class="projects-grid">
         {projects.map((project) => (
           <ProjectCard
-            slug={project.slug}
+            slug={project.id}
             title={project.data.title}
             description={project.data.description}
             status={project.data.status}

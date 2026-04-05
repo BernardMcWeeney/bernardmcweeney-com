@@ -8,7 +8,7 @@ const isDev = import.meta.env.DEV;
 export async function getStaticPaths() {
   const posts = await getCollection("blog");
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: post,
   }));
 }
@@ -22,7 +22,7 @@ const allPosts = (await getCollection("blog"))
   .filter((p) => isDev || !p.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 
-const currentIndex = allPosts.findIndex((p) => p.slug === post.slug);
+const currentIndex = allPosts.findIndex((p) => p.id === post.id);
 const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
 const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
 
@@ -73,13 +73,13 @@ const ogImage = post.data.heroImage || "/og-default.png";
     <footer class="article-footer">
       <nav class="post-nav">
         {prevPost ? (
-          <a href={`/blog/${prevPost.slug}`} class="post-nav-link prev">
+          <a href={`/blog/${prevPost.id}`} class="post-nav-link prev">
             <span class="post-nav-label">&larr; Previous</span>
             <span class="post-nav-title">{prevPost.data.title}</span>
           </a>
         ) : <div />}
         {nextPost ? (
-          <a href={`/blog/${nextPost.slug}`} class="post-nav-link next">
+          <a href={`/blog/${nextPost.id}`} class="post-nav-link next">
             <span class="post-nav-label">Next &rarr;</span>
             <span class="post-nav-title">{nextPost.data.title}</span>
           </a>
