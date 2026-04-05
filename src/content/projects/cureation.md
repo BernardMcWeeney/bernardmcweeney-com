@@ -4,6 +4,7 @@ description: A multi-platform project spanning a website, YouTube channel, auto-
 status: active
 order: 7
 liveUrl: https://cureation.com
+featureImage: /images/projects/CUREATION.png
 ---
 
 Cureation is a multi-platform publishing and automation project that stretches beyond a single website. It brings together content, distribution, and supporting systems across several channels.

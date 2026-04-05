@@ -7,6 +7,7 @@ tech:
   - Astro
   - Cloudflare
 liveUrl: https://waymark.ie
+featureImage: /images/projects/WAYMARK.png
 ---
 
 Waymark is the consultancy side of Bernard's work, focused on Microsoft cloud services, enterprise networking, and the practical infrastructure that organisations rely on behind the scenes.

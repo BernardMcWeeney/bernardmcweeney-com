@@ -22,7 +22,7 @@ const projects = defineCollection({
     order: z.number().default(99),
     tech: z.array(z.string()).optional(),
     liveUrl: z.string().optional(),
-    thumbnail: z.string().optional(),
+    featureImage: z.string().optional(),
   }),
 });
 

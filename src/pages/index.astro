@@ -2,20 +2,10 @@
 import Layout from "../layouts/Layout.astro";
 import ProjectCard from "../components/ProjectCard.astro";
 import { getCollection } from "astro:content";
-import { resolveProjectThumbnail } from "../utils/project-thumbnails";
 import { SITE_DESCRIPTION } from "../consts";
 
 const projects = (await getCollection("projects"))
   .sort((a, b) => a.data.order - b.data.order);
-const projectCards = await Promise.all(
-  projects.map(async (project) => ({
-    project,
-    resolvedThumbnail: await resolveProjectThumbnail({
-      liveUrl: project.data.liveUrl,
-      thumbnail: project.data.thumbnail,
-    }),
-  })),
-);
 ---
 
 <Layout title="Home" description={SITE_DESCRIPTION}>
@@ -28,7 +18,7 @@ const projectCards = await Promise.all(
     <section class="projects-section">
       <h2 class="section-title">Projects</h2>
       <div class="projects-grid">
-        {projectCards.map(({ project, resolvedThumbnail }) => (
+        {projects.map((project) => (
           <ProjectCard
             slug={project.slug}
             title={project.data.title}
@@ -36,8 +26,7 @@ const projectCards = await Promise.all(
             status={project.data.status}
             tech={project.data.tech}
             liveUrl={project.data.liveUrl}
-            thumbnail={resolvedThumbnail?.url}
-            thumbnailFit={resolvedThumbnail?.fit}
+            featureImage={project.data.featureImage}
           />
         ))}
       </div>

@@ -8,6 +8,7 @@ tech:
   - Tailwind CSS
   - Cloudflare
 liveUrl: https://bernardontheaux.com
+featureImage: /images/projects/BERNARDONTHEAUX.png
 ---
 
 Bernard on the Aux is Bernard's music writing project: part review site, part listening journal, and part personal record of what is catching his attention.

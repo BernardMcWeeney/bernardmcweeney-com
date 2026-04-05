@@ -4,6 +4,7 @@ description: An experimental project exploring web tools for clubs and community
 status: development
 order: 9
 liveUrl: https://clubify.ie
+featureImage: /images/projects/CLUBIFY.png
 ---
 
 Clubify is an experimental project aimed at clubs and community organisations that need simple digital tools without the cost or complexity of enterprise platforms.

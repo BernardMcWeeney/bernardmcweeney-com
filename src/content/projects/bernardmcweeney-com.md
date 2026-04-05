@@ -8,6 +8,7 @@ tech:
   - Tailwind CSS
   - Cloudflare Workers
 liveUrl: https://bernardmcweeney.com
+featureImage: /images/projects/BERNARDMCWEENEY.png
 ---
 
 bernardmcweeney.com is the central home for Bernard's work online. It brings together projects, writing, and personal context in one place without relying on a heavy CMS or a cluttered presentation layer.

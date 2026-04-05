@@ -4,6 +4,7 @@ description: Web platform tailored for churches, born out of the success of Gree
 status: active
 order: 8
 liveUrl: https://churchify.ie
+featureImage: /images/projects/CHURCHIFY.png
 ---
 
 Churchify is a niche web platform focused on churches and parishes, taking the general web development approach behind Greenberry and shaping it around a specific audience with distinct needs.

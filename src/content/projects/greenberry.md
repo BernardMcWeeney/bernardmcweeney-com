@@ -8,6 +8,7 @@ tech:
   - Cloudflare
   - Tailwind CSS
 liveUrl: https://greenberry.ie
+featureImage: /images/projects/GREENBERRY.png
 ---
 
 Greenberry is the clearest expression of Bernard's approach to web development for businesses: modern tools, fast performance, and a deliberate move away from bloated, high-maintenance website stacks.

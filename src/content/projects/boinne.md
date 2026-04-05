@@ -4,6 +4,7 @@ description: A website exploring the history of the River Boyne and the rich her
 status: active
 order: 6
 liveUrl: https://boinne.ie
+featureImage: /images/projects/BOINNE.png
 ---
 
 Boinne is a heritage project centred on the River Boyne and the history, landscape, and cultural memory that surrounds it. It sits in the same wider orbit as Bernard's place-based work on Meath and the Boyne Valley.

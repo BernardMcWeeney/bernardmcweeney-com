@@ -7,6 +7,7 @@ tech:
   - Astro
   - Cloudflare
 liveUrl: https://dowth.ie
+featureImage: /images/projects/DOWTH.png
 ---
 
 Dowth is a focused heritage site dedicated to one of the Boyne Valley's most important ancient monuments. It takes a specific place and treats it with the depth and seriousness it deserves.

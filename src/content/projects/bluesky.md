@@ -4,6 +4,7 @@ description: "Your website. Your app. Your forms, email lists, events, products,
 status: development
 order: 10
 liveUrl: https://bluesky.ie
+featureImage: /images/projects/BLUESKY.png
 ---
 
 Bluesky is an ambitious platform idea built around consolidation. Instead of relying on a messy stack of disconnected tools, it imagines a single place where websites, apps, forms, products, events, and communication channels can work together.
